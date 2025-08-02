@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///home/jamille/Documentos/catalogue/app/admin/page.tsx"],"sourcesContent":["\"use client\";\n\nimport { useEffect, useState } from \"react\";\nimport Cookies from \"js-cookie\";\n\nexport default function AdminPage() {\n  const [token, setToken] = useState<string | null>(null);\n\n  useEffect(() => {\n    const t = Cookies.get(\"auth_token\");\n    setToken(t || null);\n  }, []);\n\n  if (!token) {\n    return <p>Você não está logado. <a href=\"/signin\">Voltar</a></p>;\n  }\n\n  return <h1>Bem-vindo à área administrativa</h1>;\n}\n"],"names":[],"mappings":";;;;AAEA;;;;;;AAFA;;;;AAKe,SAAS;IACtB,MAAM,CAAC,OAAO,SAAS,GAAG,CAAA,GAAA,qMAAA,CAAA,WAAQ,AAAD,EAAiB;IAElD,CAAA,GAAA,qMAAA,CAAA,YAAS,AAAD,EAAE;QACR,MAAM,IAAI,QAAQ,GAAG,CAAC;QACtB,SAAS,KAAK;IAChB,GAAG,EAAE;IAEL,IAAI,CAAC,OAAO;QACV,qBAAO,8OAAC;;gBAAE;8BAAsB,8OAAC;oBAAE,MAAK;8BAAU;;;;;;;;;;;;IACpD;IAEA,qBAAO,8OAAC;kBAAG;;;;;;AACb","debugId":null}},
+    {"offset": {"line": 59, "column": 0}, "map": {"version":3,"sources":["file:///home/jamille/Documentos/catalogue/node_modules/next/src/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.ts"],"sourcesContent":["module.exports = require('../../module.compiled').vendored[\n  'react-ssr'\n].ReactJsxDevRuntime\n"],"names":["module","exports","require","vendored","ReactJsxDevRuntime"],"mappings":";AAAAA,OAAOC,OAAO,GAAGC,QAAQ,4HAAyBC,QAAQ,CACxD,YACD,CAACC,kBAAkB","ignoreList":[0],"debugId":null}}]
+}
