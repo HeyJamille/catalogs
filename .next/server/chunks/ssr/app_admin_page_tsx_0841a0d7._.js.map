@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///home/jamille/Documentos/catalogs/app/admin/page.tsx"],"sourcesContent":["\"use client\";\n\nimport { useEffect, useState } from \"react\";\nimport Cookies from \"js-cookie\";\n\nexport default function AdminPage() {\n  const [token, setToken] = useState<string | null>(null);\n\n  useEffect(() => {\n    const token = Cookies.get(\"auth_token\");\n    setToken(token || null);\n  }, []);\n\n  if (!token) {\n    return (\n      <p>\n        Você não está logado. <a href=\"/signin\">Voltar</a>\n      </p>\n    );\n  }\n\n  return <h1>Bem-vindo à área administrativa</h1>;\n}\n"],"names":[],"mappings":";;;;AAEA;AACA;AAHA;;;;AAKe,SAAS;IACtB,MAAM,CAAC,OAAO,SAAS,GAAG,CAAA,GAAA,qMAAA,CAAA,WAAQ,AAAD,EAAiB;IAElD,CAAA,GAAA,qMAAA,CAAA,YAAS,AAAD,EAAE;QACR,MAAM,QAAQ,qJAAA,CAAA,UAAO,CAAC,GAAG,CAAC;QAC1B,SAAS,SAAS;IACpB,GAAG,EAAE;IAEL,IAAI,CAAC,OAAO;QACV,qBACE,8OAAC;;gBAAE;8BACqB,8OAAC;oBAAE,MAAK;8BAAU;;;;;;;;;;;;IAG9C;IAEA,qBAAO,8OAAC;kBAAG;;;;;;AACb","debugId":null}}]
+}

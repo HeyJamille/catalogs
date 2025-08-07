@@ -7,12 +7,16 @@ export default function DashboardPage() {
   const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
-    const t = Cookies.get("auth_token");
-    setToken(t || null);
+    const token = Cookies.get("auth_token");
+    setToken(token || null);
   }, []);
 
   if (!token) {
-    return <p>Você não está logado. <a href="/signin">Voltar</a></p>;
+    return (
+      <p>
+        Você não está logado. <a href="/signin">Voltar</a>
+      </p>
+    );
   }
 
   return <h1>Bem-vindo ao Dashboard</h1>;
