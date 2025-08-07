@@ -1,50 +1,55 @@
 "use client";
 
-import { useState } from "react";
-import Cookies from "js-cookie";
-import { useRouter } from "next/navigation";
-import { Button, ButtonGroup } from "@heroui/button";
+import { useContext, useState } from "react";
 
-// icons
+// Route
+import { useRouter } from "next/navigation";
+
+// Icon
+import { Button } from "@heroui/button";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { login } from "../../services/authService";
+
+// Provider
+import { AuthContext } from "../../provider/auth";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
+  const [password, setPassword] = useState("");
   const [erro, setErro] = useState("");
   const [loading, setLoading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
+  const { signIn } = useContext(AuthContext);
+
   // states for "invalid field" control
   const [touched, setTouched] = useState({
     email: false,
-    senha: false,
+    password: false,
   });
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    // Exchanged marked
     setTouched({
       email: true,
-      senha: true,
+      password: true,
     });
 
-    // Check if any field is empty
-    if (!email || !senha) {
+    // Verificação se os campos foram preenchidos
+    if (!email || !password) {
       setErro("Preencha todos os campos.");
       setLoading(false);
       return;
     }
 
     try {
-      await new Promise((r) => setTimeout(r, 2000));
+      const res = await signIn({ email, password });
 
-      const res = await login(email, senha);
-      Cookies.set("auth_token", res.token);
+      if (!res || !res.token) {
+        throw new Error("Token não retornado.");
+      }
 
       const regra = res.user?.rule;
 
@@ -52,21 +57,24 @@ export default function LoginPage() {
         throw new Error("Regra do usuário não encontrada.");
       }
 
-      if (regra.name.toLowerCase() === "cliente") {
+      // Redirecionamento de acordo com a regra
+      if (regra.name === "Cliente") {
         router.push("/dashboard");
       } else {
         router.push("/admin");
       }
-    } catch (err) {
+    } catch (err: any) {
       setErro("E-mail ou senha inválidos");
     } finally {
       setLoading(false);
     }
   };
 
+  const values = { email, password };
+
   // red border
   const inputClass = (field: keyof typeof touched) =>
-    touched[field] && !eval(field)
+    touched[field] && !values[field]
       ? "w-full px-5 py-3 border border-red-400 rounded-xl shadow-sm focus:outline-none focus:ring-3 focus:ring-red-400 transition"
       : "w-full px-5 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-3 focus:ring-blue-400 transition";
 
@@ -116,21 +124,21 @@ export default function LoginPage() {
 
           <div>
             <label
-              htmlFor="senha"
+              htmlFor="password"
               className="block text-sm font-semibold text-gray-700 mb-1"
             >
               Senha
             </label>
             <div className="relative">
               <input
-                id="senha"
+                id="password"
                 type={showPassword ? "text" : "password"}
-                value={senha}
-                onChange={(e) => setSenha(e.target.value)}
-                onBlur={() => setTouched({ ...touched, senha: true })}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                onBlur={() => setTouched({ ...touched, password: true })}
                 required
                 placeholder="••••••••"
-                className={`w-full px-5 py-3 border rounded-xl shadow-sm focus:outline-none focus:ring-3 transition ${inputClass("senha")}`}
+                className={`w-full px-5 py-3 border rounded-xl shadow-sm focus:outline-none focus:ring-3 transition ${inputClass("password")}`}
               />
               <button
                 type="button"

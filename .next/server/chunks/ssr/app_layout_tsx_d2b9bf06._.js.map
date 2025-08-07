@@ -1,0 +1,8 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///home/jamille/Documentos/catalogs/app/layout.tsx/proxy.mjs"],"sourcesContent":["import { registerClientReference } from \"react-server-dom-turbopack/server.edge\";\nexport const AppTabs = registerClientReference(\n    function() { throw new Error(\"Attempted to call AppTabs() from the server but AppTabs is on the client. It's not possible to invoke a client function from the server, it can only be rendered as a Component or passed to props of a Client Component.\"); },\n    \"[project]/app/layout.tsx <module evaluation>\",\n    \"AppTabs\",\n);\n"],"names":[],"mappings":";;;AAAA;;AACO,MAAM,UAAU,CAAA,GAAA,qPAAA,CAAA,0BAAuB,AAAD,EACzC;IAAa,MAAM,IAAI,MAAM;AAA8N,GAC3P,gDACA","debugId":null}},
+    {"offset": {"line": 21, "column": 0}, "map": {"version":3,"sources":["file:///home/jamille/Documentos/catalogs/app/layout.tsx/proxy.mjs"],"sourcesContent":["import { registerClientReference } from \"react-server-dom-turbopack/server.edge\";\nexport const AppTabs = registerClientReference(\n    function() { throw new Error(\"Attempted to call AppTabs() from the server but AppTabs is on the client. It's not possible to invoke a client function from the server, it can only be rendered as a Component or passed to props of a Client Component.\"); },\n    \"[project]/app/layout.tsx\",\n    \"AppTabs\",\n);\n"],"names":[],"mappings":";;;AAAA;;AACO,MAAM,UAAU,CAAA,GAAA,qPAAA,CAAA,0BAAuB,AAAD,EACzC;IAAa,MAAM,IAAI,MAAM;AAA8N,GAC3P,4BACA","debugId":null}},
+    {"offset": {"line": 35, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}}]
+}
