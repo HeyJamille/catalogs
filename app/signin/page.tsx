@@ -37,7 +37,7 @@ export default function LoginPage() {
       password: true,
     });
 
-    // Verificação se os campos foram preenchidos
+    // Checking whether the fields have been filled in
     if (!email || !password) {
       setErro("Preencha todos os campos.");
       setLoading(false);
@@ -51,22 +51,20 @@ export default function LoginPage() {
         throw new Error("Token não retornado.");
       }
 
-      const regra = res.user?.rule;
+      const regra = res.user?.rule?.name;
 
-      if (!regra || !regra.name) {
+      if (!regra || !regra) {
         throw new Error("Regra do usuário não encontrada.");
       }
 
-      // Redirecionamento de acordo com a regra
-      if (regra.name === "Cliente") {
-        router.push("/dashboard");
+      // Redirection according to rule
+      if (regra === "Cliente") {
+        router.push("/catalogo");
       } else {
-        router.push("/admin");
+        router.push("/dashboard");
       }
     } catch (err: any) {
       setErro("E-mail ou senha inválidos");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -80,7 +78,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-tr from-blue-50 via-white to-blue-50 flex items-center justify-center px-4 py-12">
-      {/* Barra de carregamento no topo */}
+      {/* Loading bar at the top */}
       {loading && (
         <div className="fixed top-0 left-0 w-full h-1 bg-blue-600 animate-[loadingBar_2s_linear_infinite]"></div>
       )}

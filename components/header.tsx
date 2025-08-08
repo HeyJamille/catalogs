@@ -1,7 +1,18 @@
 " use client";
 
-import { ShoppingCart, Package, BarChart3, AlignJustify } from "lucide-react";
-import { useState } from "react";
+import { useContext, useState } from "react";
+
+// Providers
+import { AuthContext } from "@/provider/auth";
+
+// Icons
+import {
+  X,
+  ShoppingCart,
+  Package,
+  BarChart3,
+  AlignJustify,
+} from "lucide-react";
 
 interface HeaderProps {
   activeTab: string;
@@ -10,6 +21,7 @@ interface HeaderProps {
 
 export default function Header({ activeTab, onTabChange }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { signOut } = useContext(AuthContext);
 
   const openMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -19,7 +31,17 @@ export default function Header({ activeTab, onTabChange }: HeaderProps) {
     { id: "dashboard", label: "Dashboard", icon: BarChart3 },
     { id: "products", label: "Produtos", icon: Package },
     { id: "sales", label: "Vendas", icon: ShoppingCart },
+    { id: "sair", label: "Sair", icon: X },
   ];
+
+  const handleTabClick = async (tabId: string) => {
+    if (tabId === "sair") {
+      await signOut();
+    } else {
+      onTabChange(tabId);
+    }
+    setIsMenuOpen(false);
+  };
 
   return (
     <header className="bg-white border-b border-gray-200 shadow-sm">
@@ -73,6 +95,7 @@ export default function Header({ activeTab, onTabChange }: HeaderProps) {
                 <button
                   key={tab.id}
                   onClick={() => {
+                    handleTabClick(tab.id);
                     onTabChange(tab.id);
                     setIsMenuOpen(false);
                   }}
