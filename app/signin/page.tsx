@@ -65,6 +65,7 @@ export default function LoginPage() {
       }
     } catch (err: any) {
       setErro("E-mail ou senha inválidos");
+      setLoading(false);
     }
   };
 
@@ -176,7 +177,7 @@ export default function LoginPage() {
             {loading ? "Carregando" : "Entrar"}
           </Button>
         </form>
-        {/* Barra de carregamento no topo 
+        {/* Register
         <p className="mt-6 text-center text-gray-600 text-sm">
           Não tem uma conta?{" "}
           <a href="/signout" className="text-blue-600 font-semibold hover:underline">

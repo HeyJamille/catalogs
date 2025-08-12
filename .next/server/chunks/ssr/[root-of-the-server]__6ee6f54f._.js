@@ -24,7 +24,8 @@ function useLocalStorage(key, initialValue) {
         if ("TURBOPACK compile-time truthy", 1) return;
         "TURBOPACK unreachable";
     }, [
-        key
+        key,
+        initialValue
     ]);
     const setValue = (value)=>{
         try {
