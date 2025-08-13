@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { StatCard } from "./statcards/page";
+import StatCard from "../../../components/statcards/page";
 import {
   AlertTriangle,
   Calendar,

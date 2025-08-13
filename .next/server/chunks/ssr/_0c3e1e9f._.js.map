@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 6, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}},
-    {"offset": {"line": 18, "column": 0}, "map": {"version":3,"sources":["file:///home/jamille/Documentos/catalogs/app/signout/page.tsx"],"sourcesContent":["import { NextResponse } from \"next/server\";\n\nexport async function GET() {\n  const response = NextResponse.redirect(\n    new URL(\"/signin\", process.env.NEXT_PUBLIC_BASE_URL)\n  );\n\n  // Limpa os cookies\n  response.cookies.set(\"auth_token\", \"\", { path: \"/\", maxAge: 0 });\n  response.cookies.set(\"user_rule\", \"\", { path: \"/\", maxAge: 0 });\n\n  return response;\n}\n"],"names":[],"mappings":";;;AAAA;;AAEO,eAAe;IACpB,MAAM,WAAW,8HAAA,CAAA,eAAY,CAAC,QAAQ,CACpC,IAAI,IAAI,WAAW,QAAQ,GAAG,CAAC,oBAAoB;IAGrD,mBAAmB;IACnB,SAAS,OAAO,CAAC,GAAG,CAAC,cAAc,IAAI;QAAE,MAAM;QAAK,QAAQ;IAAE;IAC9D,SAAS,OAAO,CAAC,GAAG,CAAC,aAAa,IAAI;QAAE,MAAM;QAAK,QAAQ;IAAE;IAE7D,OAAO;AACT","debugId":null}}]
-}

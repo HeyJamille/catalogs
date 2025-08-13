@@ -40,10 +40,13 @@ function useLocalStorage(key, initialValue) {
     ]);
     const setValue = (value)=>{
         try {
-            setStoredValue(value);
-            if ("TURBOPACK compile-time truthy", 1) {
-                window.localStorage.setItem(key, JSON.stringify(value));
-            }
+            setStoredValue((prev)=>{
+                const valueToStore = typeof value === "function" ? value(prev) : value;
+                if ("TURBOPACK compile-time truthy", 1) {
+                    window.localStorage.setItem(key, JSON.stringify(value));
+                }
+                return valueToStore;
+            });
         } catch (error) {
             console.error(`Erro ao definir localStorage com chave "${key}":`, error);
         }

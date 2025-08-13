@@ -1,6 +1,6 @@
 import React from "react";
 import { Edit, Trash2, Package } from "lucide-react";
-import { Product } from "../../../types/products/index";
+import { Product } from "../../types/products/index";
 
 interface ProductCardProps {
   product: Product;

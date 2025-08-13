@@ -25,12 +25,18 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
     }
   }, [key, initialValue]);
 
-  const setValue = (value: T) => {
+  const setValue = (value: T | ((val: T) => T)) => {
     try {
-      setStoredValue(value);
-      if (typeof window !== "undefined") {
-        window.localStorage.setItem(key, JSON.stringify(value));
-      }
+      setStoredValue((prev) => {
+        const valueToStore =
+          typeof value === "function" ? (value as (val: T) => T)(prev) : value;
+
+        if (typeof window !== "undefined") {
+          window.localStorage.setItem(key, JSON.stringify(value));
+        }
+
+        return valueToStore;
+      });
     } catch (error) {
       console.error(`Erro ao definir localStorage com chave "${key}":`, error);
     }
