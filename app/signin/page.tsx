@@ -1,13 +1,14 @@
 "use client";
 
+// React
 import { useContext, useState } from "react";
 
-// Route
-import { useRouter } from "next/navigation";
-
-// Icon
+// Componentes
 import { Button } from "@heroui/button";
+
+// Bibliotecas
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { Input } from "@heroui/react";
 
 // Provider
 import { AuthContext } from "../../provider/auth";
@@ -15,84 +16,25 @@ import { AuthContext } from "../../provider/auth";
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [erro, setErro] = useState("");
+  const [menssageErro, setMenssageErro] = useState("");
   const [loading, setLoading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState(false);
-  const router = useRouter();
 
   const { signIn } = useContext(AuthContext);
 
-  // states for "invalid field" control
-  const [touched, setTouched] = useState({
-    email: false,
-    password: false,
-  });
-
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+
     setLoading(true);
 
-    setTouched({
-      email: true,
-      password: true,
-    });
+    const resp = await signIn({ email, password });
+    setMenssageErro(resp);
 
-    // Checking whether the fields have been filled in
-    if (!email || !password) {
-      setErro("Preencha todos os campos.");
-      setLoading(false);
-      return;
-    }
-
-    try {
-      const res = await signIn({ email, password });
-
-      if (!res || !res.token) {
-        throw new Error("Token não retornado.");
-      }
-
-      const regra = res.user?.rule?.name;
-
-      if (!regra || !regra) {
-        throw new Error("Regra do usuário não encontrada.");
-      }
-
-      // Redirection according to rule
-      if (regra === "Cliente") {
-        router.push("/catalogo");
-      } else {
-        router.push("/dashboard");
-      }
-    } catch (err: any) {
-      setErro("E-mail ou senha inválidos");
-      setLoading(false);
-    }
+    setLoading(false);
   };
 
-  const values = { email, password };
-
-  // red border
-  const inputClass = (field: keyof typeof touched) =>
-    touched[field] && !values[field]
-      ? "w-full px-5 py-3 border border-red-400 rounded-xl shadow-sm focus:outline-none focus:ring-3 focus:ring-red-400 transition"
-      : "w-full px-5 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-3 focus:ring-blue-400 transition";
-
   return (
-    <div className="min-h-screen bg-gradient-to-tr from-blue-50 via-white to-blue-50 flex items-center justify-center px-4 py-12">
-      {/* Loading bar at the top */}
-      {loading && (
-        <div className="fixed top-0 left-0 w-full h-1 bg-blue-600 animate-[loadingBar_2s_linear_infinite]"></div>
-      )}
-
-      <style>
-        {`
-          @keyframes loadingBar {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-          }
-        `}
-      </style>
-
+    <div className="min-h-screen bg-gradient-to-tr from-blue-50 via-white to-blue-50 flex items-center justify-center px-4 py-8">
       <div className="max-w-md w-full bg-white rounded-3xl shadow-lg p-10">
         <h2 className="text-4xl font-extrabold text-center text-blue-700 mb-6">
           Bem-vindo!
@@ -101,58 +43,49 @@ export default function LoginPage() {
           Faça login para acessar sua conta
         </p>
 
-        <form onSubmit={handleLogin} className="space-y-6" noValidate>
+        <form onSubmit={handleLogin} className="space-y-3">
           <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-semibold text-gray-700 mb-1"
-            >
-              E-mail
-            </label>
-            <input
-              id="email"
+            <Input
+              label="Email"
+              required={true}
+              variant="bordered"
+              labelPlacement="outside-top"
+              placeholder="exemplo@domain.com.br"
               type="email"
-              value={email}
               onChange={(e) => setEmail(e.target.value)}
-              onBlur={() => setTouched({ ...touched, email: true })}
-              required
-              placeholder="exemplo@dominio.com"
-              className={`w-full px-5 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-3 focus:ring-blue-400 transition ${inputClass("email")}`}
+              classNames={{
+                inputWrapper: `border-small ${menssageErro ? "border-red-600" : "border-gray-600"}  data-[hover=true]:border-default-400 group-data-[focus=true]:border-default-foreground`,
+              }}
             />
           </div>
 
           <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-semibold text-gray-700 mb-1"
-            >
-              Senha
-            </label>
-            <div className="relative">
-              <input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                onBlur={() => setTouched({ ...touched, password: true })}
-                required
-                placeholder="••••••••"
-                className={`w-full px-5 py-3 border rounded-xl shadow-sm focus:outline-none focus:ring-3 transition ${inputClass("password")}`}
-              />
-              <button
-                type="button"
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-blue-600 focus:outline-none"
-                onClick={() => setShowPassword(!showPassword)}
-                tabIndex={-1}
-                aria-label={showPassword ? "Esconder senha" : "Mostrar senha"}
-              >
-                {showPassword ? (
-                  <AiOutlineEyeInvisible size={24} />
-                ) : (
-                  <AiOutlineEye size={24} />
-                )}
-              </button>
-            </div>
+            <Input
+              label="Senha"
+              required={true}
+              variant="bordered"
+              labelPlacement="outside-top"
+              placeholder="••••••••••••••••••••••••"
+              type={showPassword ? "text" : "password"}
+              onChange={(e) => setPassword(e.target.value)}
+              classNames={{
+                inputWrapper: `border-small ${menssageErro ? "border-red-600" : "border-gray-600"}  data-[hover=true]:border-default-400 group-data-[focus=true]:border-default-foreground`,
+              }}
+              endContent={
+                <button
+                  aria-label="toggle password visibility"
+                  className="focus:outline-solid outline-transparent"
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <AiOutlineEye size={24} />
+                  ) : (
+                    <AiOutlineEyeInvisible size={24} />
+                  )}
+                </button>
+              }
+            />
           </div>
 
           <p className="text-end text-sm text-gray-500">
@@ -162,9 +95,9 @@ export default function LoginPage() {
             </a>
           </p>
 
-          {erro && (
+          {menssageErro && (
             <p className="text-center text-red-600 font-semibold text-sm">
-              {erro}
+              {menssageErro}
             </p>
           )}
 

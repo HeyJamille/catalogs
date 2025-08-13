@@ -1,7 +1,7 @@
 // Biblioteca
 import axios from "axios";
 
-export function setupApiClient(token?: string, email?: string, senha?: string) {
+export function setupApiClient(token?: string) {
   const api = axios.create({
     baseURL: "https://catalogsapi.vercel.app/v1",
   });
