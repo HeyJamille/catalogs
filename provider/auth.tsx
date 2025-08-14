@@ -1,17 +1,18 @@
 "use client";
 
+// Next
 import { useRouter } from "next/navigation";
 
 // Utils
-import { setupApiClient } from "@/utils/fetchData";
+import { setupApiClient } from "@/utils/api/fetchData";
 
 // Context
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useEffect, useState } from "react";
 
-// Cookie
+// Bibliotecas
 import Cookies from "js-cookie";
 
-// Types
+// Tipagem
 import { itemUsers } from "../types/users/index";
 
 // Tipagens
@@ -20,15 +21,9 @@ type SignInProps = {
   password: string;
 };
 
-type SignInResponse = {
-  user: itemUsers;
-  token: string;
-};
-
 type AuthContextData = {
   user: itemUsers | undefined;
-  token: string;
-  signIn: (credentials: SignInProps) => Promise<SignInResponse>;
+  signIn: (credentials: SignInProps) => Promise<string>;
   signOut: () => void;
 };
 
@@ -36,58 +31,66 @@ export const AuthContext = createContext({} as AuthContextData);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<itemUsers>();
-  const [token, setToken] = useState<string>("");
 
-  const api = setupApiClient();
   const router = useRouter();
+  const api = setupApiClient();
 
-  async function signIn({
-    email,
-    password,
-  }: SignInProps): Promise<SignInResponse> {
+  async function signIn({ email, password }: SignInProps) {
     try {
       const resp = await api.post("/users/signin", { email, password });
-      if (!resp) throw new Error("Credenciais inválidas");
 
-      const token = resp.data.token;
       const user = resp.data.user;
-      const userRuleName = user.rule.name.toLowerCase();
+      const token = resp.data.token;
 
       Cookies.set("auth_token", token);
-      Cookies.set("user_rule", userRuleName);
+      Cookies.set("user_rule", user.rule.name);
 
       setUser(user);
-      setToken(token);
       api.defaults.headers["Authorization"] = `Bearer ${token}`;
 
-      // Rule-based redirection
       const routeByRule: Record<string, string> = {
-        admin: "/dashboard",
-        dono: "/dashboard",
-        suportedosistema: "/dashboard",
+        Admin: "/dashboard",
+        Dono: "/dashboard",
+        "Suporte do Sistema": "/dashboard",
         cliente: "/catalogo",
-        estoque: "/estoque",
+        Estoque: "/estoque",
       };
 
-      router.push(routeByRule[userRuleName] || "/");
+      router.push(routeByRule[user.rule.name]);
+    } catch (err: any) {
+      // Aviso de error
 
-      return { user, token };
-    } catch (err) {
-      console.log("error: ", err);
-      throw err;
+      return err.response.data.message;
     }
   }
 
   async function signOut() {
     Cookies.remove("auth_token");
-    Cookies.remove("user_rule");
     setUser(undefined);
-    setToken("");
     router.push("/signin");
   }
 
+  useEffect(() => {
+    const token = Cookies.get("auth_token");
+    async function loadUser() {
+      if (token) {
+        try {
+          const api = setupApiClient(token);
+
+          const resp = await api.post("/users/me");
+          setUser(resp.data.user);
+        } catch (err) {
+          console.log("Erro ao validar token:", err);
+          signOut();
+        }
+      }
+    }
+
+    loadUser();
+  }, []);
+
   return (
-    <AuthContext.Provider value={{ user, token, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );

@@ -29,7 +29,7 @@ __turbopack_context__.s({
 });
 var RegraUsuario = /*#__PURE__*/ function(RegraUsuario) {
     RegraUsuario["admin"] = "admin";
-    RegraUsuario["dono"] = "dono";
+    RegraUsuario["dono"] = "Dono";
     RegraUsuario["estoque"] = "estoque";
     RegraUsuario["suportedosistema"] = "suporte do sistema";
     RegraUsuario["cliente"] = "cliente";
@@ -38,7 +38,7 @@ var RegraUsuario = /*#__PURE__*/ function(RegraUsuario) {
 function checkRule(regra) {
     const permissoesEspeciais = new Set([
         "admin",
-        "dono",
+        "Dono",
         "suporte do sistema"
     ]);
     return permissoesEspeciais.has(regra);
@@ -62,6 +62,7 @@ function podeAcessarRota(regra, path) {
 
 var { g: global, __dirname } = __turbopack_context__;
 {
+// Next
 __turbopack_context__.s({
     "config": (()=>config),
     "middleware": (()=>middleware)
@@ -83,16 +84,34 @@ function isProtectedRoute(pathname) {
 function redirectTo(path, request) {
     return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL(path, request.url));
 }
+function parseUserRule(raw) {
+    if (!raw) return undefined;
+    try {
+        let normalized = decodeURIComponent(raw);
+        normalized = normalized.trim().toLowerCase();
+        normalized = normalized.replace(/[\s\-_]+/g, "");
+        normalized = normalized.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        const map = {
+            admin: __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$checkRule$2e$ts__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["RegraUsuario"].admin,
+            dono: __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$checkRule$2e$ts__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["RegraUsuario"].dono,
+            suportedosistema: __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$checkRule$2e$ts__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["RegraUsuario"].suportedosistema,
+            cliente: __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$checkRule$2e$ts__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["RegraUsuario"].cliente,
+            estoque: __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$checkRule$2e$ts__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["RegraUsuario"].estoque
+        };
+        return map[normalized];
+    } catch (e) {
+        return undefined;
+    }
+}
 function middleware(request) {
     const token = request.cookies.get("auth_token")?.value;
-    const userRule = request.cookies.get("user_rule")?.value;
+    const cookieRule = request.cookies.get("user_rule")?.value;
+    const userRule = parseUserRule(cookieRule);
     const pathname = request.nextUrl.pathname;
     const protegido = isProtectedRoute(pathname);
-    // No token or rule => redirect if protected route
     if (!token || !userRule) {
         return protegido ? redirectTo("/signin", request) : __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].next();
     }
-    // Already have token and try to access /signin => redirect to area
     if (pathname === "/signin") {
         let redirectPath = "/catalogo";
         switch(userRule){
@@ -110,7 +129,6 @@ function middleware(request) {
         }
         return redirectTo(redirectPath, request);
     }
-    // If route is protected and user cannot access
     const podeAcessar = (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$checkRule$2e$ts__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["podeAcessarRota"])(userRule, pathname);
     if (protegido && !podeAcessar) {
         return redirectTo("/forbidden", request);

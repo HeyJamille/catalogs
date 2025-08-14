@@ -1,6 +1,6 @@
 export enum RegraUsuario {
   admin = "admin",
-  dono = "dono",
+  dono = "Dono",
   estoque = "estoque",
   suportedosistema = "suporte do sistema",
   cliente = "cliente",

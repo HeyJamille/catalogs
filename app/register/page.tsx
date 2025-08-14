@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 // icons
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { setupApiClient } from "@/utils/fetchData";
+import { setupApiClient } from "@/utils/api/fetchData";
 
 export default function RegisterPage() {
   const [nome, setNome] = useState("");

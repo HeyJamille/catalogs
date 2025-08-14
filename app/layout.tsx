@@ -1,11 +1,10 @@
+// React
 import React from "react";
-import LayoutWithTabs from "./LayoutWithTabs";
 
 // Styles
 import "@/styles/globals.css";
 
 // Providers
-import { AppProvider } from "@/provider/App";
 import { AuthProvider } from "@/provider/auth";
 
 export default function RootLayout({
@@ -16,11 +15,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className="min-h-screen bg-gray-50">
-        <AppProvider>
-          <AuthProvider>
-            <LayoutWithTabs>{children}</LayoutWithTabs>
-          </AuthProvider>
-        </AppProvider>
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );
