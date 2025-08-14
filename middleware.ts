@@ -1,3 +1,4 @@
+// Next
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
@@ -14,19 +15,43 @@ function redirectTo(path: string, request: NextRequest) {
   return NextResponse.redirect(new URL(path, request.url));
 }
 
+function parseUserRule(raw?: string): RegraUsuario | undefined {
+  if (!raw) return undefined;
+
+  try {
+    let normalized = decodeURIComponent(raw);
+    normalized = normalized.trim().toLowerCase();
+
+    normalized = normalized.replace(/[\s\-_]+/g, "");
+
+    normalized = normalized.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+    const map: Record<string, RegraUsuario> = {
+      admin: RegraUsuario.admin,
+      dono: RegraUsuario.dono,
+      suportedosistema: RegraUsuario.suportedosistema,
+      cliente: RegraUsuario.cliente,
+      estoque: RegraUsuario.estoque,
+    };
+
+    return map[normalized];
+  } catch (e) {
+    return undefined;
+  }
+}
+
 export function middleware(request: NextRequest) {
   const token = request.cookies.get("auth_token")?.value;
-  const userRule = request.cookies.get("user_rule")?.value as RegraUsuario;
+  const cookieRule = request.cookies.get("user_rule")?.value as RegraUsuario;
+  const userRule = parseUserRule(cookieRule);
 
   const pathname = request.nextUrl.pathname;
   const protegido = isProtectedRoute(pathname);
 
-  // No token or rule => redirect if protected route
   if (!token || !userRule) {
     return protegido ? redirectTo("/signin", request) : NextResponse.next();
   }
 
-  // Already have token and try to access /signin => redirect to area
   if (pathname === "/signin") {
     let redirectPath = "/catalogo";
 
@@ -47,7 +72,6 @@ export function middleware(request: NextRequest) {
     return redirectTo(redirectPath, request);
   }
 
-  // If route is protected and user cannot access
   const podeAcessar = podeAcessarRota(userRule, pathname);
   if (protegido && !podeAcessar) {
     return redirectTo("/forbidden", request);

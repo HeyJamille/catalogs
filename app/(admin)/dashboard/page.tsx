@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import StatCard from "../../../components/statcards/page";
+import StatCard from "../../../components/statusCards/page";
 import {
   AlertTriangle,
   Calendar,
@@ -14,31 +14,32 @@ import {
 import { useApp } from "@/provider/App";
 
 export default function AdminPage() {
-  const [token, setToken] = useState<string | null>(null);
+  // const [token, setToken] = useState<string | null>(null);
 
-  const { getDashboardStats, sales, products } = useApp();
+  // const { getDashboardStats, sales, products } = useApp();
 
-  const stats = getDashboardStats();
+  // const stats = getDashboardStats();
 
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    }).format(value);
-  };
+  // const formatCurrency = (value: number) => {
+  //   return new Intl.NumberFormat("pt-BR", {
+  //     style: "currency",
+  //     currency: "BRL",
+  //   }).format(value);
+  // };
 
-  const recentSales = sales
-    .sort(
-      (a, b) => new Date(b.saleDate).getTime() - new Date(a.saleDate).getTime()
-    )
-    .slice(0, 5);
+  // const recentSales = sales
+  //   .sort(
+  //     (a, b) => new Date(b.saleDate).getTime() - new Date(a.saleDate).getTime()
+  //   )
+  //   .slice(0, 5);
 
-  const lowStockProducts = products.filter((p) => p.stock < 10);
+  // const lowStockProducts = products.filter((p) => p.stock < 10);
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatCard
+      <h1>Dashboard</h1>
+      {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+         <StatCard
           title="Total de Vendas"
           value={stats.totalSales}
           icon={ShoppingBag}
@@ -154,7 +155,7 @@ export default function AdminPage() {
             )}
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
