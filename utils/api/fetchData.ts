@@ -13,7 +13,6 @@ export function setupApiClient(token?: string) {
       }
       return config;
     },
-
     (error) => {
       return Promise.reject(error);
     }

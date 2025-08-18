@@ -2,83 +2,89 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-import { RegraUsuario, podeAcessarRota } from "./utils/checkRule";
+// Utils
+import { AccessControl, UserRule } from "./utils/checkRule";
 
-// Routes that require authentication
-const rotasProtegidas = ["/dashboard", "/catalogo", "/dono"];
+const protectedRoutes = ["/dashboard"];
 
 function isProtectedRoute(pathname: string): boolean {
-  return rotasProtegidas.some((rota) => pathname.startsWith(rota));
+  return protectedRoutes.some((router) => pathname.startsWith(router));
 }
 
-function redirectTo(path: string, request: NextRequest) {
-  return NextResponse.redirect(new URL(path, request.url));
+function redirectTo(path: string, req: NextRequest) {
+  return NextResponse.redirect(new URL(path, req.url));
 }
 
-function parseUserRule(raw?: string): RegraUsuario | undefined {
-  if (!raw) return undefined;
+function parseUserRule(access?: string): UserRule | undefined {
+  if (!access) return undefined;
 
   try {
-    let normalized = decodeURIComponent(raw);
-    normalized = normalized.trim().toLowerCase();
+    let rule = decodeURIComponent(access);
+    rule = rule
+      .trim()
+      .toLowerCase()
+      .replace(/[\s\-_]+/g, "");
+    rule = rule.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-    normalized = normalized.replace(/[\s\-_]+/g, "");
-
-    normalized = normalized.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-
-    const map: Record<string, RegraUsuario> = {
-      admin: RegraUsuario.admin,
-      dono: RegraUsuario.dono,
-      suportedosistema: RegraUsuario.suportedosistema,
-      cliente: RegraUsuario.cliente,
-      estoque: RegraUsuario.estoque,
+    const routesByAccessRule: Record<string, UserRule> = {
+      admin: UserRule.admin,
+      dono: UserRule.dono,
+      suportedosistema: UserRule.suportedosistema,
+      cliente: UserRule.cliente,
+      estoque: UserRule.estoque,
     };
 
-    return map[normalized];
+    return routesByAccessRule[rule];
   } catch (e) {
     return undefined;
   }
 }
 
-export function middleware(request: NextRequest) {
-  const token = request.cookies.get("auth_token")?.value;
-  const cookieRule = request.cookies.get("user_rule")?.value as RegraUsuario;
+export function middleware(req: NextRequest) {
+  const token = req.cookies.get("auth_token")?.value;
+  const cookieRule = req.cookies.get("user_rule")?.value;
   const userRule = parseUserRule(cookieRule);
 
-  const pathname = request.nextUrl.pathname;
-  const protegido = isProtectedRoute(pathname);
+  const pathname = req.nextUrl.pathname;
+  const protectedRoute = isProtectedRoute(pathname);
 
   if (!token || !userRule) {
-    return protegido ? redirectTo("/signin", request) : NextResponse.next();
+    if (pathname === "/forbidden") {
+      return redirectTo("/", req);
+    }
+    return protectedRoute ? redirectTo("/signin", req) : NextResponse.next();
   }
 
   if (pathname === "/signin") {
     let redirectPath = "/catalogo";
 
     switch (userRule) {
-      case RegraUsuario.admin:
-      case RegraUsuario.dono:
-      case RegraUsuario.suportedosistema:
+      case UserRule.admin:
+      case UserRule.dono:
+      case UserRule.suportedosistema:
         redirectPath = "/dashboard";
         break;
-      case RegraUsuario.cliente:
+      case UserRule.cliente:
         redirectPath = "/catalogo";
         break;
-      case RegraUsuario.estoque:
+      case UserRule.estoque:
         redirectPath = "/estoque";
         break;
     }
 
-    return redirectTo(redirectPath, request);
+    return redirectTo(redirectPath, req);
   }
 
-  const podeAcessar = podeAcessarRota(userRule, pathname);
-  if (protegido && !podeAcessar) {
-    return redirectTo("/forbidden", request);
+  const accessControl = new AccessControl(userRule);
+  const canAccess = accessControl.canAccess(pathname);
+
+  if (protectedRoute && !canAccess) {
+    return redirectTo("/forbidden", req);
   }
 
   return NextResponse.next();
 }
-export const config = {
+
+export const settings = {
   matcher: ["/dashboard/:path*", "/catalogo/:path*", "/dono/:path*", "/signin"],
 };

@@ -1,4 +1,4 @@
-export enum RegraUsuario {
+export enum UserRule {
   admin = "admin",
   dono = "Dono",
   estoque = "estoque",
@@ -6,32 +6,41 @@ export enum RegraUsuario {
   cliente = "cliente",
 }
 
-// Check if the user has special permission  (admin, dono, suporte)
-export function checkRule(regra: RegraUsuario): boolean {
-  const permissoesEspeciais = new Set([
-    RegraUsuario.admin,
-    RegraUsuario.dono,
-    RegraUsuario.suportedosistema,
-  ]);
-
-  return permissoesEspeciais.has(regra);
+interface CheckRules {
+  canAccess(path: string): boolean;
 }
 
-// Check if the user is a client
-export function isCliente(regra: RegraUsuario): boolean {
-  return regra === RegraUsuario.cliente;
+class SpecialAccess implements CheckRules {
+  canAccess(path: string): boolean {
+    return path.startsWith("/dashboard");
+  }
 }
 
-// Check if the user can access a route in the rule and path
-export function podeAcessarRota(regra: RegraUsuario, path: string): boolean {
-  if (checkRule(regra)) {
-    return true;
+class ClientAccess implements CheckRules {
+  canAccess(path: string): boolean {
+    return path.startsWith("/catalogo");
+  }
+}
+
+export class AccessControl {
+  private strategy: CheckRules;
+
+  constructor(rule: UserRule) {
+    switch (rule) {
+      case UserRule.admin:
+      case UserRule.dono:
+      case UserRule.suportedosistema:
+        this.strategy = new SpecialAccess();
+        break;
+      case UserRule.cliente:
+        this.strategy = new ClientAccess();
+        break;
+      default:
+        throw new Error("Regra de usuário desconhecida");
+    }
   }
 
-  if (isCliente(regra)) {
-    const permitido = path.startsWith("/catalogo");
-    return permitido;
+  canAccess(path: string): boolean {
+    return this.strategy.canAccess(path);
   }
-
-  return false;
 }

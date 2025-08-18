@@ -63,27 +63,25 @@ function AuthProvider({ children }) {
     _s();
     const [user, setUser] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])();
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"])();
-    const api = (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2f$fetchData$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["setupApiClient"])();
     async function signIn({ email, password }) {
         try {
+            const api = (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2f$fetchData$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["setupApiClient"])();
             const resp = await api.post("/users/signin", {
                 email,
                 password
             });
-            const user = resp.data.user;
-            const token = resp.data.token;
-            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$js$2d$cookie$2f$dist$2f$js$2e$cookie$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].set("auth_token", token);
-            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$js$2d$cookie$2f$dist$2f$js$2e$cookie$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].set("user_rule", user.rule.name);
-            setUser(user);
-            api.defaults.headers["Authorization"] = `Bearer ${token}`;
+            setUser(resp.data.user);
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$js$2d$cookie$2f$dist$2f$js$2e$cookie$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].set("auth_token", resp.data.token);
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$js$2d$cookie$2f$dist$2f$js$2e$cookie$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].set("user_rule", resp.data.user.rule.name);
+            api.defaults.headers["Authorization"] = `Bearer ${resp.data.token}`;
             const routeByRule = {
                 Admin: "/dashboard",
                 Dono: "/dashboard",
                 "Suporte do Sistema": "/dashboard",
-                cliente: "/catalogo",
+                Cliente: "/catalogo",
                 Estoque: "/estoque"
             };
-            router.push(routeByRule[user.rule.name]);
+            router.push(routeByRule[resp.data.user.rule.name]);
         } catch (err) {
             // Aviso de error
             return err.response.data.message;
@@ -91,6 +89,7 @@ function AuthProvider({ children }) {
     }
     async function signOut() {
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$js$2d$cookie$2f$dist$2f$js$2e$cookie$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].remove("auth_token");
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$js$2d$cookie$2f$dist$2f$js$2e$cookie$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].remove("user_rule");
         setUser(undefined);
         router.push("/signin");
     }
@@ -101,7 +100,7 @@ function AuthProvider({ children }) {
                 if (token) {
                     try {
                         const api = (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2f$fetchData$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["setupApiClient"])(token);
-                        const resp = await api.post("/users/me");
+                        const resp = await api.get("/users/me");
                         setUser(resp.data.user);
                     } catch (err) {
                         console.log("Erro ao validar token:", err);
@@ -121,7 +120,7 @@ function AuthProvider({ children }) {
         children: children
     }, void 0, false, {
         fileName: "[project]/provider/auth.tsx",
-        lineNumber: 93,
+        lineNumber: 98,
         columnNumber: 5
     }, this);
 }

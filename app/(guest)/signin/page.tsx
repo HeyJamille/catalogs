@@ -11,7 +11,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Input } from "@heroui/react";
 
 // Provider
-import { AuthContext } from "../../provider/auth";
+import { AuthContext } from "@/provider/auth";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -28,6 +28,8 @@ export default function LoginPage() {
     setLoading(true);
 
     const resp = await signIn({ email, password });
+    setEmail("");
+    setPassword("");
     setMenssageErro(resp);
 
     setLoading(false);
@@ -110,14 +112,6 @@ export default function LoginPage() {
             {loading ? "Carregando" : "Entrar"}
           </Button>
         </form>
-        {/* Register
-        <p className="mt-6 text-center text-gray-600 text-sm">
-          Não tem uma conta?{" "}
-          <a href="/signout" className="text-blue-600 font-semibold hover:underline">
-            Cadastre-se
-          </a>
-        </p>
-        */}
       </div>
     </div>
   );

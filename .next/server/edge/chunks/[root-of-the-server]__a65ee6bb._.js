@@ -22,39 +22,46 @@ module.exports = mod;
 var { g: global, __dirname } = __turbopack_context__;
 {
 __turbopack_context__.s({
-    "RegraUsuario": (()=>RegraUsuario),
-    "checkRule": (()=>checkRule),
-    "isCliente": (()=>isCliente),
-    "podeAcessarRota": (()=>podeAcessarRota)
+    "AccessControl": (()=>AccessControl),
+    "UserRule": (()=>UserRule)
 });
-var RegraUsuario = /*#__PURE__*/ function(RegraUsuario) {
-    RegraUsuario["admin"] = "admin";
-    RegraUsuario["dono"] = "Dono";
-    RegraUsuario["estoque"] = "estoque";
-    RegraUsuario["suportedosistema"] = "suporte do sistema";
-    RegraUsuario["cliente"] = "cliente";
-    return RegraUsuario;
+var UserRule = /*#__PURE__*/ function(UserRule) {
+    UserRule["admin"] = "admin";
+    UserRule["dono"] = "Dono";
+    UserRule["estoque"] = "estoque";
+    UserRule["suportedosistema"] = "suporte do sistema";
+    UserRule["cliente"] = "cliente";
+    return UserRule;
 }({});
-function checkRule(regra) {
-    const permissoesEspeciais = new Set([
-        "admin",
-        "Dono",
-        "suporte do sistema"
-    ]);
-    return permissoesEspeciais.has(regra);
-}
-function isCliente(regra) {
-    return regra === "cliente";
-}
-function podeAcessarRota(regra, path) {
-    if (checkRule(regra)) {
-        return true;
+class SpecialAccess {
+    canAccess(path) {
+        return path.startsWith("/dashboard");
     }
-    if (isCliente(regra)) {
-        const permitido = path.startsWith("/catalogo");
-        return permitido;
+}
+class ClientAccess {
+    canAccess(path) {
+        return path.startsWith("/catalogo");
     }
-    return false;
+}
+class AccessControl {
+    strategy;
+    constructor(rule){
+        switch(rule){
+            case "admin":
+            case "Dono":
+            case "suporte do sistema":
+                this.strategy = new SpecialAccess();
+                break;
+            case "cliente":
+                this.strategy = new ClientAccess();
+                break;
+            default:
+                throw new Error("Regra de usuário desconhecida");
+        }
+    }
+    canAccess(path) {
+        return this.strategy.canAccess(path);
+    }
 }
 }}),
 "[project]/middleware.ts [middleware-edge] (ecmascript)": ((__turbopack_context__) => {
@@ -64,78 +71,79 @@ var { g: global, __dirname } = __turbopack_context__;
 {
 // Next
 __turbopack_context__.s({
-    "config": (()=>config),
-    "middleware": (()=>middleware)
+    "middleware": (()=>middleware),
+    "settings": (()=>settings)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$api$2f$server$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__$3c$module__evaluation$3e$__ = __turbopack_context__.i("[project]/node_modules/next/dist/esm/api/server.js [middleware-edge] (ecmascript) <module evaluation>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/esm/server/web/spec-extension/response.js [middleware-edge] (ecmascript)");
+// Utils
 var __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$checkRule$2e$ts__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/utils/checkRule.ts [middleware-edge] (ecmascript)");
 ;
 ;
-// Routes that require authentication
-const rotasProtegidas = [
-    "/dashboard",
-    "/catalogo",
-    "/dono"
+const protectedRoutes = [
+    "/dashboard"
 ];
 function isProtectedRoute(pathname) {
-    return rotasProtegidas.some((rota)=>pathname.startsWith(rota));
+    return protectedRoutes.some((router)=>pathname.startsWith(router));
 }
-function redirectTo(path, request) {
-    return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL(path, request.url));
+function redirectTo(path, req) {
+    return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL(path, req.url));
 }
-function parseUserRule(raw) {
-    if (!raw) return undefined;
+function parseUserRule(access) {
+    if (!access) return undefined;
     try {
-        let normalized = decodeURIComponent(raw);
-        normalized = normalized.trim().toLowerCase();
-        normalized = normalized.replace(/[\s\-_]+/g, "");
-        normalized = normalized.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-        const map = {
-            admin: __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$checkRule$2e$ts__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["RegraUsuario"].admin,
-            dono: __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$checkRule$2e$ts__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["RegraUsuario"].dono,
-            suportedosistema: __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$checkRule$2e$ts__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["RegraUsuario"].suportedosistema,
-            cliente: __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$checkRule$2e$ts__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["RegraUsuario"].cliente,
-            estoque: __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$checkRule$2e$ts__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["RegraUsuario"].estoque
+        let rule = decodeURIComponent(access);
+        rule = rule.trim().toLowerCase().replace(/[\s\-_]+/g, "");
+        rule = rule.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        const routesByAccessRule = {
+            admin: __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$checkRule$2e$ts__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["UserRule"].admin,
+            dono: __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$checkRule$2e$ts__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["UserRule"].dono,
+            suportedosistema: __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$checkRule$2e$ts__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["UserRule"].suportedosistema,
+            cliente: __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$checkRule$2e$ts__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["UserRule"].cliente,
+            estoque: __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$checkRule$2e$ts__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["UserRule"].estoque
         };
-        return map[normalized];
+        return routesByAccessRule[rule];
     } catch (e) {
         return undefined;
     }
 }
-function middleware(request) {
-    const token = request.cookies.get("auth_token")?.value;
-    const cookieRule = request.cookies.get("user_rule")?.value;
+function middleware(req) {
+    const token = req.cookies.get("auth_token")?.value;
+    const cookieRule = req.cookies.get("user_rule")?.value;
     const userRule = parseUserRule(cookieRule);
-    const pathname = request.nextUrl.pathname;
-    const protegido = isProtectedRoute(pathname);
+    const pathname = req.nextUrl.pathname;
+    const protectedRoute = isProtectedRoute(pathname);
     if (!token || !userRule) {
-        return protegido ? redirectTo("/signin", request) : __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].next();
+        if (pathname === "/forbidden") {
+            return redirectTo("/", req);
+        }
+        return protectedRoute ? redirectTo("/signin", req) : __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].next();
     }
     if (pathname === "/signin") {
         let redirectPath = "/catalogo";
         switch(userRule){
-            case __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$checkRule$2e$ts__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["RegraUsuario"].admin:
-            case __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$checkRule$2e$ts__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["RegraUsuario"].dono:
-            case __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$checkRule$2e$ts__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["RegraUsuario"].suportedosistema:
+            case __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$checkRule$2e$ts__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["UserRule"].admin:
+            case __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$checkRule$2e$ts__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["UserRule"].dono:
+            case __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$checkRule$2e$ts__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["UserRule"].suportedosistema:
                 redirectPath = "/dashboard";
                 break;
-            case __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$checkRule$2e$ts__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["RegraUsuario"].cliente:
+            case __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$checkRule$2e$ts__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["UserRule"].cliente:
                 redirectPath = "/catalogo";
                 break;
-            case __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$checkRule$2e$ts__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["RegraUsuario"].estoque:
+            case __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$checkRule$2e$ts__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["UserRule"].estoque:
                 redirectPath = "/estoque";
                 break;
         }
-        return redirectTo(redirectPath, request);
+        return redirectTo(redirectPath, req);
     }
-    const podeAcessar = (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$checkRule$2e$ts__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["podeAcessarRota"])(userRule, pathname);
-    if (protegido && !podeAcessar) {
-        return redirectTo("/forbidden", request);
+    const accessControl = new __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$checkRule$2e$ts__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["AccessControl"](userRule);
+    const canAccess = accessControl.canAccess(pathname);
+    if (protectedRoute && !canAccess) {
+        return redirectTo("/forbidden", req);
     }
     return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].next();
 }
-const config = {
+const settings = {
     matcher: [
         "/dashboard/:path*",
         "/catalogo/:path*",

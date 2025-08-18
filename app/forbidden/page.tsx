@@ -1,6 +1,8 @@
-"use client";
-
+// Bibliotecas
 import { Lock } from "lucide-react";
+
+// Next
+import Link from "next/link";
 
 export default function ForbiddenPage() {
   return (
@@ -18,12 +20,12 @@ export default function ForbiddenPage() {
           o administrador para obter acesso.
         </p>
 
-        <a
+        <Link
           href="/catalogo"
           className="inline-block bg-red-500 hover:bg-red-600 text-white font-medium px-6 py-2 rounded-lg transition-colors duration-200"
         >
           Voltar para a página inicial
-        </a>
+        </Link>
       </section>
     </article>
   );

@@ -14,8 +14,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <body className="min-h-screen bg-gray-50">
-        <AuthProvider>{children}</AuthProvider>
+      <body>
+        <AuthProvider>
+          <main className="min-h-screen bg-gray-50">{children} </main>
+        </AuthProvider>
       </body>
     </html>
   );
