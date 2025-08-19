@@ -1,5 +1,5 @@
 // Componentes
-import Menu from "../../../components/menu/menu";
+import Menu from "../../../components/menu/landingPage/menu";
 
 export default function AdminLayout({
   children,
