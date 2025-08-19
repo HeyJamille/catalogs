@@ -36,7 +36,7 @@ export default function AdminPage() {
   // const lowStockProducts = products.filter((p) => p.stock < 10);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pt-5">
       <h1>Dashboard</h1>
       {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
          <StatCard

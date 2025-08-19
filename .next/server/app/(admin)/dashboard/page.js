@@ -6,7 +6,7 @@ runtime.loadChunk("server/chunks/ssr/_39389866._.js");
 runtime.loadChunk("server/chunks/ssr/node_modules_next_0a83f2df._.js");
 runtime.loadChunk("server/chunks/ssr/node_modules_next_dist_client_components_forbidden-error_ea7ea172.js");
 runtime.loadChunk("server/chunks/ssr/node_modules_next_dist_client_components_unauthorized-error_c8949b27.js");
-runtime.loadChunk("server/chunks/ssr/_27f0da90._.js");
+runtime.loadChunk("server/chunks/ssr/_d5349f75._.js");
 runtime.loadChunk("server/chunks/ssr/_4d220955._.js");
 runtime.getOrInstantiateRuntimeModule("[project]/.next-internal/server/app/(admin)/dashboard/page/actions.js [app-rsc] (server actions loader, ecmascript)", CHUNK_PUBLIC_PATH);
 runtime.getOrInstantiateRuntimeModule("[project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(admin)/dashboard/page { MODULE_0 => \"[project]/app/layout.tsx [app-rsc] (ecmascript, Next.js server component)\", MODULE_1 => \"[project]/node_modules/next/dist/client/components/not-found-error.js [app-rsc] (ecmascript, Next.js server component)\", MODULE_2 => \"[project]/node_modules/next/dist/client/components/forbidden-error.js [app-rsc] (ecmascript, Next.js server component)\", MODULE_3 => \"[project]/node_modules/next/dist/client/components/unauthorized-error.js [app-rsc] (ecmascript, Next.js server component)\", MODULE_4 => \"[project]/app/(admin)/dashboard/layout.tsx [app-rsc] (ecmascript, Next.js server component)\", MODULE_5 => \"[project]/app/(admin)/dashboard/page.tsx [app-rsc] (ecmascript, Next.js server component)\" } [app-rsc] (ecmascript)", CHUNK_PUBLIC_PATH);

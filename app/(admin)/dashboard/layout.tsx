@@ -1,5 +1,6 @@
 // Componentes
-import Menu from "../../../components/menu/landingPage/menu";
+import HeaderNav from "@/components/menu/admin/headerNav";
+import SideNav from "@/components/menu/admin/sideNav";
 
 export default function AdminLayout({
   children,
@@ -7,11 +8,12 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
-      <Menu />
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main className="w-full flex">
+      <SideNav />
+      <main className="w-full p-4 ">
+        <HeaderNav />
         {children}
       </main>
-    </>
+    </main>
   );
 }
