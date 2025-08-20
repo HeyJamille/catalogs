@@ -35,9 +35,9 @@ export default function UserDropdown() {
                 description="@tonyreichert"
                 name="Tony Reichert"
               />
-              <div>
-                <Settings className="text-white w-4 h-4" />
-              </div>
+            </div>
+            <div>
+              <Settings className="text-white w-4 h-4" />
             </div>
           </div>
         </DropdownTrigger>
