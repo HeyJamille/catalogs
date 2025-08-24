@@ -8,6 +8,7 @@ interface NavLinkProps {
   children: React.ReactNode;
   icon: React.ReactNode;
   isSupport?: boolean;
+  isMenu?: boolean;
 }
 
 export default function ActiveSide({
@@ -15,6 +16,7 @@ export default function ActiveSide({
   children,
   icon,
   isSupport,
+  isMenu,
 }: NavLinkProps) {
   const pathname = usePathname();
   const isActive = pathname === href;
@@ -23,12 +25,12 @@ export default function ActiveSide({
     ? "bg-blue-500 text-white"
     : isSupport
       ? "text-gray-300 hover:bg-blue-100 hover:text-blue-700"
-      : "text-gray-100 hover:bg-blue-100 hover:text-blue-700 font-semibold";
+      : `text-gray-100 hover:bg-blue-100 hover:text-blue-700 font-semibold ${isMenu && "flex items-center justify-center"}`;
 
   return (
     <Link href={href} className={`${baseClasses} ${activeClasses}`}>
       {icon}
-      <span className="ml-2">{children}</span>
+      <span className={`${!isMenu && "ml-2"}`}>{children}</span>
     </Link>
   );
 }

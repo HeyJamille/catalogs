@@ -24,7 +24,11 @@ import {
   UserRoundCog,
 } from "lucide-react";
 
-export default function UserDropdown() {
+export default function UserDropdown({
+  ShortenedMenu,
+}: {
+  ShortenedMenu?: boolean;
+}) {
   const { signOut, user } = useContext(AuthContext);
 
   return (
