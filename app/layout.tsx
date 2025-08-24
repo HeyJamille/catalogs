@@ -16,7 +16,7 @@ export default function RootLayout({
     <html lang="pt-BR">
       <body>
         <AuthProvider>
-          <main className="min-h-screen bg-gray-50">{children} </main>
+          <main className="min-h-screen bg-[#f1f5f9]">{children} </main>
         </AuthProvider>
       </body>
     </html>
