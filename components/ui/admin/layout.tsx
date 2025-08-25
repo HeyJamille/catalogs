@@ -26,7 +26,7 @@ export default function Layout({ companysData, children }: LayoutProps) {
           isOpen={isOpen}
           companysData={companysData}
         />
-        {children}
+        <div className="py-6 px-5">{children}</div>
       </main>
     </main>
   );
