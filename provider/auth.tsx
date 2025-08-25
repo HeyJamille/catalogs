@@ -13,7 +13,7 @@ import { createContext, ReactNode, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 
 // Tipagem
-import { itemUsers } from "../types/users/index";
+import { itemUsers } from "../types/user";
 
 // Tipagens
 type SignInProps = {

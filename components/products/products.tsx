@@ -3,7 +3,7 @@ import { Package, Plus, Search } from "lucide-react";
 import { useApp } from "../../provider/App";
 import { ProductCard } from "../products/productCard";
 import { ProductForm } from "../products/productForm";
-import { Product } from "../../types/products/index";
+import { Product } from "../../types/product";
 
 export function Products() {
   const { products, deleteProduct } = useApp();

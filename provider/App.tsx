@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, ReactNode } from "react";
-import { Product, Sale, DashboardStats } from "../types/products/index";
+import { Product, Sale, DashboardStats } from "../types/product";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 
 interface AppContextType {
