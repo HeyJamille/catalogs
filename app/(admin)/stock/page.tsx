@@ -13,7 +13,7 @@ import StockDataOnCards from "@/data/cards/stockDataOnCards";
 // Bibliotecas
 
 // Componentes
-import Container from "@/components/ui/admin/container";
+import Container from "@/components/ui/container";
 import ToolBar from "@/components/ui/admin/toolbar";
 import {
   Table,
@@ -31,6 +31,7 @@ export default async function StockPage() {
   const api = setupApiClient(token);
 
   const activeProducts = await api.get("/stocks/filters?is_active=true");
+  const products = await api.get("/stocks");
   const cardDetails = StockDataOnCards({
     stockData: activeProducts.data.products,
   });
