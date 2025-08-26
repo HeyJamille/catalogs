@@ -18,9 +18,9 @@ export default function Layout({ companysData, children }: LayoutProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
-    <main className="w-full flex">
+    <main className="w-full flex overflow-hidden">
       <SideNav isOpen={isOpen} />
-      <main className="w-full p-4 ">
+      <main className="w-full p-4 overflow-auto">
         <HeaderNav
           isClose={() => setIsOpen(!isOpen)}
           isOpen={isOpen}

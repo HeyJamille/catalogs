@@ -9,20 +9,13 @@ import { setupApiClient } from "@/utils/api/fetchData";
 
 // Dados
 import StockDataOnCards from "@/data/cards/stockDataOnCards";
-
-// Bibliotecas
+import columns from "@/data/columns/products/columns.json";
 
 // Componentes
 import Container from "@/components/ui/container";
 import ToolBar from "@/components/ui/admin/toolbar";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableColumn,
-  TableHeader,
-  TableRow,
-} from "@heroui/react";
+import Table from "@/components/ui/admin/table";
+import { renderCell } from "@/components/ui/admin/renderCell";
 
 export default async function StockPage() {
   const cookieStore = cookies();
@@ -50,35 +43,20 @@ export default async function StockPage() {
           handleRefresh={() => console.log("Ativou!")}
           handleAddItems={() => console.log("Ativou")}
         />
-        <Table aria-label="Example static collection table">
-          <TableHeader>
-            <TableColumn>NAME</TableColumn>
-            <TableColumn>ROLE</TableColumn>
-            <TableColumn>STATUS</TableColumn>
-          </TableHeader>
-          <TableBody>
-            <TableRow key="1">
-              <TableCell>Tony Reichert</TableCell>
-              <TableCell>CEO</TableCell>
-              <TableCell>Active</TableCell>
-            </TableRow>
-            <TableRow key="2">
-              <TableCell>Zoey Lang</TableCell>
-              <TableCell>Technical Lead</TableCell>
-              <TableCell>Paused</TableCell>
-            </TableRow>
-            <TableRow key="3">
-              <TableCell>Jane Fisher</TableCell>
-              <TableCell>Senior Developer</TableCell>
-              <TableCell>Active</TableCell>
-            </TableRow>
-            <TableRow key="4">
-              <TableCell>William Howard</TableCell>
-              <TableCell>Community Manager</TableCell>
-              <TableCell>Vacation</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
+        <Table
+          columns={columns}
+          data={products.data.products}
+          loading={false}
+          renderCell={renderCell}
+          // children={
+          //   <ToolBar
+          //     title="Produtos"
+          //     addItemDescription="Produtos"
+          //     handleRefresh={() => console.log("Ativou!")}
+          //     handleAddItems={() => console.log("Ativou")}
+          //   />
+          // }
+        />
       </Container>
     </div>
   );

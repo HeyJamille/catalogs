@@ -1,0 +1,14 @@
+[
+  { "name": "Nome do Produto", "uid": "name" },
+  { "name": "Código de Barra", "uid": "product_code" },
+  { "name": "Marca", "uid": "brand" },
+  { "name": "Categoria ", "uid": "category" },
+  { "name": "Ativo?", "uid": "is_active" },
+  { "name": "Preço", "uid": "price" },
+  { "name": "Preço de Compra", "uid": "purchase_price" },
+  { "name": "Preço de Custo", "uid": "cost_price" },
+  { "name": "Custo da Mercadoria", "uid": "cost_of_goods" },
+  { "name": "Quantidade Atual", "uid": "current_quantity" },
+  { "name": "Quantidade Mínima", "uid": "minimum_quantity" },
+  { "name": "Quantidade Máxima", "uid": "maximum_quantity" }
+]
