@@ -750,6 +750,10 @@
     order: 3;
   }
 
+  .col-span-full {
+    grid-column: 1 / -1;
+  }
+
   .-m-2 {
     margin: calc(var(--spacing) * -2);
   }
@@ -1247,8 +1251,20 @@
     min-height: 32px;
   }
 
+  .min-h-\[40px\] {
+    min-height: 40px;
+  }
+
+  .min-h-\[80px\] {
+    min-height: 80px;
+  }
+
   .min-h-\[100dvh\] {
     min-height: 100dvh;
+  }
+
+  .min-h-\[100px\] {
+    min-height: 100px;
   }
 
   .min-h-screen {
@@ -1523,6 +1539,14 @@
     min-width: calc(var(--spacing) * 24);
   }
 
+  .min-w-28 {
+    min-width: calc(var(--spacing) * 28);
+  }
+
+  .min-w-32 {
+    min-width: calc(var(--spacing) * 32);
+  }
+
   .min-w-40 {
     min-width: calc(var(--spacing) * 40);
   }
@@ -1783,6 +1807,10 @@
 
   .resize-none {
     resize: none;
+  }
+
+  .resize-y {
+    resize: vertical;
   }
 
   .snap-y {
@@ -2383,6 +2411,10 @@
 
   .border-gray-300 {
     border-color: var(--color-gray-300);
+  }
+
+  .border-gray-400 {
+    border-color: var(--color-gray-400);
   }
 
   .border-gray-600 {
@@ -3211,6 +3243,10 @@
 
   .pt-5 {
     padding-top: calc(var(--spacing) * 5);
+  }
+
+  .pt-\[0\.28rem\] {
+    padding-top: .28rem;
   }
 
   .pr-0\.5 {
@@ -4938,6 +4974,10 @@
 
   .group-data-\[focus\=true\]\:\!border-danger:is(:where(.group)[data-focus="true"] *) {
     border-color: hsl(var(--heroui-danger) / 1) !important;
+  }
+
+  .group-data-\[focus\=true\]\:border-blue-800:is(:where(.group)[data-focus="true"] *) {
+    border-color: var(--color-blue-800);
   }
 
   .group-data-\[focus\=true\]\:border-danger:is(:where(.group)[data-focus="true"] *) {
@@ -7038,6 +7078,10 @@
     opacity: .7 !important;
   }
 
+  .active\:opacity-50:active {
+    opacity: .5;
+  }
+
   .active\:opacity-disabled:active {
     opacity: var(--heroui-disabled-opacity);
   }
@@ -7677,6 +7721,10 @@
   .data-\[hover\=true\]\:translate-x-0[data-hover="true"] {
     --tw-translate-x: calc(var(--spacing) * 0);
     translate: var(--tw-translate-x) var(--tw-translate-y);
+  }
+
+  .data-\[hover\=true\]\:border-blue-500[data-hover="true"] {
+    border-color: var(--color-blue-500);
   }
 
   .data-\[hover\=true\]\:border-danger[data-hover="true"] {
