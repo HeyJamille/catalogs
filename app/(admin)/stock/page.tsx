@@ -2,20 +2,19 @@
 import { cookies } from "next/headers";
 
 // Componentes
-import InfoCards from "@/components/ui/admin/infoCards";
-
+import InfoCards from "../../../components/ui/admin/infoCards";
 // Utils
-import { setupApiClient } from "@/utils/api/fetchData";
+import { setupApiClient } from "./../../../utils/api/fetchData";
 
 // Dados
-import StockDataOnCards from "@/data/cards/stockDataOnCards";
-import columns from "@/data/columns/products/columns.json";
+import StockDataOnCards from "./../../../data/cards/stockDataOnCards";
+import columns from "./../../../data/columns/products/columns.json";
 
 // Componentes
-import Container from "@/components/ui/container";
-import ToolBar from "@/components/ui/admin/toolbar";
-import Table from "@/components/ui/admin/table";
-import { renderCell } from "@/components/ui/admin/renderCell";
+import Container from "./../../../components/ui/container";
+import ToolBar from "./../../../components/ui/admin/toolbar";
+import Table from "./../../../components/ui/admin/table";
+import { renderCell } from "../../../components/renderCell/product/renderCell";
 
 export default async function StockPage() {
   const cookieStore = cookies();
@@ -41,21 +40,13 @@ export default async function StockPage() {
           title="Produtos"
           addItemDescription="Produtos"
           handleRefresh={() => console.log("Ativou!")}
-          handleAddItems={() => console.log("Ativou")}
+          handleAddItems="/stock/register"
         />
         <Table
           columns={columns}
           data={products.data.products}
           loading={false}
           renderCell={renderCell}
-          // children={
-          //   <ToolBar
-          //     title="Produtos"
-          //     addItemDescription="Produtos"
-          //     handleRefresh={() => console.log("Ativou!")}
-          //     handleAddItems={() => console.log("Ativou")}
-          //   />
-          // }
         />
       </Container>
     </div>

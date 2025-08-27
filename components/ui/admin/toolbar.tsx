@@ -8,7 +8,7 @@ interface ToolBarProps {
   title: string;
   addItemDescription: string;
   handleRefresh: () => void;
-  handleAddItems: () => void;
+  handleAddItems: string;
 }
 
 export default function ToolBar({
@@ -35,6 +35,9 @@ export default function ToolBar({
           </Button>
           <Button
             startContent={<Plus className="w-5 h-5" />}
+            // onClick={() => handleAddItems()}
+            href={handleAddItems}
+            as="a"
             size="md"
             radius="lg"
             color="success"

@@ -1,14 +1,14 @@
 "use client";
 
 // Bibliotecas
-import { Chip, User } from "@heroui/react";
-import { Package2 } from "lucide-react";
+import { Chip, Tooltip, User } from "@heroui/react";
+import { Package2, Pen, Trash } from "lucide-react";
 
 // Utils
-import { formatCurrency } from "./../../../utils/mask/formatCurrency";
+import { formatCurrency } from "../../../utils/mask/formatCurrency";
 
 // Tipagem
-import { productItems } from "@/types/product";
+import { productItems } from "./../../../types/product";
 
 export const renderCell = (item: productItems, columnKey: string) => {
   const myStockIsLow =
@@ -126,6 +126,21 @@ export const renderCell = (item: productItems, columnKey: string) => {
         >
           {item.stock.maximum_quantity}
         </p>
+      );
+    case "actions":
+      return (
+        <div className="flex items-center gap-2">
+          <Tooltip content="Editar Produto">
+            <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+              <Pen className="w-5 h-5" />
+            </span>
+          </Tooltip>
+          <Tooltip color="danger" content="Excluir Produto">
+            <span className="text-lg text-danger cursor-pointer active:opacity-50">
+              <Trash className="w-5 h-5" />
+            </span>
+          </Tooltip>
+        </div>
       );
   }
 };
