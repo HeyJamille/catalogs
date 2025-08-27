@@ -51,7 +51,7 @@ export default function SideNav({ isOpen }: { isOpen: boolean }) {
 
   return (
     <aside
-      className={`bg-[#3b82f6] dark:bg-gray-900 border-r border-gray-200 rounded-r-lg ${isOpen ? "w-20" : "w-72"} h-screen flex flex-col`}
+      className={`bg-[#3b82f6] dark:bg-gray-900 border-r border-gray-200 rounded-r-lg ${isOpen ? "w-20" : "w-72"} flex flex-col`}
     >
       <div
         className={`flex items-center ${isOpen ? " justify-center p-2" : "p-6 space-x-4"}`}
