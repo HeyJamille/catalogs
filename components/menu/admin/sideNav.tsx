@@ -98,16 +98,18 @@ export default function SideNav({ isOpen }: { isOpen: boolean }) {
                 className="flex items-center bg-gray-100 w-full px-3 py-2 rounded-lg text-blue-900 transition"
               />
               {openMenus.has(item.label) && (
-                <div className="pl-8 space-y-1">
-                  {item.subItems.map((subItem, index) => (
-                    <ActiveSide
-                      key={index}
-                      href={subItem.href}
-                      icon={<subItem.icon className="w-5 h-5 mr-2" />}
-                    >
-                      {subItem.label}
-                    </ActiveSide>
-                  ))}
+                <div className="pl-6 space-y-1">
+                  {item.subItems.map((subItem, index) => {
+                    return (
+                      <ActiveSide
+                        key={index}
+                        href={subItem.href}
+                        icon={<subItem.icon className="w-5 h-5 mr-2" />}
+                      >
+                        {subItem.label}
+                      </ActiveSide>
+                    );
+                  })}
                 </div>
               )}
             </div>
@@ -134,6 +136,7 @@ export default function SideNav({ isOpen }: { isOpen: boolean }) {
                           startContent={
                             <subItem.icon className="w-5 h-5 mr-2" />
                           }
+                          as="a"
                           key={index}
                           href={subItem.href}
                         >

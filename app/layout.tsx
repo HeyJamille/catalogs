@@ -7,6 +7,9 @@ import "@/styles/globals.css";
 // Providers
 import { AuthProvider } from "@/provider/auth";
 
+// Bibliotecas
+import NextTopLoader from "nextjs-toploader";
+
 export default function RootLayout({
   children,
 }: {
@@ -16,6 +19,7 @@ export default function RootLayout({
     <html lang="pt-BR">
       <body>
         <AuthProvider>
+          <NextTopLoader color="#155dfc" />
           <main className="min-h-screen bg-[#f1f5f9]">{children} </main>
         </AuthProvider>
       </body>

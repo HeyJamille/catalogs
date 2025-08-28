@@ -3,7 +3,13 @@
 // Bibliotecas
 import { Textarea } from "@heroui/input";
 
-export default function CommentArea({ label }: { label: string }) {
+export default function CommentArea({
+  label,
+  name,
+}: {
+  label: string;
+  name: string;
+}) {
   return (
     <Textarea
       isClearable
@@ -20,6 +26,7 @@ export default function CommentArea({ label }: { label: string }) {
       placeholder=""
       variant="bordered"
       disableAutosize
+      name={name}
       // eslint-disable-next-line no-console
       //   onClear={() => console.log("textarea cleared")}
     />

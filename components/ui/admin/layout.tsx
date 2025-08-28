@@ -20,13 +20,13 @@ export default function Layout({ companysData, children }: LayoutProps) {
   return (
     <main className="w-full flex overflow-hidden">
       <SideNav isOpen={isOpen} />
-      <main className="w-full p-4 overflow-auto">
+      <main className="w-full p-4 h-screen overflow-hidden">
         <HeaderNav
           isClose={() => setIsOpen(!isOpen)}
           isOpen={isOpen}
           companysData={companysData}
         />
-        <div className="py-6 px-5 overflow-auto">{children}</div>
+        <div className="py-6 px-5 overflow-auto w-ful">{children}</div>
       </main>
     </main>
   );

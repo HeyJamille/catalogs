@@ -1,5 +1,6 @@
 "use client";
 
+// Bibliotecas
 import { Spinner } from "@heroui/react";
 
 export default function LoadingOverlay() {

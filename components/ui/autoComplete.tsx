@@ -7,6 +7,7 @@ import { Autocomplete as AtcUI, AutocompleteItem } from "@heroui/react";
 interface AutoCompleteProps {
   lable: string;
   name?: string;
+  isRequired?: boolean;
   placeholder: string;
   data: { id: string; label: string }[];
 }
@@ -14,6 +15,7 @@ interface AutoCompleteProps {
 export default function Autocomplete({
   lable,
   name,
+  isRequired,
   placeholder,
   data,
 }: AutoCompleteProps) {
@@ -25,6 +27,7 @@ export default function Autocomplete({
       label={lable}
       placeholder={placeholder}
       name={name}
+      isRequired={isRequired}
       labelPlacement="outside-top"
       inputProps={{
         size: "md",
