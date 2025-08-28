@@ -1251,20 +1251,12 @@
     min-height: 32px;
   }
 
-  .min-h-\[40px\] {
-    min-height: 40px;
-  }
-
   .min-h-\[80px\] {
     min-height: 80px;
   }
 
   .min-h-\[100dvh\] {
     min-height: 100dvh;
-  }
-
-  .min-h-\[100px\] {
-    min-height: 100px;
   }
 
   .min-h-screen {
@@ -1539,10 +1531,6 @@
     min-width: calc(var(--spacing) * 24);
   }
 
-  .min-w-28 {
-    min-width: calc(var(--spacing) * 28);
-  }
-
   .min-w-32 {
     min-width: calc(var(--spacing) * 32);
   }
@@ -1807,10 +1795,6 @@
 
   .resize-none {
     resize: none;
-  }
-
-  .resize-y {
-    resize: vertical;
   }
 
   .snap-y {
