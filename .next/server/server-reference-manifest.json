@@ -1,5 +1,17 @@
 {
-  "node": {},
+  "node": {
+    "409c88e338fcefd6f988448fa2678da811a7b3aba2": {
+      "workers": {
+        "app/(admin)/stock/register/page": {
+          "moduleId": "[project]/.next-internal/server/app/(admin)/stock/register/page/actions.js { ACTIONS_MODULE0 => \"[project]/app/(admin)/stock/register/page.tsx [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/(admin)/stock/register/page": "rsc"
+      }
+    }
+  },
   "edge": {},
-  "encryptionKey": "G4iTzZDAsvpTvR0oE7ULaMgcYOyxHZIikqKSciM8cXQ="
+  "encryptionKey": "dN4krk6Kot/JwQS+/5TK3FQEfeSsAAFX/oeSgqV4iF0="
 }

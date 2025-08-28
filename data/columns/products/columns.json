@@ -10,5 +10,6 @@
   { "name": "Custo da Mercadoria", "uid": "cost_of_goods" },
   { "name": "Quantidade Atual", "uid": "current_quantity" },
   { "name": "Quantidade Mínima", "uid": "minimum_quantity" },
-  { "name": "Quantidade Máxima", "uid": "maximum_quantity" }
+  { "name": "Quantidade Máxima", "uid": "maximum_quantity" },
+  { "name": "Ações", "uid": "actions" }
 ]

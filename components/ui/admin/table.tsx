@@ -68,7 +68,7 @@ export default function Table<T>({
 
       <TableBody
         items={data}
-        className="w-full overflow-auto"
+        className="w-full "
         emptyContent={loading ? "Carregando..." : "Nenhum produto encontrado"}
       >
         {(item) => (

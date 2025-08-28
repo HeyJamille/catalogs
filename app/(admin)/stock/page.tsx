@@ -2,20 +2,21 @@
 import { cookies } from "next/headers";
 
 // Componentes
-import InfoCards from "@/components/ui/admin/infoCards";
+import InfoCards from "../../../components/ui/admin/infoCards";
 
 // Utils
-import { setupApiClient } from "@/utils/api/fetchData";
+import { setupApiClient } from "./../../../utils/api/fetchData";
 
 // Dados
 import StockDataOnCards from "@/data/cards/stockDataOnCards";
-import columns from "@/data/columns/products/columns.json";
+import columns from "./../../../data/columns/products/columns.json";
 
 // Componentes
 import Container from "@/components/ui/container";
 import ToolBar from "@/components/ui/admin/toolbar";
 import Table from "@/components/ui/admin/table";
-import { renderCell } from "@/components/ui/admin/renderCell";
+import ContainerLayout from "@/components/ui/admin/containerLayout";
+import { renderCell } from "@/components/renderCell/product/renderCell";
 
 export default async function StockPage() {
   const cookieStore = cookies();
@@ -30,34 +31,21 @@ export default async function StockPage() {
   });
 
   return (
-    <div className="space-y-8">
-      <h1 className="text-3xl font-semibold text-gray-900 dark:text-white mb-6">
-        Gestão de Estoque
-      </h1>
+    <ContainerLayout title="Gestão de Estoque">
       <InfoCards data={cardDetails} />
-
       <Container>
         <ToolBar
           title="Produtos"
           addItemDescription="Produtos"
-          handleRefresh={() => console.log("Ativou!")}
-          handleAddItems={() => console.log("Ativou")}
+          handleAddItems="/stock/register"
         />
         <Table
           columns={columns}
           data={products.data.products}
           loading={false}
           renderCell={renderCell}
-          // children={
-          //   <ToolBar
-          //     title="Produtos"
-          //     addItemDescription="Produtos"
-          //     handleRefresh={() => console.log("Ativou!")}
-          //     handleAddItems={() => console.log("Ativou")}
-          //   />
-          // }
         />
       </Container>
-    </div>
+    </ContainerLayout>
   );
 }

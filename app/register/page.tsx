@@ -55,7 +55,7 @@ export default function RegisterPage() {
       setErro("As senhas não coincidem.");
       return;
     }
-
+    /*
     try {
       const res = await setupApiClient(nome, email, senha);
 
@@ -64,6 +64,7 @@ export default function RegisterPage() {
     } catch (err) {
       setErro("Erro ao registrar. Tente novamente.");
     }
+    */
   };
 
   // red border
