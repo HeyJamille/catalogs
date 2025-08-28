@@ -10,6 +10,9 @@ import { formatCurrency } from "../../../utils/mask/formatCurrency";
 // Tipagem
 import { productItems } from "./../../../types/product";
 
+// Components
+import ActionsCell from "@/components/ui/admin/actionsCell";
+
 export const renderCell = (item: productItems, columnKey: string) => {
   const myStockIsLow =
     item.stock.current_quantity <= item.stock.minimium_quantity;
@@ -128,19 +131,6 @@ export const renderCell = (item: productItems, columnKey: string) => {
         </p>
       );
     case "actions":
-      return (
-        <div className="flex items-center gap-2">
-          <Tooltip content="Editar Produto">
-            <span className="text-lg text-default-600 cursor-pointer active:opacity-50">
-              <Pen className="w-5 h-5" />
-            </span>
-          </Tooltip>
-          <Tooltip color="danger" content="Excluir Produto">
-            <span className="text-lg text-danger cursor-pointer active:opacity-50">
-              <Trash className="w-5 h-5" />
-            </span>
-          </Tooltip>
-        </div>
-      );
+      return <ActionsCell productId={item.id} />;
   }
 };

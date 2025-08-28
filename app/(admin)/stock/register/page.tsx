@@ -49,7 +49,7 @@ export default async function RegisterStock() {
                 { id: "1", label: "Fones de Ouvidos" },
                 { id: "2", label: "Carregadores" },
                 { id: "3", label: "Capinhas" },
-                { id: "3", label: "Cadastrar Uma Nova Categoria" },
+                { id: "4", label: "Cadastrar Uma Nova Categoria" },
               ]}
             />
             <Autocomplete
@@ -59,7 +59,7 @@ export default async function RegisterStock() {
                 { id: "1", label: "Peining" },
                 { id: "2", label: "Kimaster" },
                 { id: "3", label: "B-max" },
-                { id: "3", label: "Cadastrar Uma Nova Marca" },
+                { id: "4", label: "Cadastrar Uma Nova Marca" },
               ]}
             />
             <Input label="Unidade de Venda" placeholder="UN" />
