@@ -734,14 +734,6 @@
     order: 3;
   }
 
-  .col-span-1 {
-    grid-column: span 1 / span 1;
-  }
-
-  .col-span-2 {
-    grid-column: span 2 / span 2;
-  }
-
   .col-span-full {
     grid-column: 1 / -1;
   }
@@ -1819,10 +1811,6 @@
 
   .grid-cols-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
-  .grid-cols-12 {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
   }
 
   .flex-col {
