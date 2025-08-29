@@ -1,5 +1,8 @@
 "use client";
 
+// React
+import { TransitionStartFunction } from "react";
+
 // Bibliotecas
 import {
   Table as TB,
@@ -9,52 +12,37 @@ import {
   TableHeader,
   TableRow,
 } from "@heroui/react";
-import ToolBar from "./toolbar";
-
-// React
-import { ReactNode, useEffect, useState } from "react";
 
 // Tipagem
-type Itemscolumns = {
-  name: string;
-  uid: string;
-};
-
+import { ItemsColumns } from "@/types/columns";
 interface TableProps<T> {
-  columns: Itemscolumns[];
+  columns: ItemsColumns[];
   data: T[];
-  loading: boolean;
-  renderCell: (item: T, columnUid: string) => React.ReactNode;
+  setLoading: TransitionStartFunction;
+  renderCell: (
+    item: T,
+    columnUid: string,
+    setLoading: TransitionStartFunction
+  ) => React.ReactNode;
 }
 
 export default function Table<T>({
   columns,
   data,
-  loading,
+  setLoading,
   renderCell,
 }: TableProps<T>) {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) return null;
-
   return (
     <TB
       aria-label="table"
       isHeaderSticky
       selectionMode="multiple"
-      //   bottomContent={bottomContent}
       classNames={{
-        base: "p-4 mb-5 overflow-auto max-h-[582px] ",
+        base: "p-4 mb-5 overflow-auto max-h-[530px] ",
         th: "bg-[#3b82f6] text-gray-200 text-sm ",
         wrapper: "",
         td: "border-b border-gray-300",
       }}
-      //   selectedKeys={selectedKeys}
-      //   selectionMode="multiple"
       topContentPlacement="outside"
       removeWrapper
     >
@@ -69,12 +57,14 @@ export default function Table<T>({
       <TableBody
         items={data}
         className="w-full "
-        emptyContent={loading ? "Carregando..." : "Nenhum produto encontrado"}
+        emptyContent="Nenhum produto encontrado"
       >
         {(item) => (
           <TableRow key={(item as any).id ?? (item as any).product_code}>
             {columns.map((col) => (
-              <TableCell key={col.uid}>{renderCell(item, col.uid)}</TableCell>
+              <TableCell key={col.uid}>
+                {renderCell(item, col.uid, setLoading)}
+              </TableCell>
             ))}
           </TableRow>
         )}

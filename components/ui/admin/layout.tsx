@@ -3,6 +3,9 @@
 // React
 import { ReactNode, useState } from "react";
 
+// Bibliotecas
+import { Provider } from "jotai";
+
 // Components
 import HeaderNav from "@/components/menu/admin/headerNav";
 import SideNav from "@/components/menu/admin/sideNav";
@@ -26,7 +29,11 @@ export default function Layout({ companysData, children }: LayoutProps) {
           isOpen={isOpen}
           companysData={companysData}
         />
-        <div className="py-6 px-5 overflow-auto w-ful">{children}</div>
+        <div className="py-6 px-5">
+          <main className="w-full overflow-auto h-full">
+            <Provider>{children}</Provider>
+          </main>
+        </div>
       </main>
     </main>
   );

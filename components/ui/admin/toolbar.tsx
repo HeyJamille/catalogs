@@ -4,19 +4,26 @@
 import { Button } from "@heroui/button";
 import { Divider } from "@heroui/react";
 import { Plus, RefreshCcw } from "lucide-react";
+
+// Next
 import { useRouter } from "next/navigation";
+
+// React
+import { TransitionStartFunction } from "react";
 
 // Tipagem
 interface ToolBarProps {
   title: string;
   addItemDescription: string;
   handleAddItems: string;
+  setLoading: TransitionStartFunction;
 }
 
 export default function ToolBar({
   title,
   addItemDescription,
   handleAddItems,
+  setLoading,
 }: ToolBarProps) {
   const router = useRouter();
 
@@ -32,14 +39,17 @@ export default function ToolBar({
             size="md"
             radius="lg"
             color="primary"
-            onPress={() => router.refresh()}
+            onPress={() => {
+              setLoading(() => {
+                router.refresh();
+              });
+            }}
             className="bg-[#3b82f6] text-white shadow-md transition duration-300"
           >
             Atualizar
           </Button>
           <Button
             startContent={<Plus className="w-5 h-5" />}
-            // onClick={() => handleAddItems()}
             href={handleAddItems}
             as="a"
             size="md"

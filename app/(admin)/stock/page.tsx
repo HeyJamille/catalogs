@@ -17,6 +17,7 @@ import ToolBar from "@/components/ui/admin/toolbar";
 import Table from "@/components/ui/admin/table";
 import ContainerLayout from "@/components/ui/admin/containerLayout";
 import { renderCell } from "@/components/renderCell/product/renderCell";
+import DataGrid from "@/components/ui/admin/dataGrid";
 
 export default async function StockPage() {
   const cookieStore = cookies();
@@ -33,19 +34,14 @@ export default async function StockPage() {
   return (
     <ContainerLayout title="Gestão de Estoque">
       <InfoCards data={cardDetails} />
-      <Container>
-        <ToolBar
-          title="Produtos"
-          addItemDescription="Produtos"
-          handleAddItems="/stock/register"
-        />
-        <Table
-          columns={columns}
-          data={products.data.products}
-          loading={false}
-          renderCell={renderCell}
-        />
-      </Container>
+      <DataGrid
+        title="Produtos"
+        addItemDescription="Produtos"
+        handleAddItems="/stock/register"
+        columns={columns}
+        data={products.data.products}
+        renderCell={renderCell}
+      />
     </ContainerLayout>
   );
 }

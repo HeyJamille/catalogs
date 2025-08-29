@@ -1,8 +1,11 @@
 "use client";
 
+// React
+import { TransitionStartFunction } from "react";
+
 // Bibliotecas
-import { Chip, Tooltip, User } from "@heroui/react";
-import { Package2, Pen, Trash } from "lucide-react";
+import { Chip, User } from "@heroui/react";
+import { Package2 } from "lucide-react";
 
 // Utils
 import { formatCurrency } from "../../../utils/mask/formatCurrency";
@@ -13,7 +16,11 @@ import { productItems } from "./../../../types/product";
 // Components
 import ActionsCell from "@/components/ui/admin/actionsCell";
 
-export const renderCell = (item: productItems, columnKey: string) => {
+export const renderCell = (
+  item: productItems,
+  columnKey: string,
+  setLoading: TransitionStartFunction
+) => {
   const myStockIsLow =
     item.stock.current_quantity <= item.stock.minimium_quantity;
 
@@ -131,6 +138,6 @@ export const renderCell = (item: productItems, columnKey: string) => {
         </p>
       );
     case "actions":
-      return <ActionsCell productId={item.id} />;
+      return <ActionsCell productId={item.id} setLoadingUI={setLoading} />;
   }
 };

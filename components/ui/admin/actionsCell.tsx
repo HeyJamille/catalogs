@@ -1,3 +1,8 @@
+"use client";
+
+// Next
+import { useRouter } from "next/navigation";
+
 // Icons
 import {
   Modal,
@@ -12,27 +17,39 @@ import {
 import { Pen, Trash } from "lucide-react";
 
 // Bibliotecas
-import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
-// API
+// React
+import { TransitionStartFunction, useState } from "react";
+
+// Utils
 import { setupApiClient } from "../../../utils/api/fetchData";
 
+// Tipagem
 interface ActionsCellProps {
   productId: string;
+  setLoadingUI: TransitionStartFunction;
 }
 
-export default function ActionsCell({ productId }: ActionsCellProps) {
+export default function ActionsCell({
+  productId,
+  setLoadingUI,
+}: ActionsCellProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [loading, setLoading] = useState(false);
 
-  const api = setupApiClient();
+  const token = Cookies.get("auth_token");
+  const api = setupApiClient(token);
+  const router = useRouter();
 
   const handleDelete = async () => {
     try {
       setLoading(true);
 
       await api.delete(`/stocks/${productId}`);
-
+      setLoadingUI(() => {
+        router.refresh();
+      });
       onOpenChange();
     } catch (error) {
       console.error("Erro ao excluir produto", error);
