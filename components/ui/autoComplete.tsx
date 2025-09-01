@@ -1,5 +1,8 @@
 "use client";
 
+// React
+import React from "react";
+
 // Biblioteca
 import { Autocomplete as AtcUI, AutocompleteItem } from "@heroui/react";
 
@@ -9,6 +12,8 @@ interface AutoCompleteProps {
   name?: string;
   isRequired?: boolean;
   placeholder: string;
+  value?: React.Key | string | null;
+  setValue?: (value: React.Key | string | null) => void;
   data: { id: string; label: string }[];
 }
 
@@ -16,6 +21,7 @@ export default function Autocomplete({
   lable,
   name,
   isRequired,
+  value,
   placeholder,
   data,
 }: AutoCompleteProps) {
@@ -27,7 +33,9 @@ export default function Autocomplete({
       label={lable}
       placeholder={placeholder}
       name={name}
+      onSelectionChange={(key) => (value = key)}
       isRequired={isRequired}
+      defaultItems={data}
       labelPlacement="outside-top"
       inputProps={{
         size: "md",
@@ -38,9 +46,9 @@ export default function Autocomplete({
         },
       }}
     >
-      {data.map((items) => (
-        <AutocompleteItem key={items.id}>{items.label}</AutocompleteItem>
-      ))}
+      {(data) => (
+        <AutocompleteItem key={data.id}>{data.label}</AutocompleteItem>
+      )}
     </AtcUI>
   );
 }

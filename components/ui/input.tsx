@@ -10,10 +10,12 @@ import { MoneyMaskInput } from "@/utils/mask/inputMask";
 // Tipagem
 type InputProps = ComponentProps<typeof Inp> & {
   label: string;
+  value?: string;
   isRequired?: boolean;
   placeholder: string;
   maskMoney?: boolean;
   error?: boolean;
+  setValue?: (value: string) => void;
 };
 
 export default function Input({
@@ -24,10 +26,6 @@ export default function Input({
   maskMoney = false,
   ...rest
 }: InputProps) {
-  const [value, setValue] = useState("");
-
-  const { handleChange } = MoneyMaskInput({ setValue });
-
   return (
     <Inp
       isRequired={isRequired}
@@ -38,8 +36,6 @@ export default function Input({
       labelPlacement="outside"
       placeholder={placeholder}
       className="pt-[0.28rem] w-full"
-      onChange={maskMoney ? handleChange : undefined}
-      value={maskMoney ? value : undefined}
       classNames={{
         inputWrapper:
           "border-1  border-gray-400 data-[hover=true]:border-blue-500 group-data-[focus=true]:border-blue-800",

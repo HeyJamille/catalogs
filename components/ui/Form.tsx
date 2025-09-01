@@ -12,12 +12,15 @@ export default function Form({
   href,
   children,
 }: {
-  handleForm: (formData: FormData) => void;
+  handleForm: (e: React.FormEvent) => void;
   children: ReactNode;
   href: string;
 }) {
   return (
-    <form action={handleForm} className="flex-col flex items-center space-y-4">
+    <form
+      /*action={handleForm}*/ onSubmit={handleForm}
+      className="flex-col flex items-center space-y-4"
+    >
       <div className="w-full grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2">
         {children}
       </div>

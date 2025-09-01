@@ -1,7 +1,7 @@
 "use client";
 
 // React
-import { useState } from "react";
+import React, { useState } from "react";
 
 // Componentes
 import Autocomplete from "../ui/autoComplete";
@@ -14,7 +14,7 @@ import Input from "../ui/input";
 import { MoneyMaskInput } from "@/utils/mask/inputMask";
 
 // Tipagem
-import { ItemsAutoComplete } from "@/types/autoCompleteData";
+import { ItemsAutoComplete } from "@/types/autoComplete";
 interface ProductForm {
   warehouses: ItemsAutoComplete[];
   categories: ItemsAutoComplete[];
@@ -28,9 +28,9 @@ export default function ProductForm({
 }: ProductForm) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [stockId, setStockId] = useState<string | null>("");
-  const [categoryId, setCategoryId] = useState<string | null>("");
-  const [brandId, setBrandId] = useState<string | null>("");
+  const [stockId, setStockId] = useState<React.Key | string | null>("");
+  const [categoryId, setCategoryId] = useState<React.Key | string | null>("");
+  const [brandId, setBrandId] = useState<React.Key | string | null>("");
   const [salesUnit, setSalesUnit] = useState("");
   const [productCode, setProductCode] = useState<string>("");
   const [currentQuantity, setCurrentQuantity] = useState<string>("");
@@ -40,12 +40,38 @@ export default function ProductForm({
   const [purchasePrice, setPurchasePrice] = useState<string>("");
   const [costPrice, setCostPrice] = useState<string>("");
 
-  const { handleChange } = MoneyMaskInput({ setValue: setPrice });
+  const { handleChange: handleChangePrice } = MoneyMaskInput({
+    setValue: setPrice,
+  });
+  const { handleChange: handleChangePurchasePrice } = MoneyMaskInput({
+    setValue: setPurchasePrice,
+  });
+  const { handleChange: handleChangeCostPrice } = MoneyMaskInput({
+    setValue: setCostPrice,
+  });
+
+  function handleForm(e: React.FormEvent) {
+    e.preventDefault();
+
+    setName("");
+    setDescription("");
+    setStockId("");
+    setCategoryId("");
+    setBrandId("");
+    setSalesUnit("");
+    setProductCode("");
+    setCurrentQuantity("");
+    setMinimiumQuantity("");
+    setMaximumQuantity("");
+    setPrice("");
+    setPurchasePrice("");
+    setCostPrice("");
+  }
 
   return (
     <Container>
       <main className="p-4">
-        <Form href="/stock">
+        <Form handleForm={handleForm} href="/stock">
           <Input
             label="Nome do Produto"
             isRequired={true}
@@ -68,8 +94,9 @@ export default function ProductForm({
             <CommentArea
               name="description"
               label="Descrição"
+              isRequired={true}
               value={description}
-              setValue={setDescription}
+              onChange={(e) => setDescription(e.target.value)}
             />
           </div>
           <Autocomplete
@@ -138,8 +165,8 @@ export default function ProductForm({
             maskMoney={true}
             placeholder="R$ 80"
             name="price"
+            onChange={handleChangePrice}
             value={price}
-            onChange={handleChange}
           />
           <Input
             label="Preço de Compra"
@@ -148,7 +175,7 @@ export default function ProductForm({
             placeholder="R$ 80"
             name="purchase_price"
             value={purchasePrice}
-            onChange={(e) => setPurchasePrice(e.target.value)}
+            onChange={handleChangePurchasePrice}
           />
           <Input
             label="Preço de Custo"
@@ -157,7 +184,7 @@ export default function ProductForm({
             placeholder="R$ 85,99"
             name="cost_price"
             value={costPrice}
-            onChange={(e) => setCostPrice(e.target.value)}
+            onChange={handleChangeCostPrice}
           />
         </Form>
       </main>
