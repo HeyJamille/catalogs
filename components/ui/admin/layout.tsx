@@ -29,11 +29,9 @@ export default function Layout({ companysData, children }: LayoutProps) {
           isOpen={isOpen}
           companysData={companysData}
         />
-        <div className="py-6 px-5">
-          <main className="w-full overflow-auto h-full">
-            <Provider>{children}</Provider>
-          </main>
-        </div>
+        <main className="w-full py-6 px-5 overflow-auto h-full">
+          <Provider>{children}</Provider>
+        </main>
       </main>
     </main>
   );

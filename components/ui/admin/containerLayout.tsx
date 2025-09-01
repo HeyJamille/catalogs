@@ -9,7 +9,7 @@ export default function ContainerLayout({
   children: ReactNode;
 }) {
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 w-full">
       <h1 className="text-3xl font-semibold text-gray-900 dark:text-white mb-6">
         {title}
       </h1>

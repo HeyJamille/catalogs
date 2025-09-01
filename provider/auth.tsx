@@ -11,6 +11,8 @@ import { createContext, ReactNode, useEffect, useState } from "react";
 
 // Bibliotecas
 import Cookies from "js-cookie";
+import { ToastProvider } from "@heroui/react";
+import { useTopLoader } from "nextjs-toploader";
 
 // Tipagem
 import { itemUsers } from "../types/user";
@@ -33,6 +35,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<itemUsers>();
 
   const router = useRouter();
+  const loader = useTopLoader();
 
   async function signIn({ email, password }: SignInProps) {
     try {
@@ -55,6 +58,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         Estoque: "/estoque",
       };
 
+      loader.start();
       router.push(routeByRule[resp.data.user.rule.name]);
     } catch (err: any) {
       // Aviso de error
@@ -97,6 +101,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   return (
     <AuthContext.Provider value={{ user, signIn, signOut }}>
       {children}
+      <ToastProvider placement="top-right" toastOffset={20} />
     </AuthContext.Provider>
   );
 }

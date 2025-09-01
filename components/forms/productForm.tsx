@@ -15,6 +15,7 @@ import { MoneyMaskInput } from "@/utils/mask/inputMask";
 
 // Tipagem
 import { ItemsAutoComplete } from "@/types/autoComplete";
+import { addToast } from "@heroui/react";
 interface ProductForm {
   warehouses: ItemsAutoComplete[];
   categories: ItemsAutoComplete[];
@@ -52,6 +53,13 @@ export default function ProductForm({
 
   function handleForm(e: React.FormEvent) {
     e.preventDefault();
+
+    addToast({
+      title: "Campos obrigatório",
+      description: "Porfavor preenchar todos os campos",
+      variant: "flat",
+      color: "danger",
+    });
 
     setName("");
     setDescription("");
@@ -94,7 +102,6 @@ export default function ProductForm({
             <CommentArea
               name="description"
               label="Descrição"
-              isRequired={true}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />

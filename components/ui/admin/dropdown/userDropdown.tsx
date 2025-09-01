@@ -23,6 +23,7 @@ import {
   User2,
   UserRoundCog,
 } from "lucide-react";
+import { useTopLoader } from "nextjs-toploader";
 
 export default function UserDropdown({
   ShortenedMenu,
@@ -30,6 +31,8 @@ export default function UserDropdown({
   ShortenedMenu?: boolean;
 }) {
   const { signOut, user } = useContext(AuthContext);
+
+  const loader = useTopLoader();
 
   return (
     <div className="p-2 w-full max-w-xs bg-white dark:bg-slate-800 rounded-lg shadow-sm">
@@ -133,7 +136,10 @@ export default function UserDropdown({
               className="text-danger px-3"
               description="Sair do Sistema"
               startContent={<LogOut className="w-5 h-5" />}
-              onClick={() => signOut()}
+              onClick={() => {
+                signOut();
+                loader.start();
+              }}
             >
               Log Out
             </DropdownItem>

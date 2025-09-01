@@ -180,7 +180,11 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2f$fetchData$2e
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
 // Bibliotecas
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$js$2d$cookie$2f$dist$2f$js$2e$cookie$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/js-cookie/dist/js.cookie.mjs [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$heroui$2f$react$2f$node_modules$2f40$heroui$2f$toast$2f$dist$2f$chunk$2d$U2DWYKGQ$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@heroui/react/node_modules/@heroui/toast/dist/chunk-U2DWYKGQ.mjs [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$nextjs$2d$toploader$2f$dist$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/nextjs-toploader/dist/index.js [app-ssr] (ecmascript)");
 "use client";
+;
+;
 ;
 ;
 ;
@@ -190,6 +194,7 @@ const AuthContext = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project
 function AuthProvider({ children }) {
     const [user, setUser] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])();
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRouter"])();
+    const loader = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$nextjs$2d$toploader$2f$dist$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useTopLoader"])();
     async function signIn({ email, password }) {
         try {
             const api = (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2f$fetchData$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["setupApiClient"])();
@@ -208,6 +213,7 @@ function AuthProvider({ children }) {
                 Cliente: "/catalogo",
                 Estoque: "/estoque"
             };
+            loader.start();
             router.push(routeByRule[resp.data.user.rule.name]);
         } catch (err) {
             // Aviso de error
@@ -242,10 +248,20 @@ function AuthProvider({ children }) {
             signIn,
             signOut
         },
-        children: children
-    }, void 0, false, {
+        children: [
+            children,
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$heroui$2f$react$2f$node_modules$2f40$heroui$2f$toast$2f$dist$2f$chunk$2d$U2DWYKGQ$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ToastProvider"], {
+                placement: "top-right",
+                toastOffset: 20
+            }, void 0, false, {
+                fileName: "[project]/provider/auth.tsx",
+                lineNumber: 104,
+                columnNumber: 7
+            }, this)
+        ]
+    }, void 0, true, {
         fileName: "[project]/provider/auth.tsx",
-        lineNumber: 98,
+        lineNumber: 102,
         columnNumber: 5
     }, this);
 }
