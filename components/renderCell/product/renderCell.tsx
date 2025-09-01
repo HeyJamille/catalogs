@@ -8,7 +8,7 @@ import { Chip, User } from "@heroui/react";
 import { Package2 } from "lucide-react";
 
 // Utils
-import { formatCurrency } from "../../../utils/mask/formatCurrency";
+import { formatCurrency } from "../../../utils/mask/money/formatCurrency";
 
 // Tipagem
 import { productItems } from "./../../../types/product";

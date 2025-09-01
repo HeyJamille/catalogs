@@ -5,7 +5,7 @@ import { ComponentProps, useState } from "react";
 
 // Bibliotecas
 import { Input as Inp } from "@heroui/input";
-import { MoneyMaskInput } from "@/utils/mask/inputMask";
+import { MoneyMaskInput } from "@/utils/mask/money/inputMask";
 
 // Tipagem
 type InputProps = ComponentProps<typeof Inp> & {

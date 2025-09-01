@@ -12,9 +12,6 @@ import StockDataOnCards from "@/data/cards/stockDataOnCards";
 import columns from "./../../../data/columns/products/columns.json";
 
 // Componentes
-import Container from "@/components/ui/container";
-import ToolBar from "@/components/ui/admin/toolbar";
-import Table from "@/components/ui/admin/table";
 import ContainerLayout from "@/components/ui/admin/containerLayout";
 import { renderCell } from "@/components/renderCell/product/renderCell";
 import DataGrid from "@/components/ui/admin/dataGrid";

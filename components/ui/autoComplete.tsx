@@ -12,8 +12,8 @@ interface AutoCompleteProps {
   name?: string;
   isRequired?: boolean;
   placeholder: string;
-  value?: React.Key | string | null;
-  setValue?: (value: React.Key | string | null) => void;
+  value: string | undefined;
+  setValue: (value: string | undefined) => void;
   data: { id: string; label: string }[];
 }
 
@@ -24,6 +24,7 @@ export default function Autocomplete({
   value,
   placeholder,
   data,
+  setValue,
 }: AutoCompleteProps) {
   return (
     <AtcUI
@@ -33,7 +34,8 @@ export default function Autocomplete({
       label={lable}
       placeholder={placeholder}
       name={name}
-      onSelectionChange={(key) => (value = key)}
+      selectedKey={value ?? ""}
+      onSelectionChange={(key) => setValue(key?.toString())}
       isRequired={isRequired}
       defaultItems={data}
       labelPlacement="outside-top"

@@ -10,12 +10,17 @@ import Container from "../ui/container";
 import Form from "../ui/Form";
 import Input from "../ui/input";
 
+// Bibliotecas
+import Cookies from "js-cookie";
+import { addToast } from "@heroui/react";
+
 // Utils
-import { MoneyMaskInput } from "@/utils/mask/inputMask";
+import { MoneyMaskInput } from "@/utils/mask/money/inputMask";
+import { setupApiClient } from "@/utils/api/fetchData";
 
 // Tipagem
 import { ItemsAutoComplete } from "@/types/autoComplete";
-import { addToast } from "@heroui/react";
+import { removeCurrencyMask } from "@/utils/mask/money/removeMoneyMask";
 interface ProductForm {
   warehouses: ItemsAutoComplete[];
   categories: ItemsAutoComplete[];
@@ -29,9 +34,9 @@ export default function ProductForm({
 }: ProductForm) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [stockId, setStockId] = useState<React.Key | string | null>("");
-  const [categoryId, setCategoryId] = useState<React.Key | string | null>("");
-  const [brandId, setBrandId] = useState<React.Key | string | null>("");
+  const [stockId, setStockId] = useState<string | undefined>("");
+  const [categoryId, setCategoryId] = useState<string | undefined>("");
+  const [brandId, setBrandId] = useState<string | undefined>("");
   const [salesUnit, setSalesUnit] = useState("");
   const [productCode, setProductCode] = useState<string>("");
   const [currentQuantity, setCurrentQuantity] = useState<string>("");
@@ -40,6 +45,10 @@ export default function ProductForm({
   const [price, setPrice] = useState<string>("");
   const [purchasePrice, setPurchasePrice] = useState<string>("");
   const [costPrice, setCostPrice] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const token = Cookies.get("auth_token");
+  const api = setupApiClient(token);
 
   const { handleChange: handleChangePrice } = MoneyMaskInput({
     setValue: setPrice,
@@ -51,15 +60,61 @@ export default function ProductForm({
     setValue: setCostPrice,
   });
 
-  function handleForm(e: React.FormEvent) {
+  async function handleForm(e: React.FormEvent) {
     e.preventDefault();
+    setLoading(true);
 
-    addToast({
-      title: "Campos obrigatório",
-      description: "Porfavor preenchar todos os campos",
-      variant: "flat",
-      color: "danger",
-    });
+    const data = {
+      name,
+      description,
+      stock_id: stockId,
+      category_id: categoryId,
+      brand_id: brandId,
+      product_code: productCode,
+      sales_unit: salesUnit,
+      current_quantity: removeCurrencyMask(currentQuantity),
+      minimium_quantity: removeCurrencyMask(minimiumQuantity),
+      maximum_quantity: removeCurrencyMask(maximumQuantity),
+      price: removeCurrencyMask(price),
+      purchase_price: removeCurrencyMask(price),
+      cost_price: removeCurrencyMask(costPrice),
+    };
+
+    try {
+      setLoading(true);
+      const resp = await api.post("/stocks", data);
+
+      if (resp.status === 201) {
+        addToast({
+          title: "Produto cadastrado!",
+          description: "O produto foi salvo com sucesso no estoque.",
+          variant: "solid",
+          color: "success",
+          classNames: {
+            title: "text-white",
+            description: "text-gray-100",
+            icon: "text-white",
+          },
+        });
+      } else {
+        addToast({
+          title: "Erro ao Cadastrar",
+          description:
+            resp.data.message ||
+            "Verifique suas credenciais e tente novamente.",
+          variant: "flat",
+          color: "danger",
+        });
+      }
+    } catch (err) {
+      addToast({
+        title: "Erro no servidor",
+        description: "Tente novamente mais tarde.",
+        variant: "flat",
+        color: "danger",
+      });
+      console.log("Error: ", err);
+    }
 
     setName("");
     setDescription("");
@@ -74,12 +129,14 @@ export default function ProductForm({
     setPrice("");
     setPurchasePrice("");
     setCostPrice("");
+
+    setLoading(false);
   }
 
   return (
     <Container>
       <main className="p-4">
-        <Form handleForm={handleForm} href="/stock">
+        <Form handleForm={handleForm} href="/stock" loading={loading}>
           <Input
             label="Nome do Produto"
             isRequired={true}
@@ -90,10 +147,10 @@ export default function ProductForm({
             name="name"
           />
           <Autocomplete
+            data={warehouses}
             lable="Selecione um Almoxarifado"
             placeholder="Escolha um Almoxarifado"
             isRequired={true}
-            data={warehouses}
             value={stockId}
             setValue={setStockId}
             name="warehouse"

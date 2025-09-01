@@ -1,6 +1,6 @@
 // Utils
 import { sumValues } from "@/utils/functions/sumValues";
-import { formatCurrency } from "@/utils/mask/formatCurrency";
+import { formatCurrency } from "@/utils/mask/money/formatCurrency";
 
 // Bibliotecas
 import { Banknote, BanknoteArrowUp, Box } from "lucide-react";
