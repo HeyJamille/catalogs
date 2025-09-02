@@ -12,7 +12,7 @@ import Input from "../ui/input";
 
 // Bibliotecas
 import Cookies from "js-cookie";
-import { addToast } from "@heroui/react";
+import { addToast, Button } from "@heroui/react";
 
 // Utils
 import { MoneyMaskInput } from "@/utils/mask/money/inputMask";
@@ -21,6 +21,7 @@ import { setupApiClient } from "@/utils/api/fetchData";
 // Tipagem
 import { ItemsAutoComplete } from "@/types/autoComplete";
 import { removeCurrencyMask } from "@/utils/mask/money/removeMoneyMask";
+import { ChevronDownIcon, CircleFadingPlus } from "lucide-react";
 interface ProductForm {
   warehouses: ItemsAutoComplete[];
   categories: ItemsAutoComplete[];
@@ -135,7 +136,7 @@ export default function ProductForm({
 
   return (
     <Container>
-      <main className="p-4">
+      <main className="">
         <Form handleForm={handleForm} href="/stock" loading={loading}>
           <Input
             label="Nome do Produto"
@@ -146,40 +147,15 @@ export default function ProductForm({
             placeholder="Digite o nome do produto"
             name="name"
           />
-          <Autocomplete
-            data={warehouses}
-            lable="Selecione um Almoxarifado"
-            placeholder="Escolha um Almoxarifado"
+
+          <Input
+            label="Código de Barra"
             isRequired={true}
-            value={stockId}
-            setValue={setStockId}
-            name="warehouse"
-          />
-          <div className="col-span-full">
-            <CommentArea
-              name="description"
-              label="Descrição"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </div>
-          <Autocomplete
-            lable="Selecione uma Categoria"
-            isRequired={true}
-            placeholder="Escolha uma Categoria"
-            data={categories}
-            name="category_id"
-            value={categoryId}
-            setValue={setCategoryId}
-          />
-          <Autocomplete
-            lable="Selecione uma Marca"
-            isRequired={true}
-            placeholder="Escolha uma Marca"
-            data={brands}
-            name="brand_id"
-            value={brandId}
-            setValue={setBrandId}
+            placeholder="000000000000000000000000000"
+            name="product_code"
+            type="number"
+            value={productCode}
+            onChange={(e) => setProductCode(e.target.value)}
           />
           <Input
             isRequired={true}
@@ -190,15 +166,14 @@ export default function ProductForm({
             value={salesUnit}
             onChange={(e) => setSalesUnit(e.target.value)}
           />
-          <Input
-            label="Código de Barra"
-            isRequired={true}
-            placeholder="000000000000000000000000000"
-            name="product_code"
-            type="number"
-            value={productCode}
-            onChange={(e) => setProductCode(e.target.value)}
-          />
+          <div className="col-span-full">
+            <CommentArea
+              name="description"
+              label="Descrição"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
           <Input
             label="Quantidade Atual do estoque"
             isRequired={true}
@@ -250,6 +225,65 @@ export default function ProductForm({
             value={costPrice}
             onChange={handleChangeCostPrice}
           />
+          <div>
+            <h3 className="text-lg pb-1 font-semibold text-gray-700">Marcas</h3>
+            <div className="flex-col py-3 px-3 border-gray-400 rounded-lg border items-center">
+              <p className="text-sm text-gray-500">
+                Organize suas marcas para facilitar a busca e destacar seus
+                produtos. Isso ajuda seus clientes a encontrarem rapidamente o
+                que procuram e valoriza a identidade da sua loja.
+              </p>
+              <Button
+                startContent={<CircleFadingPlus className="w-5 h-5" />}
+                className="bg-transparent min-w-0 h-7 px-0 text-blue-500"
+              >
+                <p className="hover:underline underline-offset-1">
+                  Selecione a marca
+                </p>
+              </Button>
+            </div>
+          </div>
+          <div>
+            <h3 className="text-lg pb-1 font-semibold text-gray-700">
+              Categorias
+            </h3>
+            <div className="flex-col py-3 px-3 border-gray-400 rounded-lg border items-center">
+              <p className="text-sm text-gray-500">
+                Classifique seus produtos em categorias bem definidas para
+                otimizar a navegação e facilitar a busca. Uma boa organização
+                aumenta a satisfação do cliente e pode impulsionar suas vendas.
+              </p>
+              <Button
+                startContent={<CircleFadingPlus className="w-5 h-5" />}
+                className="bg-transparent min-w-0 h-7 px-0 text-blue-500"
+              >
+                <p className="hover:underline underline-offset-1">
+                  Selecione a categoria
+                </p>
+              </Button>
+            </div>
+          </div>
+          <div>
+            <h3 className="text-lg pb-1 font-semibold text-gray-700">
+              Almoxarifado
+            </h3>
+            <div className="flex-col py-3 px-3 border-gray-400 rounded-lg border items-center">
+              <p className="text-sm text-gray-500">
+                Mantenha seu almoxarifado bem organizado para garantir o
+                controle eficiente de estoque e facilitar a distribuição de
+                produtos. Uma gestão eficaz evita perdas e melhora a operação da
+                sua loja.
+              </p>
+              <Button
+                startContent={<CircleFadingPlus className="w-5 h-5" />}
+                className="bg-transparent min-w-0 h-7 px-0 text-blue-500"
+              >
+                <p className="hover:underline underline-offset-1">
+                  Selecione o almoxarifado
+                </p>
+              </Button>
+            </div>
+          </div>
         </Form>
       </main>
     </Container>

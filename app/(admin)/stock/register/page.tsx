@@ -8,6 +8,8 @@ import ContainerLayout from "@/components/ui/admin/containerLayout";
 import { setupApiClient } from "@/utils/api/fetchData";
 import { formatedLabel } from "@/utils/functions/formattedLabel";
 import ProductForm from "@/components/forms/productForm";
+import Container from "@/components/ui/container";
+import Input from "@/components/ui/input";
 
 export default async function RegisterStock() {
   const cookieStore = cookies();
@@ -27,7 +29,7 @@ export default async function RegisterStock() {
   const brands = formatedLabel(brandsData.data.brands, "id", "name");
 
   return (
-    <ContainerLayout title="Cadastro de Produtos">
+    <ContainerLayout title="Cadastro de Estoque">
       <ProductForm
         warehouses={warehouses}
         categories={categories}
