@@ -17,7 +17,7 @@ export default function CommentArea({ ...rest }: CommentAreaProps) {
       classNames={{
         inputWrapper:
           "border-1  border-gray-400 data-[hover=true]:border-blue-500 group-data-[focus=true]:border-blue-800",
-        input: "min-h-[80px]",
+        input: "min-h-[100px]",
         label: "font-semibold",
       }}
       placeholder=""

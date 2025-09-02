@@ -24,9 +24,9 @@ export default function Form({
   return (
     <form
       onSubmit={handleForm}
-      className="flex-col flex items-center space-y-4"
+      className="flex-col flex items-center space-y-8"
     >
-      <div className="w-full grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2">
+      <div className="w-full grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {children}
       </div>
       <div className="w-full flex justify-end space-x-4">

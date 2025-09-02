@@ -135,7 +135,7 @@ export default function ProductForm({
 
   return (
     <Container>
-      <main className="p-4">
+      <main className="p-5">
         <Form handleForm={handleForm} href="/stock" loading={loading}>
           <Input
             label="Nome do Produto"
@@ -146,7 +146,26 @@ export default function ProductForm({
             placeholder="Digite o nome do produto"
             name="name"
           />
-          <Autocomplete
+
+          <Input
+            label="Código de Barra"
+            isRequired={true}
+            placeholder="000000000000000000000000000"
+            name="product_code"
+            type="number"
+            value={productCode}
+            onChange={(e) => setProductCode(e.target.value)}
+          />
+          <Input
+            isRequired={true}
+            label="Unidade de Venda"
+            placeholder="UN"
+            type="text"
+            name="sales_unit"
+            value={salesUnit}
+            onChange={(e) => setSalesUnit(e.target.value)}
+          />
+          {/* <Autocomplete
             data={warehouses}
             lable="Selecione um Almoxarifado"
             placeholder="Escolha um Almoxarifado"
@@ -154,7 +173,7 @@ export default function ProductForm({
             value={stockId}
             setValue={setStockId}
             name="warehouse"
-          />
+          /> */}
           <div className="col-span-full">
             <CommentArea
               name="description"
@@ -163,7 +182,7 @@ export default function ProductForm({
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
-          <Autocomplete
+          {/* <Autocomplete
             lable="Selecione uma Categoria"
             isRequired={true}
             placeholder="Escolha uma Categoria"
@@ -180,25 +199,7 @@ export default function ProductForm({
             name="brand_id"
             value={brandId}
             setValue={setBrandId}
-          />
-          <Input
-            isRequired={true}
-            label="Unidade de Venda"
-            placeholder="UN"
-            type="text"
-            name="sales_unit"
-            value={salesUnit}
-            onChange={(e) => setSalesUnit(e.target.value)}
-          />
-          <Input
-            label="Código de Barra"
-            isRequired={true}
-            placeholder="000000000000000000000000000"
-            name="product_code"
-            type="number"
-            value={productCode}
-            onChange={(e) => setProductCode(e.target.value)}
-          />
+          /> */}
           <Input
             label="Quantidade Atual do estoque"
             isRequired={true}

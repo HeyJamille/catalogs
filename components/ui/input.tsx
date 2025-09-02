@@ -9,7 +9,7 @@ import { MoneyMaskInput } from "@/utils/mask/money/inputMask";
 
 // Tipagem
 type InputProps = ComponentProps<typeof Inp> & {
-  label: string;
+  label?: string;
   value?: string;
   isRequired?: boolean;
   placeholder: string;
