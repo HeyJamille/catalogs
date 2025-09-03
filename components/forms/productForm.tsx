@@ -1,10 +1,9 @@
 "use client";
 
 // React
-import React, { useState } from "react";
+import React, { useReducer, useState } from "react";
 
 // Componentes
-import Autocomplete from "../ui/autoComplete";
 import CommentArea from "../ui/commentArea";
 import Container from "../ui/container";
 import Form from "../ui/Form";
@@ -13,159 +12,128 @@ import Input from "../ui/input";
 // Bibliotecas
 import Cookies from "js-cookie";
 import { addToast, Button } from "@heroui/react";
+import { CircleFadingPlus } from "lucide-react";
+
+// Dados
+import inputFields from "@/data/inputsFields/productsFields.json";
 
 // Utils
 import { MoneyMaskInput } from "@/utils/mask/money/inputMask";
 import { setupApiClient } from "@/utils/api/fetchData";
+import { stateActionForm } from "@/utils/stateActionForms";
+import { removeCurrencyMask } from "@/utils/mask/money/removeMoneyMask";
 
 // Tipagem
 import { ItemsAutoComplete } from "@/types/autoComplete";
-import { removeCurrencyMask } from "@/utils/mask/money/removeMoneyMask";
-import { ChevronDownIcon, CircleFadingPlus } from "lucide-react";
 interface ProductForm {
   warehouses: ItemsAutoComplete[];
   categories: ItemsAutoComplete[];
   brands: ItemsAutoComplete[];
 }
 
+const initialState = {
+  name: "",
+  stockId: "",
+  categoryId: "",
+  brandId: "",
+  salesUnit: "",
+  productCode: "",
+  currentQuantity: "",
+  minimiumQuantity: "",
+  maximumQuantity: "",
+  price: "",
+  purchasePrice: "",
+  costPrice: "",
+  loading: false,
+};
+
 export default function ProductForm({
   warehouses,
   categories,
   brands,
 }: ProductForm) {
-  const [name, setName] = useState("");
+  const [state, dispatch] = useReducer(
+    stateActionForm,
+    initialState,
+    (init) => init
+  );
   const [description, setDescription] = useState("");
-  const [stockId, setStockId] = useState<string | undefined>("");
-  const [categoryId, setCategoryId] = useState<string | undefined>("");
-  const [brandId, setBrandId] = useState<string | undefined>("");
-  const [salesUnit, setSalesUnit] = useState("");
-  const [productCode, setProductCode] = useState<string>("");
-  const [currentQuantity, setCurrentQuantity] = useState<string>("");
-  const [minimiumQuantity, setMinimiumQuantity] = useState<string>("");
-  const [maximumQuantity, setMaximumQuantity] = useState<string>("");
-  const [price, setPrice] = useState<string>("");
-  const [purchasePrice, setPurchasePrice] = useState<string>("");
-  const [costPrice, setCostPrice] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
+  const [categoryId, setCategoryId] = useState<string>("");
+  const [brandId, setBrandId] = useState<string>("");
+  const [stockId, setStockId] = useState<string>("");
 
   const token = Cookies.get("auth_token");
   const api = setupApiClient(token);
 
-  const { handleChange: handleChangePrice } = MoneyMaskInput({
-    setValue: setPrice,
+  const handleChangePrice = MoneyMaskInput({
+    setValue: (value: string) =>
+      dispatch({ type: "SET_FIELD", field: "price", value }),
   });
-  const { handleChange: handleChangePurchasePrice } = MoneyMaskInput({
-    setValue: setPurchasePrice,
+  const handleChangePurchasePrice = MoneyMaskInput({
+    setValue: (value: string) =>
+      dispatch({ type: "SET_FIELD", field: "purchasePrice", value }),
   });
-  const { handleChange: handleChangeCostPrice } = MoneyMaskInput({
-    setValue: setCostPrice,
+  const handleChangeCostPrice = MoneyMaskInput({
+    setValue: (value: string) =>
+      dispatch({ type: "SET_FIELD", field: "costPrice", value }),
   });
 
   async function handleForm(e: React.FormEvent) {
     e.preventDefault();
-    setLoading(true);
+    dispatch({ type: "SET_LOADING", value: true });
 
     const data = {
-      name,
-      description,
-      stock_id: stockId,
-      category_id: categoryId,
-      brand_id: brandId,
-      product_code: productCode,
-      sales_unit: salesUnit,
-      current_quantity: removeCurrencyMask(currentQuantity),
-      minimium_quantity: removeCurrencyMask(minimiumQuantity),
-      maximum_quantity: removeCurrencyMask(maximumQuantity),
-      price: removeCurrencyMask(price),
-      purchase_price: removeCurrencyMask(price),
-      cost_price: removeCurrencyMask(costPrice),
+      name: state.name,
+      description: state.description,
+      stock_id: state.stockId,
+      category_id: state.categoryId,
+      brand_id: state.brandId,
+      product_code: state.productCode,
+      sales_unit: state.salesUnit,
+      current_quantity: removeCurrencyMask(state.currentQuantity),
+      minimium_quantity: removeCurrencyMask(state.minimiumQuantity),
+      maximum_quantity: removeCurrencyMask(state.maximumQuantity),
+      price: removeCurrencyMask(state.price),
+      purchase_price: removeCurrencyMask(state.purchasePrice),
+      cost_price: removeCurrencyMask(state.costPrice),
     };
-
-    try {
-      setLoading(true);
-      const resp = await api.post("/stocks", data);
-
-      if (resp.status === 201) {
-        addToast({
-          title: "Produto cadastrado!",
-          description: "O produto foi salvo com sucesso no estoque.",
-          variant: "solid",
-          color: "success",
-          classNames: {
-            title: "text-white",
-            description: "text-gray-100",
-            icon: "text-white",
-          },
-        });
-      } else {
-        addToast({
-          title: "Erro ao Cadastrar",
-          description:
-            resp.data.message ||
-            "Verifique suas credenciais e tente novamente.",
-          variant: "flat",
-          color: "danger",
-        });
-      }
-    } catch (err) {
-      addToast({
-        title: "Erro no servidor",
-        description: "Tente novamente mais tarde.",
-        variant: "flat",
-        color: "danger",
-      });
-      console.log("Error: ", err);
-    }
-
-    setName("");
-    setDescription("");
-    setStockId("");
-    setCategoryId("");
-    setBrandId("");
-    setSalesUnit("");
-    setProductCode("");
-    setCurrentQuantity("");
-    setMinimiumQuantity("");
-    setMaximumQuantity("");
-    setPrice("");
-    setPurchasePrice("");
-    setCostPrice("");
-
-    setLoading(false);
+    console.log("Dados: ", data);
+    dispatch({ type: "RESET", payload: initialState });
   }
 
   return (
     <Container>
       <main className="">
-        <Form handleForm={handleForm} href="/stock" loading={loading}>
-          <Input
-            label="Nome do Produto"
-            isRequired={true}
-            value={name}
-            type="text"
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Digite o nome do produto"
-            name="name"
-          />
-
-          <Input
-            label="Código de Barra"
-            isRequired={true}
-            placeholder="000000000000000000000000000"
-            name="product_code"
-            type="number"
-            value={productCode}
-            onChange={(e) => setProductCode(e.target.value)}
-          />
-          <Input
-            isRequired={true}
-            label="Unidade de Venda"
-            placeholder="UN"
-            type="text"
-            name="sales_unit"
-            value={salesUnit}
-            onChange={(e) => setSalesUnit(e.target.value)}
-          />
+        <Form handleForm={handleForm} href="/stock" loading={state.loading}>
+          {inputFields.map(
+            ({ name, label, type, placeholder, required, mask }) => (
+              <Input
+                key={name}
+                label={label}
+                isRequired={required}
+                type={type}
+                placeholder={placeholder}
+                name={name}
+                value={state[name]}
+                onChange={(e) =>
+                  dispatch({
+                    type: "SET_FIELD",
+                    field: name,
+                    value: e.target.value,
+                  })
+                }
+                {...(mask && {
+                  maskMoney: true,
+                  onChange:
+                    name === "price"
+                      ? handleChangePrice
+                      : name === "purchasePrice"
+                        ? handleChangePurchasePrice
+                        : handleChangeCostPrice,
+                })}
+              />
+            )
+          )}
           <div className="col-span-full">
             <CommentArea
               name="description"
@@ -174,57 +142,6 @@ export default function ProductForm({
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
-          <Input
-            label="Quantidade Atual do estoque"
-            isRequired={true}
-            placeholder="20"
-            name="current_quantity"
-            value={currentQuantity}
-            onChange={(e) => setCurrentQuantity(e.target.value)}
-          />
-          <Input
-            label="Quantidade Mínima do estoque"
-            isRequired={true}
-            placeholder="10"
-            name="minimium_quantity"
-            value={minimiumQuantity}
-            onChange={(e) => setMinimiumQuantity(e.target.value)}
-          />
-          <Input
-            label="Quantidade Máxima do estoque"
-            isRequired={true}
-            placeholder="80"
-            name="maximum_quantity"
-            value={maximumQuantity}
-            onChange={(e) => setMaximumQuantity(e.target.value)}
-          />
-          <Input
-            label="Preço de Venda"
-            isRequired={true}
-            maskMoney={true}
-            placeholder="R$ 80"
-            name="price"
-            onChange={handleChangePrice}
-            value={price}
-          />
-          <Input
-            label="Preço de Compra"
-            isRequired={true}
-            maskMoney={true}
-            placeholder="R$ 80"
-            name="purchase_price"
-            value={purchasePrice}
-            onChange={handleChangePurchasePrice}
-          />
-          <Input
-            label="Preço de Custo"
-            isRequired={true}
-            maskMoney={true}
-            placeholder="R$ 85,99"
-            name="cost_price"
-            value={costPrice}
-            onChange={handleChangeCostPrice}
-          />
           <div>
             <h3 className="text-lg pb-1 font-semibold text-gray-700">Marcas</h3>
             <div className="flex-col py-3 px-3 border-gray-400 rounded-lg border items-center">
