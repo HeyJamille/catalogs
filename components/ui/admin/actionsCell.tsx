@@ -28,11 +28,13 @@ import { setupApiClient } from "../../../utils/api/fetchData";
 // Tipagem
 interface ActionsCellProps {
   productId: string;
+  endpoint: string;
   setLoadingUI: TransitionStartFunction;
 }
 
 export default function ActionsCell({
   productId,
+  endpoint,
   setLoadingUI,
 }: ActionsCellProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -46,13 +48,13 @@ export default function ActionsCell({
     try {
       setLoading(true);
 
-      await api.delete(`/stocks/${productId}`);
+      await api.delete(`${endpoint}/${productId}`);
       setLoadingUI(() => {
         router.refresh();
       });
       onOpenChange();
     } catch (error) {
-      console.error("Erro ao excluir produto", error);
+      console.error("Erro ao excluir item", error);
     } finally {
       setLoading(false);
     }

@@ -3,13 +3,11 @@ import { cookies } from "next/headers";
 
 // Componentes
 import ContainerLayout from "@/components/ui/admin/containerLayout";
+import ProductForm from "@/components/forms/productForm";
 
 // Utils
 import { setupApiClient } from "@/utils/api/fetchData";
 import { formatedLabel } from "@/utils/functions/formattedLabel";
-import ProductForm from "@/components/forms/productForm";
-import Container from "@/components/ui/container";
-import Input from "@/components/ui/input";
 
 export default async function RegisterStock() {
   const cookieStore = cookies();
