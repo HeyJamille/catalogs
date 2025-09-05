@@ -6,8 +6,8 @@ export function MoneyMaskInput({
 }: {
   setValue: (value: string) => void;
 }) {
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    let value = event.target.value;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value;
     value = value.replace(/[^\d,]/g, "");
     const numericValue = parseFloat(value.replace(",", "."));
 
@@ -19,5 +19,5 @@ export function MoneyMaskInput({
     }
   };
 
-  return { handleChange };
+  return handleChange;
 }

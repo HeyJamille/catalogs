@@ -1,10 +1,13 @@
 "use client";
 
 // React
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 
 // Bibliotecas
-import { Provider } from "jotai";
+import { Provider, useAtom } from "jotai";
+
+// Atom
+import { isMenuOpenAtom } from "@/atom/isMenuOpen";
 
 // Components
 import HeaderNav from "@/components/menu/admin/headerNav";
@@ -18,7 +21,7 @@ interface LayoutProps {
 }
 
 export default function Layout({ companysData, children }: LayoutProps) {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useAtom<boolean>(isMenuOpenAtom);
 
   return (
     <main className="w-full flex overflow-hidden">

@@ -16,7 +16,7 @@ export default function CommentArea({ ...rest }: CommentAreaProps) {
       className="w-full"
       classNames={{
         inputWrapper:
-          "border-1  border-gray-400 data-[hover=true]:border-blue-500 group-data-[focus=true]:border-blue-800",
+          "border-1 pt-1 border-gray-400 data-[hover=true]:border-blue-500 group-data-[focus=true]:border-blue-800",
         input: "min-h-[100px]",
         label: "font-semibold",
       }}
@@ -24,8 +24,6 @@ export default function CommentArea({ ...rest }: CommentAreaProps) {
       variant="bordered"
       disableAutosize
       {...rest}
-      // eslint-disable-next-line no-console
-      //   onClear={() => console.log("textarea cleared")}
     />
   );
 }

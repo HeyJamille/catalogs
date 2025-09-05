@@ -138,6 +138,12 @@ export const renderCell = (
         </p>
       );
     case "actions":
-      return <ActionsCell productId={item.id} setLoadingUI={setLoading} />;
+      return (
+        <ActionsCell
+          endpoint="/stocks"
+          productId={item.id}
+          setLoadingUI={setLoading}
+        />
+      );
   }
 };
