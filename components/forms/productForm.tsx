@@ -63,14 +63,10 @@ export default function ProductForm({
     (init) => init
   );
   const [description, setDescription] = useState("");
-  const [categoryId, setCategoryId] = useState<string>("");
-  const [brandId, setBrandId] = useState<string>("");
-  const [stockId, setStockId] = useState<string>("");
-  const [value, setValue] = useState<string>("");
-
-  const token = Cookies.get("auth_token");
-  const api = setupApiClient(token);
-  const router = useRouter();
+  const [categoryId, setCategoryId] = useState<string[]>([]);
+  const [brandId, setBrandId] = useState<string[]>([]);
+  const [stockId, setStockId] = useState<string[]>([]);
+  const [selectDrawerType, setSelectDrawerType] = useState<string[]>([]);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -153,11 +149,11 @@ export default function ProductForm({
               />
             </div>
             <div>
-              <h3 className="text-lg pb-1 font-semibold text-gray-700">
+              <h3 className="text-md pb-1 font-semibold text-gray-700">
                 Marcas
               </h3>
               <div className="flex-col py-3 px-3 border-gray-400 rounded-lg border items-center">
-                <p className="text-sm text-gray-500">
+                <p className="text-sm pb-2 text-gray-500">
                   Organize suas marcas para facilitar a busca e destacar seus
                   produtos. Isso ajuda seus clientes a encontrarem rapidamente o
                   que procuram e valoriza a identidade da sua loja.
@@ -165,7 +161,10 @@ export default function ProductForm({
                 <Button
                   startContent={<CircleFadingPlus className="w-5 h-5" />}
                   className="bg-transparent min-w-0 h-7 px-0 text-blue-500"
-                  onPress={() => onOpen()}
+                  onPress={() => {
+                    onOpen();
+                    setSelectDrawerType(["brands", "marca"]);
+                  }}
                 >
                   <p className="hover:underline underline-offset-1">
                     Selecione a marca
@@ -174,11 +173,11 @@ export default function ProductForm({
               </div>
             </div>
             <div>
-              <h3 className="text-lg pb-1 font-semibold text-gray-700">
+              <h3 className="text-md pb-1 font-semibold text-gray-700">
                 Categorias
               </h3>
               <div className="flex-col py-3 px-3 border-gray-400 rounded-lg border items-center">
-                <p className="text-sm text-gray-500">
+                <p className="text-sm pb-2 text-gray-500">
                   Classifique seus produtos em categorias bem definidas para
                   otimizar a navegação e facilitar a busca. Uma boa organização
                   aumenta a satisfação do cliente e pode impulsionar suas
@@ -187,6 +186,10 @@ export default function ProductForm({
                 <Button
                   startContent={<CircleFadingPlus className="w-5 h-5" />}
                   className="bg-transparent min-w-0 h-7 px-0 text-blue-500"
+                  onPress={() => {
+                    onOpen();
+                    setSelectDrawerType(["categories", "categoria"]);
+                  }}
                 >
                   <p className="hover:underline underline-offset-1">
                     Selecione a categoria
@@ -195,11 +198,11 @@ export default function ProductForm({
               </div>
             </div>
             <div>
-              <h3 className="text-lg pb-1 font-semibold text-gray-700">
+              <h3 className="text-md pb-1 font-semibold text-gray-700">
                 Almoxarifado
               </h3>
               <div className="flex-col py-3 px-3 border-gray-400 rounded-lg border items-center">
-                <p className="text-sm text-gray-500">
+                <p className="text-sm pb-2 text-gray-500">
                   Mantenha seu almoxarifado bem organizado para garantir o
                   controle eficiente de estoque e facilitar a distribuição de
                   produtos. Uma gestão eficaz evita perdas e melhora a operação
@@ -208,6 +211,10 @@ export default function ProductForm({
                 <Button
                   startContent={<CircleFadingPlus className="w-5 h-5" />}
                   className="bg-transparent min-w-0 h-7 px-0 text-blue-500"
+                  onPress={() => {
+                    onOpen();
+                    setSelectDrawerType(["warehouses", "almoxarifado"]);
+                  }}
                 >
                   <p className="hover:underline underline-offset-1">
                     Selecione o almoxarifado
@@ -218,11 +225,36 @@ export default function ProductForm({
           </Form>
         </main>
       </Container>
-      <Drawer title="Slecione uma Marca" isOpen={isOpen} onClose={onClose}>
+      <Drawer
+        title={`Selecione uma ${selectDrawerType[1]}`}
+        isOpen={isOpen}
+        onClose={onClose}
+      >
         <DrawerSelect
-          title="Marca"
-          placeholder="Digite nome da marca"
-          data={categories}
+          title={`${selectDrawerType[1]}`}
+          endpoint={`/${selectDrawerType[0]}`}
+          placeholder={`Digite nome da ${selectDrawerType[1]}`}
+          data={
+            selectDrawerType[0] == "brands"
+              ? brands
+              : selectDrawerType[0] == "categories"
+                ? categories
+                : warehouses
+          }
+          value={
+            selectDrawerType[0] == "brands"
+              ? brandId
+              : selectDrawerType[0] == "categories"
+                ? categoryId
+                : stockId
+          }
+          setValue={
+            selectDrawerType[0] == "brands"
+              ? setBrandId
+              : selectDrawerType[0] == "categories"
+                ? setCategoryId
+                : setStockId
+          }
         />
       </Drawer>
     </>

@@ -39,7 +39,7 @@ export default function Input({
       classNames={{
         inputWrapper:
           "border-1  border-gray-400 data-[hover=true]:border-blue-500 group-data-[focus=true]:border-blue-800",
-        label: "font-semibold",
+        label: "font-semibold capitalize",
       }}
       {...rest}
     />
