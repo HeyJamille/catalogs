@@ -5,7 +5,6 @@ interface FormState {
 }
 
 export function stateActionForm(state: FormState, action: any): FormState {
-  console.log("Formulario: ", state);
   switch (action.type) {
     case "SET_FIELD":
       return { ...state, [action.field]: action.value };

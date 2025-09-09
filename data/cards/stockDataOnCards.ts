@@ -6,7 +6,7 @@ import { formatCurrency } from "@/utils/mask/money/formatCurrency";
 import { Banknote, BanknoteArrowUp, Box } from "lucide-react";
 
 // Tipagem
-import { productItems } from "@/types/product";
+import { productItems } from "@/types/stock";
 interface StockDataOnCardsProps {
   stockData: productItems[];
 }

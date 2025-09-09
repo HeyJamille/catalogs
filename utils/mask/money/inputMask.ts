@@ -6,18 +6,18 @@ export function MoneyMaskInput({
 }: {
   setValue: (value: string) => void;
 }) {
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value;
-    value = value.replace(/[^\d,]/g, "");
-    const numericValue = parseFloat(value.replace(",", "."));
+  return (e: React.ChangeEvent<HTMLInputElement>) => {
+    const digits = e.target.value.replace(/\D/g, "");
 
-    if (isNaN(numericValue)) {
+    if (!digits) {
       setValue("");
-    } else {
-      const formattedValue = formatCurrency(numericValue);
-      setValue(formattedValue);
+      return;
     }
-  };
 
-  return handleChange;
+    const numberValue = parseInt(digits, 10) / 100;
+
+    const formatted = formatCurrency(numberValue);
+
+    setValue(formatted);
+  };
 }

@@ -11,7 +11,7 @@ import { Package2 } from "lucide-react";
 import { formatCurrency } from "../../../utils/mask/money/formatCurrency";
 
 // Tipagem
-import { productItems } from "./../../../types/product";
+import { productItems } from "../../../types/stock";
 
 // Components
 import ActionsCell from "@/components/ui/admin/actionsCell";
@@ -140,8 +140,9 @@ export const renderCell = (
     case "actions":
       return (
         <ActionsCell
+          id={item.id}
           endpoint="/stocks"
-          productId={item.id}
+          hrfeEdit="/stock/edit"
           setLoadingUI={setLoading}
         />
       );

@@ -2,8 +2,21 @@
 
 // Bibliotecas
 import { Button } from "@heroui/button";
-import { Divider } from "@heroui/react";
-import { Plus, RefreshCcw } from "lucide-react";
+import {
+  Divider,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from "@heroui/react";
+import {
+  Download,
+  Ellipsis,
+  FunnelPlus,
+  FunnelX,
+  Plus,
+  RefreshCcw,
+} from "lucide-react";
 
 // Next
 import { useRouter } from "next/navigation";
@@ -16,6 +29,7 @@ interface ToolBarProps {
   title: string;
   addItemDescription: string;
   handleAddItems: string;
+  onOpen: () => void;
   setLoading: TransitionStartFunction;
 }
 
@@ -23,6 +37,7 @@ export default function ToolBar({
   title,
   addItemDescription,
   handleAddItems,
+  onOpen,
   setLoading,
 }: ToolBarProps) {
   const router = useRouter();
@@ -37,7 +52,7 @@ export default function ToolBar({
           <Button
             startContent={<RefreshCcw className="w-5 h-5" />}
             size="md"
-            radius="lg"
+            radius="sm"
             color="primary"
             onPress={() => {
               setLoading(() => {
@@ -53,12 +68,50 @@ export default function ToolBar({
             href={handleAddItems}
             as="a"
             size="md"
-            radius="lg"
+            radius="sm"
             color="success"
             className=" text-white shadow-md transition duration-300"
           >
             Cadastrar {addItemDescription}
           </Button>
+          <Dropdown showArrow radius="md" placement="bottom-end">
+            <DropdownTrigger>
+              <Button
+                isIconOnly
+                variant="bordered"
+                radius="sm"
+                className="border-gray-300 dark:border-gray-600 hover:border-primary transition"
+              >
+                <Ellipsis className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu aria-label="Mais opções" variant="light">
+              <DropdownItem
+                key="filters"
+                description="Refine os resultados exibidos"
+                onPress={onOpen}
+                startContent={
+                  <FunnelPlus className="w-5 h-5 text-primary/70" />
+                }
+              >
+                Aplicar filtros
+              </DropdownItem>
+              <DropdownItem
+                key="clearFilter"
+                description="Voltar à visualização padrão"
+                startContent={<FunnelX className="w-5 h-5 text-danger/70" />}
+              >
+                Limpar filtros
+              </DropdownItem>
+              <DropdownItem
+                key="exportExcel"
+                description="Baixe os dados em formato Excel"
+                startContent={<Download className="w-5 h-5 text-success/70" />}
+              >
+                Exportar para Excel
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
         </div>
       </div>
       <div className="px-4">

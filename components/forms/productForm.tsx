@@ -4,7 +4,7 @@
 import { useRouter } from "next/navigation";
 
 // React
-import React, { useReducer, useState, useTransition } from "react";
+import React, { useReducer, useState } from "react";
 
 // Componentes
 import CommentArea from "../ui/commentArea";
@@ -12,11 +12,10 @@ import Container from "../ui/container";
 import Form from "../ui/Form";
 import Input from "../ui/input";
 import Drawer from "../ui/admin/drawers/drawer";
-import DrawerSelect from "../ui/admin/drawers/drawerSelect";
+import DrawerSelect from "../ui/admin/drawers/drawerSelectForm";
 
 // Bibliotecas
-import Cookies from "js-cookie";
-import { addToast, Button, useDisclosure } from "@heroui/react";
+import { Button, useDisclosure } from "@heroui/react";
 import { CircleFadingPlus } from "lucide-react";
 
 // Dados
@@ -24,51 +23,72 @@ import inputFields from "@/data/inputsFields/productsFields.json";
 
 // Utils
 import { MoneyMaskInput } from "@/utils/mask/money/inputMask";
-import { setupApiClient } from "@/utils/api/fetchData";
 import { stateActionForm } from "@/utils/stateActionForms";
 import { removeCurrencyMask } from "@/utils/mask/money/removeMoneyMask";
+import { handleForm } from "@/utils/handle/handleCreate";
+import { formatCurrency } from "./../../utils/mask/money/formatCurrency";
 
 // Tipagem
 import { ItemsAutoComplete } from "@/types/autoComplete";
+import { stockItems } from "@/types/stock";
 interface ProductForm {
   warehouses: ItemsAutoComplete[];
   categories: ItemsAutoComplete[];
   brands: ItemsAutoComplete[];
+  product?: stockItems;
 }
-
-const initialState = {
-  name: "",
-  stockId: "",
-  categoryId: "",
-  brandId: "",
-  salesUnit: "",
-  productCode: "",
-  currentQuantity: "",
-  minimiumQuantity: "",
-  maximumQuantity: "",
-  price: "",
-  purchasePrice: "",
-  costPrice: "",
-  loading: false,
-};
 
 export default function ProductForm({
   warehouses,
   categories,
   brands,
+  product,
 }: ProductForm) {
+  const initial = product
+    ? {
+        name: product.name,
+        salesUnit: product.sales_unit,
+        productCode: product.product_code,
+        currentQuantity: product.stock.current_quantity ?? 0,
+        minimiumQuantity: product.stock.minimium_quantity ?? 0,
+        maximumQuantity: product.stock.maximum_quantity ?? 0,
+        price: formatCurrency(product.stock.price),
+        purchasePrice: formatCurrency(product.stock.purchase_price),
+        costPrice: formatCurrency(product.stock.cost_price),
+        loading: false,
+      }
+    : {
+        name: "",
+        salesUnit: "",
+        productCode: "",
+        currentQuantity: "",
+        minimiumQuantity: "",
+        maximumQuantity: "",
+        price: "",
+        purchasePrice: "",
+        costPrice: "",
+        loading: false,
+      };
+
   const [state, dispatch] = useReducer(
     stateActionForm,
-    initialState,
+    initial,
     (init) => init
   );
-  const [description, setDescription] = useState("");
-  const [categoryId, setCategoryId] = useState<string[]>([]);
-  const [brandId, setBrandId] = useState<string[]>([]);
-  const [stockId, setStockId] = useState<string[]>([]);
+  const [description, setDescription] = useState(product?.description ?? "");
+  const [categoryId, setCategoryId] = useState<string[]>([
+    `${product?.category.id}`,
+  ]);
+  const [brandId, setBrandId] = useState<string[]>([`${product?.brand.id}`]);
+  const [stockId, setStockId] = useState<string[]>([
+    `${product?.stock.warehouse_id}`,
+  ]);
   const [selectDrawerType, setSelectDrawerType] = useState<string[]>([]);
+  const [error, setError] = useState<boolean>(false);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const router = useRouter();
 
   const handleChangePrice = MoneyMaskInput({
     setValue: (value: string) =>
@@ -83,17 +103,23 @@ export default function ProductForm({
       dispatch({ type: "SET_FIELD", field: "costPrice", value }),
   });
 
-  async function handleForm(e: React.FormEvent) {
+  async function handleFormProduct(e: React.FormEvent) {
     e.preventDefault();
     dispatch({ type: "SET_LOADING", value: true });
 
+    if (categoryId.length <= 0) setError(true);
+    if (brandId.length <= 0) setError(true);
+    if (stockId.length <= 0) setError(true);
+
     const data = {
       name: state.name,
-      description: state.description,
-      stock_id: state.stockId,
-      category_id: state.categoryId,
-      brand_id: state.brandId,
-      product_code: state.productCode,
+      description: description,
+      stock_id: stockId[0],
+      category_id: categoryId[0],
+      brand_id: brandId[0],
+      ...(state.productCode !== product?.product_code && {
+        product_code: state.productCode,
+      }),
       sales_unit: state.salesUnit,
       current_quantity: removeCurrencyMask(state.currentQuantity),
       minimium_quantity: removeCurrencyMask(state.minimiumQuantity),
@@ -103,14 +129,29 @@ export default function ProductForm({
       cost_price: removeCurrencyMask(state.costPrice),
     };
 
-    dispatch({ type: "RESET", payload: initialState });
+    await handleForm({
+      isEdit: product && true,
+      endpoint: product ? `/stocks/${product.id}` : "/stocks",
+      router,
+      data,
+    });
+
+    dispatch({ type: "RESET", payload: initial });
+    !product && setDescription("");
+    !product && setCategoryId([]);
+    !product && setBrandId([]);
+    !product && setStockId([]);
   }
 
   return (
     <>
       <Container>
         <main className="">
-          <Form handleForm={handleForm} href="/stock" loading={state.loading}>
+          <Form
+            handleForm={handleFormProduct}
+            href="/stock"
+            loading={state.loading}
+          >
             {inputFields.map(
               ({ name, label, type, placeholder, required, mask }) => (
                 <Input
@@ -149,10 +190,14 @@ export default function ProductForm({
               />
             </div>
             <div>
-              <h3 className="text-md pb-1 font-semibold text-gray-700">
+              <h3
+                className={`text-md pb-1 font-semibold ${error ? "text-red-500" : "text-gray-700"} `}
+              >
                 Marcas
               </h3>
-              <div className="flex-col py-3 px-3 border-gray-400 rounded-lg border items-center">
+              <div
+                className={`flex-col py-3 px-3 ${error ? "border-red-400" : "border-gray-400"}  rounded-lg border items-center`}
+              >
                 <p className="text-sm pb-2 text-gray-500">
                   Organize suas marcas para facilitar a busca e destacar seus
                   produtos. Isso ajuda seus clientes a encontrarem rapidamente o
@@ -173,10 +218,14 @@ export default function ProductForm({
               </div>
             </div>
             <div>
-              <h3 className="text-md pb-1 font-semibold text-gray-700">
+              <h3
+                className={`text-md pb-1 font-semibold ${error ? "text-red-500" : "text-gray-700"} `}
+              >
                 Categorias
               </h3>
-              <div className="flex-col py-3 px-3 border-gray-400 rounded-lg border items-center">
+              <div
+                className={`flex-col py-3 px-3 ${error ? "border-red-400" : "border-gray-400"}  rounded-lg border items-center`}
+              >
                 <p className="text-sm pb-2 text-gray-500">
                   Classifique seus produtos em categorias bem definidas para
                   otimizar a navegação e facilitar a busca. Uma boa organização
@@ -198,10 +247,14 @@ export default function ProductForm({
               </div>
             </div>
             <div>
-              <h3 className="text-md pb-1 font-semibold text-gray-700">
+              <h3
+                className={`text-md pb-1 font-semibold ${error ? "text-red-500" : "text-gray-700"} `}
+              >
                 Almoxarifado
               </h3>
-              <div className="flex-col py-3 px-3 border-gray-400 rounded-lg border items-center">
+              <div
+                className={`flex-col py-3 px-3 ${error ? "border-red-400" : "border-gray-400"}  rounded-lg border items-center`}
+              >
                 <p className="text-sm pb-2 text-gray-500">
                   Mantenha seu almoxarifado bem organizado para garantir o
                   controle eficiente de estoque e facilitar a distribuição de

@@ -27,7 +27,7 @@ import { searchFilter } from "@/utils/filters/searchFilter";
 
 // Tipagem
 import { ItemsAutoComplete } from "@/types/autoComplete";
-interface DrawerSelectProps {
+interface DrawerSelectFormProps {
   title: string;
   endpoint: string;
   placeholder: string;
@@ -36,14 +36,14 @@ interface DrawerSelectProps {
   setValue: (value: string[]) => void;
 }
 
-export default function DrawerSelect({
+export default function DrawerSelectForm({
   title,
   endpoint,
   placeholder,
   data,
   value,
   setValue,
-}: DrawerSelectProps) {
+}: DrawerSelectFormProps) {
   const [name, setName] = useState<string>("");
   const [search, setSearch] = useState<string>("");
   const [id, setId] = useState<string>("");

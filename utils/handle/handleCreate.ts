@@ -13,7 +13,7 @@ interface HandleFormProps {
   router: AppRouterInstance;
   data?: object;
   isEdit?: boolean;
-  setLoading: React.TransitionStartFunction;
+  setLoading?: React.TransitionStartFunction;
 }
 
 export async function handleForm({
@@ -31,11 +31,12 @@ export async function handleForm({
       ? await api.patch(endpoint, data)
       : await api.post(endpoint, data);
 
-    setLoading(() => {
-      router.refresh();
-    });
+    setLoading &&
+      setLoading(() => {
+        router.refresh();
+      });
 
-    if (resp.status === 201) {
+    if (resp.status === 201 || resp.status === 200) {
       addToast({
         title: `${(resp as any).data.msg}`,
         variant: "solid",
@@ -51,6 +52,19 @@ export async function handleForm({
     console.log("Erro: ", err);
 
     if ((err as any).status === 400) {
+      addToast({
+        title: "Erro ao salvar",
+        description: `${(err as any).response.data.message}`,
+        variant: "solid",
+        color: "danger",
+        classNames: {
+          title: "text-white",
+          description: "text-gray-100",
+          icon: "text-white",
+        },
+      });
+    }
+    if ((err as any).status === 404) {
       addToast({
         title: "Erro ao salvar",
         description: `${(err as any).response.data.message}`,

@@ -38,7 +38,7 @@ export default function Table<T>({
       isHeaderSticky
       selectionMode="multiple"
       classNames={{
-        base: "p-4 mb-5 overflow-auto max-h-[530px] ",
+        base: "p-4 mb-5 overflow-auto max-h-[530px]",
         th: "bg-[#3b82f6] text-gray-200 text-sm ",
         wrapper: "",
         td: "border-b border-gray-300",
