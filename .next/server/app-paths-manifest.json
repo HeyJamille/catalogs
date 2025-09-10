@@ -1,4 +1,3 @@
 {
-  "/(admin)/stock/edit/[id]/page": "app/(admin)/stock/edit/[id]/page.js",
   "/(admin)/stock/page": "app/(admin)/stock/page.js"
 }

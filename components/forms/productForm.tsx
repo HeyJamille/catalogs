@@ -29,12 +29,12 @@ import { handleForm } from "@/utils/handle/handleCreate";
 import { formatCurrency } from "./../../utils/mask/money/formatCurrency";
 
 // Tipagem
-import { ItemsAutoComplete } from "@/types/autoComplete";
+import { ItemsLabels } from "@/types/labels";
 import { stockItems } from "@/types/stock";
 interface ProductForm {
-  warehouses: ItemsAutoComplete[];
-  categories: ItemsAutoComplete[];
-  brands: ItemsAutoComplete[];
+  warehouses: ItemsLabels[];
+  categories: ItemsLabels[];
+  brands: ItemsLabels[];
   product?: stockItems;
 }
 
@@ -280,6 +280,7 @@ export default function ProductForm({
       </Container>
       <Drawer
         title={`Selecione uma ${selectDrawerType[1]}`}
+        displayFooter={false}
         isOpen={isOpen}
         onClose={onClose}
       >

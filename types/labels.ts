@@ -1,4 +1,4 @@
-export type ItemsAutoComplete = {
+export type ItemsLabels = {
   id: string;
   label: string;
 };

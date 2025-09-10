@@ -26,12 +26,12 @@ import { handleForm } from "@/utils/handle/handleCreate";
 import { searchFilter } from "@/utils/filters/searchFilter";
 
 // Tipagem
-import { ItemsAutoComplete } from "@/types/autoComplete";
+import { ItemsLabels } from "@/types/labels";
 interface DrawerSelectFormProps {
   title: string;
   endpoint: string;
   placeholder: string;
-  data: ItemsAutoComplete[];
+  data: ItemsLabels[];
   value: string[];
   setValue: (value: string[]) => void;
 }

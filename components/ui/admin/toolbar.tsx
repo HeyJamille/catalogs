@@ -80,7 +80,7 @@ export default function ToolBar({
                 isIconOnly
                 variant="bordered"
                 radius="sm"
-                className="border-gray-300 dark:border-gray-600 hover:border-primary transition"
+                className="border-gray-300 dark:border-gray-600  transition"
               >
                 <Ellipsis className="w-6 h-6 text-gray-700 dark:text-gray-300" />
               </Button>

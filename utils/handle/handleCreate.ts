@@ -55,34 +55,27 @@ export async function handleForm({
       addToast({
         title: "Erro ao salvar",
         description: `${(err as any).response.data.message}`,
-        variant: "solid",
+        variant: "flat",
         color: "danger",
-        classNames: {
-          title: "text-white",
-          description: "text-gray-100",
-          icon: "text-white",
-        },
       });
     }
     if ((err as any).status === 404) {
       addToast({
         title: "Erro ao salvar",
         description: `${(err as any).response.data.message}`,
-        variant: "solid",
-        color: "danger",
-        classNames: {
-          title: "text-white",
-          description: "text-gray-100",
-          icon: "text-white",
-        },
-      });
-    } else {
-      addToast({
-        title: "Erro no servidor",
-        description: "Tente novamente mais tarde.",
         variant: "flat",
         color: "danger",
       });
+    }
+    if ((err as any).status === 500) {
+      {
+        addToast({
+          title: "Erro no servidor",
+          description: "Tente novamente mais tarde.",
+          variant: "flat",
+          color: "danger",
+        });
+      }
     }
   }
 }
