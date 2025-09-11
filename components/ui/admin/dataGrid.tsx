@@ -52,7 +52,7 @@ export default function DataGrid<T>({
   const [loading, setLoading] = useTransition();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  console.log("Dados: ", value);
+
   return (
     <Container>
       <ToolBar
@@ -78,8 +78,9 @@ export default function DataGrid<T>({
         title="Filtros"
         value={value}
         isOpen={isOpen}
-        onClose={onClose}
         displayFooter={true}
+        onClose={onClose}
+        clear={setValue}
       >
         <DrawerFilter value={value} data={dataFilter} setValue={setValue} />
       </Drawer>

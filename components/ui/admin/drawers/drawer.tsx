@@ -24,6 +24,7 @@ interface DrawerProps {
   displayFooter: boolean;
   value: StateValue;
   onClose: () => void;
+  clear: (value: StateValue) => void;
 }
 
 export default function Drawer({
@@ -33,24 +34,33 @@ export default function Drawer({
   displayFooter,
   value,
   onClose,
+  clear,
 }: DrawerProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const handleFilterChange = (filterKey: string, values: string[]) => {
+  const handleFilterChange = () => {
     const params = new URLSearchParams(searchParams.toString());
 
-    // Remover o parâmetro existente para evitar duplicação
-    params.delete(filterKey);
-
-    // Adicionar cada valor como um parâmetro separado
-    values.forEach((value) => {
-      if (value) {
-        params.append(filterKey, value);
+    value.categories.forEach((category) => {
+      if (category) {
+        params.delete("category");
+        params.append("category", category);
+      }
+    });
+    value.warehouses.forEach((warehouse) => {
+      if (warehouse) {
+        params.delete("warehouse");
+        params.append("warehouse", warehouse);
+      }
+    });
+    value.brands.forEach((brand) => {
+      if (brand) {
+        params.delete("brand");
+        params.append("brand", brand);
       }
     });
 
-    // Atualizar a URL com os novos parâmetros
     router.push(`?${params.toString()}`);
     router.refresh();
   };
@@ -59,6 +69,7 @@ export default function Drawer({
     const params = new URLSearchParams();
 
     router.push(`?${params.toString()}`);
+    clear({ brands: [], categories: [], warehouses: [] });
   };
 
   return (
@@ -83,18 +94,14 @@ export default function Drawer({
                   startContent={<FunnelX className="w-5 h-5" />}
                   color="danger"
                   variant="light"
-                  onPress={() => handleCleanChange()}
+                  onPress={handleCleanChange}
                 >
                   Limpar Filtro
                 </Button>
                 <Button
                   color="primary"
                   startContent={<Save className="w-5 h-5" />}
-                  onPress={() => {
-                    handleFilterChange("categories", value.categories);
-                    // handleFilterChange("warehouses", value.warehouses);
-                    // handleFilterChange("brands", value.brands);
-                  }}
+                  onPress={handleFilterChange}
                 >
                   Salvar Filtro
                 </Button>

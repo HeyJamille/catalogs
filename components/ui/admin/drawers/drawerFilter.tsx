@@ -49,7 +49,7 @@ export default function DrawerFilter({
             onChange={(newValues: string[]) =>
               setValue({
                 ...value,
-                [item.name]: newValues,
+                [item.name]: newValues.slice(-1), // pega apenas o último selecionado
               })
             }
             classNames={{
