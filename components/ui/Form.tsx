@@ -6,21 +6,18 @@ import { ReactNode } from "react";
 // Bibliotecas
 import { Button } from "@heroui/react";
 import { ChevronLeft, Save } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 // Tipagem
 interface FormProps {
   handleForm: (e: React.FormEvent) => void;
   children: ReactNode;
-  href: string;
   loading: boolean;
 }
 
-export default function Form({
-  handleForm,
-  href,
-  children,
-  loading,
-}: FormProps) {
+export default function Form({ handleForm, children, loading }: FormProps) {
+  const router = useRouter();
+
   return (
     <form
       onSubmit={handleForm}
@@ -46,8 +43,7 @@ export default function Form({
           <Button
             startContent={<ChevronLeft className="w-5 h-5" />}
             size="md"
-            as="a"
-            href={href}
+            onPress={() => router.back()}
             radius="sm"
             variant="bordered"
             className="border-gray-300 border-1 bg-white min-w-24"

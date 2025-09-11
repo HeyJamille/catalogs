@@ -31,14 +31,20 @@ export default function AvatarDropDown({ isMenu }: { isMenu?: boolean }) {
   const loader = useTopLoader();
 
   return (
-    <Dropdown placement="bottom-start">
+    <Dropdown
+      placement="bottom-start"
+      classNames={{
+        base: "before:bg-default-200",
+        content: "p-0 border-small border-divider bg-background",
+      }}
+    >
       <DropdownTrigger>
         <Avatar
           src={user?.photo || undefined}
           radius="sm"
           size="md"
           classNames={{
-            base: `${isMenu ? "bg-gray-200 text-blue-900" : "bg-[#3b82f6] text-white"} `,
+            base: `${isMenu ? "before:bg-default-200 bg-gray-200 text-blue-900" : "bg-[#3b82f6] text-white"} `,
           }}
           icon={<User2 />}
         />

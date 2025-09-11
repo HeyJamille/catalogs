@@ -3,11 +3,11 @@
 // React
 import { TransitionStartFunction, useState, useTransition } from "react";
 
+// Next
+import { useSearchParams } from "next/navigation";
+
 // Bibliotecas
 import { useDisclosure } from "@heroui/react";
-
-// Next
-import { useRouter, useSearchParams } from "next/navigation";
 
 // Componentes
 import Container from "../container";
@@ -44,10 +44,12 @@ export default function DataGrid<T>({
   dataFilter,
   renderCell,
 }: DataGridProps<T>) {
+  const searchParams = useSearchParams();
   const [value, setValue] = useState<StateValue>({
-    warehouses: [],
-    categories: [],
-    brands: [],
+    warehouses: [searchParams.get("warehouse")?.toString() ?? ""],
+    categories: [searchParams.get("category")?.toString() ?? ""],
+    brands: [searchParams.get("brand")?.toString() ?? ""],
+    is_active: ["all"],
   });
   const [loading, setLoading] = useTransition();
 
@@ -60,7 +62,9 @@ export default function DataGrid<T>({
         addItemDescription={addItemDescription}
         handleAddItems={handleAddItems}
         onOpen={onOpen}
+        clear={setValue}
         setLoading={setLoading}
+        columns={columns}
       />
       {loading ? (
         <main className="h-[530px]">
@@ -81,6 +85,7 @@ export default function DataGrid<T>({
         displayFooter={true}
         onClose={onClose}
         clear={setValue}
+        setLoading={setLoading}
       >
         <DrawerFilter value={value} data={dataFilter} setValue={setValue} />
       </Drawer>

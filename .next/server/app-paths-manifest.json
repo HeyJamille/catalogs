@@ -1,7 +1,6 @@
 {
   "/(admin)/dashboard/page": "app/(admin)/dashboard/page.js",
   "/(admin)/stock/page": "app/(admin)/stock/page.js",
-  "/(guest)/page": "app/(guest)/page.js",
-  "/(guest)/signin/page": "app/(guest)/signin/page.js",
-  "/_not-found/page": "app/_not-found/page.js"
+  "/(admin)/stock/register/page": "app/(admin)/stock/register/page.js",
+  "/(guest)/page": "app/(guest)/page.js"
 }

@@ -14,7 +14,7 @@ import { FunnelX, Save } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 // React
-import { ReactNode } from "react";
+import { ReactNode, TransitionStartFunction } from "react";
 
 // Tipagem
 interface DrawerProps {
@@ -22,9 +22,10 @@ interface DrawerProps {
   isOpen: boolean;
   children: ReactNode;
   displayFooter: boolean;
-  value: StateValue;
+  value?: StateValue;
   onClose: () => void;
-  clear: (value: StateValue) => void;
+  clear?: (value: StateValue) => void;
+  setLoading?: TransitionStartFunction;
 }
 
 export default function Drawer({
@@ -35,6 +36,7 @@ export default function Drawer({
   value,
   onClose,
   clear,
+  setLoading,
 }: DrawerProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -42,34 +44,57 @@ export default function Drawer({
   const handleFilterChange = () => {
     const params = new URLSearchParams(searchParams.toString());
 
-    value.categories.forEach((category) => {
-      if (category) {
-        params.delete("category");
-        params.append("category", category);
-      }
-    });
-    value.warehouses.forEach((warehouse) => {
-      if (warehouse) {
-        params.delete("warehouse");
-        params.append("warehouse", warehouse);
-      }
-    });
-    value.brands.forEach((brand) => {
-      if (brand) {
-        params.delete("brand");
-        params.append("brand", brand);
-      }
-    });
+    value &&
+      value.categories.forEach((category) => {
+        if (category) {
+          params.delete("category");
+          params.append("category", category);
+        }
+      });
+    value &&
+      value.warehouses.forEach((warehouse) => {
+        if (warehouse) {
+          params.delete("warehouse");
+          params.append("warehouse", warehouse);
+        }
+      });
+    value &&
+      value.brands.forEach((brand) => {
+        if (brand) {
+          params.delete("brand");
+          params.append("brand", brand);
+        }
+      });
+    value &&
+      value.is_active.forEach((active) => {
+        if (active) {
+          params.delete("is_active");
+          params.append("is_active", active);
+        }
+      });
 
     router.push(`?${params.toString()}`);
-    router.refresh();
+    setLoading &&
+      setLoading(() => {
+        router.refresh();
+      });
   };
 
   const handleCleanChange = () => {
     const params = new URLSearchParams();
 
     router.push(`?${params.toString()}`);
-    clear({ brands: [], categories: [], warehouses: [] });
+    clear &&
+      clear({
+        brands: [],
+        categories: [],
+        warehouses: [],
+        is_active: ["all"],
+      });
+    setLoading &&
+      setLoading(() => {
+        router.refresh();
+      });
   };
 
   return (
@@ -93,6 +118,7 @@ export default function Drawer({
                 <Button
                   startContent={<FunnelX className="w-5 h-5" />}
                   color="danger"
+                  radius="sm"
                   variant="light"
                   onPress={handleCleanChange}
                 >
@@ -100,6 +126,7 @@ export default function Drawer({
                 </Button>
                 <Button
                   color="primary"
+                  radius="sm"
                   startContent={<Save className="w-5 h-5" />}
                   onPress={handleFilterChange}
                 >

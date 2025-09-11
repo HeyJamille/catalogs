@@ -13,7 +13,8 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib
 ;
 function setupApiClient(token) {
     const api = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].create({
-        baseURL: "https://catalogsapi.vercel.app/v1"
+        baseURL: "https://catalogsapi.vercel.app/v1",
+        validateStatus: (status)=>status < 500
     });
     api.interceptors.request.use({
         "setupApiClient.use": (config)=>{
@@ -23,8 +24,8 @@ function setupApiClient(token) {
             return config;
         }
     }["setupApiClient.use"], {
-        "setupApiClient.use": (error)=>{
-            return Promise.reject(error);
+        "setupApiClient.use": (err)=>{
+            return Promise.reject(err);
         }
     }["setupApiClient.use"]);
     return api;

@@ -162,7 +162,13 @@ export default function DrawerSelectForm({
                     {item.label}
                   </Checkbox>
                 </CheckboxGroup>
-                <div className="flex items-center">
+                <div
+                  className={
+                    item.label.toLowerCase() !== "estoque online"
+                      ? "flex items-center"
+                      : "hidden"
+                  }
+                >
                   <Button
                     variant="light"
                     radius="full"

@@ -147,11 +147,7 @@ export default function ProductForm({
     <>
       <Container>
         <main className="">
-          <Form
-            handleForm={handleFormProduct}
-            href="/stock"
-            loading={state.loading}
-          >
+          <Form handleForm={handleFormProduct} loading={state.loading}>
             {inputFields.map(
               ({ name, label, type, placeholder, required, mask }) => (
                 <Input

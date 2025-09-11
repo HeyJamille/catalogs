@@ -11,13 +11,13 @@ import { Package2 } from "lucide-react";
 import { formatCurrency } from "../../../utils/mask/money/formatCurrency";
 
 // Tipagem
-import { productItems } from "../../../types/stock";
+import { stockItems } from "../../../types/stock";
 
 // Components
 import ActionsCell from "@/components/ui/admin/actionsCell";
 
 export const renderCell = (
-  item: productItems,
+  item: stockItems,
   columnKey: string,
   setLoading: TransitionStartFunction
 ) => {
@@ -57,7 +57,7 @@ export const renderCell = (
         <p
           className={`${myStockIsLow && "text-red-500"} text-bold text-small capitalize`}
         >
-          {item.brand}
+          {(item as any).brand}
         </p>
       );
     case "category":
@@ -65,7 +65,7 @@ export const renderCell = (
         <p
           className={`${myStockIsLow && "text-red-500"} text-bold text-small capitalize`}
         >
-          {item.category}
+          {(item as any).category}
         </p>
       );
     case "is_active":

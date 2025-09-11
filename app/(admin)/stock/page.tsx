@@ -30,20 +30,31 @@ export default async function StockPage({
   const cookieStore = cookies();
   const token = (await cookieStore).get("auth_token")?.value;
   const api = setupApiClient(token);
-  const category = (await searchParams)?.category;
-  const warehouse = (await searchParams)?.warehouse;
 
-  const productsData = await api.get(
-    `/stocks/filters?is_active=true${category && `&categories=${category}`}`
-  );
-  const warehouseData = await api.get("/warehouses/filter?is_active=true");
-  const categoriesData = await api.get("/categories");
-  const brandsData = await api.get("/brands");
+  const search = await searchParams;
+  const category = search.category;
+  const warehouse = search.warehouse;
+  const brand = search.brand;
+  const isActive = search.is_active;
+
+  const query = new URLSearchParams({
+    ...(isActive !== "all" ? { is_active: String(isActive) } : {}),
+    ...(category ? { categories: String(category) } : {}),
+    ...(warehouse ? { warehouse: String(warehouse) } : {}),
+    ...(brand ? { brands: String(brand) } : {}),
+  }).toString();
+
+  const [productsData, warehouseData, categoriesData, brandsData] =
+    await Promise.all([
+      api.get(`/stocks/filters?${query}`),
+      api.get("/warehouses/filter?is_active=true"),
+      api.get("/categories"),
+      api.get("/brands"),
+    ]);
 
   const cardDetails = StockDataOnCards({
     stockData: productsData.data.products,
   });
-  categoriesData;
   const warehouses = formatedLabel(warehouseData.data.warehouses, "id", "name");
   const categories = formatedLabel(
     categoriesData.data.categories,
@@ -51,7 +62,6 @@ export default async function StockPage({
     "name"
   );
   const brands = formatedLabel(brandsData.data.brands, "id", "name");
-
   const dataFilter: FilterItem[] = [
     {
       id: 1,
@@ -66,6 +76,16 @@ export default async function StockPage({
       data: categories,
     },
     { id: 3, title: "Filtrar por marcas", name: "brands", data: brands },
+    {
+      id: 4,
+      title: "Status do Produto",
+      name: "is_active",
+      data: [
+        { id: "true", label: "Ativado" },
+        { id: "false", label: "Desativado" },
+        { id: "all", label: "Todos" },
+      ],
+    },
   ];
 
   return (

@@ -149,15 +149,16 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib
 ;
 function setupApiClient(token) {
     const api = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].create({
-        baseURL: "https://catalogsapi.vercel.app/v1"
+        baseURL: "https://catalogsapi.vercel.app/v1",
+        validateStatus: (status)=>status < 500
     });
     api.interceptors.request.use((config)=>{
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
-    }, (error)=>{
-        return Promise.reject(error);
+    }, (err)=>{
+        return Promise.reject(err);
     });
     return api;
 }

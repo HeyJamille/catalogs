@@ -5,6 +5,7 @@ export interface StateValue {
   warehouses: string[];
   categories: string[];
   brands: string[];
+  is_active: string[];
 }
 
 export interface FilterItem {
