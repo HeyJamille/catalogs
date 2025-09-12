@@ -36,7 +36,13 @@ export default function UserDropdown({
 
   return (
     <div className="p-2 w-full max-w-xs bg-white dark:bg-slate-800 rounded-lg shadow-sm">
-      <Dropdown placement="bottom-start">
+      <Dropdown
+        placement="bottom-start"
+        classNames={{
+          base: "before:bg-default-200",
+          content: "p-0 border-small border-divider bg-background",
+        }}
+      >
         <DropdownTrigger>
           <div className="flex items-center gap-3 cursor-pointer px-2 py-1">
             <User

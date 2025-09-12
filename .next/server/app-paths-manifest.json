@@ -2,5 +2,9 @@
   "/(admin)/dashboard/page": "app/(admin)/dashboard/page.js",
   "/(admin)/stock/page": "app/(admin)/stock/page.js",
   "/(admin)/stock/register/page": "app/(admin)/stock/register/page.js",
+<<<<<<< HEAD
   "/(guest)/signin/page": "app/(guest)/signin/page.js"
+=======
+  "/(guest)/page": "app/(guest)/page.js"
+>>>>>>> f18552b18590365000878aff47ca828d1a1bce4c
 }

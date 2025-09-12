@@ -4,6 +4,7 @@ import axios from "axios";
 export function setupApiClient(token?: string) {
   const api = axios.create({
     baseURL: "https://catalogsapi.vercel.app/v1",
+    validateStatus: (status) => status < 500,
   });
 
   api.interceptors.request.use(
@@ -13,8 +14,8 @@ export function setupApiClient(token?: string) {
       }
       return config;
     },
-    (error) => {
-      return Promise.reject(error);
+    (err) => {
+      return Promise.reject(err);
     }
   );
 

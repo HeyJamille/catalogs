@@ -1,15 +1,15 @@
 [
-  { "name": "Nome do Produto", "uid": "name" },
-  { "name": "Código de Barra", "uid": "product_code" },
-  { "name": "Marca", "uid": "brand" },
-  { "name": "Categoria ", "uid": "category" },
-  { "name": "Ativo?", "uid": "is_active" },
-  { "name": "Preço", "uid": "price" },
-  { "name": "Preço de Compra", "uid": "purchase_price" },
-  { "name": "Preço de Custo", "uid": "cost_price" },
-  { "name": "Custo da Mercadoria", "uid": "cost_of_goods" },
-  { "name": "Quantidade Atual", "uid": "current_quantity" },
-  { "name": "Quantidade Mínima", "uid": "minimum_quantity" },
-  { "name": "Quantidade Máxima", "uid": "maximum_quantity" },
-  { "name": "Ações", "uid": "actions" }
+  { "name": "Nome do Produto", "uid": "name", "sortable": true },
+  { "name": "Código de Barra", "uid": "product_code", "sortable": true },
+  { "name": "Marca", "uid": "brand", "sortable": true },
+  { "name": "Categoria ", "uid": "category", "sortable": true },
+  { "name": "Ativo?", "uid": "is_active", "sortable": true },
+  { "name": "Preço", "uid": "price", "sortable": true },
+  { "name": "Preço de Compra", "uid": "purchase_price", "sortable": true },
+  { "name": "Preço de Custo", "uid": "cost_price", "sortable": true },
+  { "name": "Custo da Mercadoria", "uid": "cost_of_goods", "sortable": true },
+  { "name": "Quantidade Atual", "uid": "current_quantity", "sortable": true },
+  { "name": "Quantidade Mínima", "uid": "minimum_quantity", "sortable": true },
+  { "name": "Quantidade Máxima", "uid": "maximum_quantity", "sortable": true },
+  { "name": "Ações", "uid": "actions", "sortable": true }
 ]

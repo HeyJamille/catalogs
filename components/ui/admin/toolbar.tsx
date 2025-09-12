@@ -10,6 +10,7 @@ import {
   DropdownTrigger,
 } from "@heroui/react";
 import {
+  ChevronDownIcon,
   Download,
   Ellipsis,
   FunnelPlus,
@@ -25,11 +26,15 @@ import { useRouter } from "next/navigation";
 import { TransitionStartFunction } from "react";
 
 // Tipagem
+import { StateValue } from "@/types/filter";
+import { ItemsColumns } from "@/types/columns";
 interface ToolBarProps {
   title: string;
   addItemDescription: string;
   handleAddItems: string;
+  columns: ItemsColumns[];
   onOpen: () => void;
+  clear: (value: StateValue) => void;
   setLoading: TransitionStartFunction;
 }
 
@@ -37,10 +42,28 @@ export default function ToolBar({
   title,
   addItemDescription,
   handleAddItems,
+  columns,
   onOpen,
+  clear,
   setLoading,
 }: ToolBarProps) {
   const router = useRouter();
+
+  const handleCleanChange = () => {
+    const params = new URLSearchParams();
+
+    router.push(`?${params.toString()}`);
+    clear({
+      brands: [],
+      categories: [],
+      warehouses: [],
+      is_active: ["all"],
+    });
+    setLoading &&
+      setLoading(() => {
+        router.refresh();
+      });
+  };
 
   return (
     <main>
@@ -49,11 +72,40 @@ export default function ToolBar({
           {title}
         </h2>
         <div className="flex items-center gap-4">
+          <Dropdown
+            showArrow
+            classNames={{
+              base: "before:bg-default-200",
+              content: "p-0 border-small border-divider bg-background",
+            }}
+          >
+            <DropdownTrigger className="hidden sm:flex">
+              <Button
+                endContent={<ChevronDownIcon className="text-small" />}
+                size="md"
+                radius="sm"
+                variant="flat"
+              >
+                Colunas
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu
+              disallowEmptySelection
+              aria-label="Table Columns"
+              closeOnSelect={false}
+              selectionMode="multiple"
+            >
+              {columns.map((column) => (
+                <DropdownItem key={column.uid} className="capitalize">
+                  {column.name}
+                </DropdownItem>
+              ))}
+            </DropdownMenu>
+          </Dropdown>
           <Button
             startContent={<RefreshCcw className="w-5 h-5" />}
             size="md"
             radius="sm"
-            color="primary"
             onPress={() => {
               setLoading(() => {
                 router.refresh();
@@ -63,6 +115,7 @@ export default function ToolBar({
           >
             Atualizar
           </Button>
+
           <Button
             startContent={<Plus className="w-5 h-5" />}
             href={handleAddItems}
@@ -74,13 +127,21 @@ export default function ToolBar({
           >
             Cadastrar {addItemDescription}
           </Button>
-          <Dropdown showArrow radius="md" placement="bottom-end">
+          <Dropdown
+            showArrow
+            radius="md"
+            placement="bottom-end"
+            classNames={{
+              base: "before:bg-default-200",
+              content: "p-0 border-small border-divider bg-background",
+            }}
+          >
             <DropdownTrigger>
               <Button
                 isIconOnly
                 variant="bordered"
                 radius="sm"
-                className="border-gray-300 dark:border-gray-600 hover:border-primary transition"
+                className="border-gray-300 dark:border-gray-600  transition"
               >
                 <Ellipsis className="w-6 h-6 text-gray-700 dark:text-gray-300" />
               </Button>
@@ -100,6 +161,7 @@ export default function ToolBar({
                 key="clearFilter"
                 description="Voltar à visualização padrão"
                 startContent={<FunnelX className="w-5 h-5 text-danger/70" />}
+                onPress={handleCleanChange}
               >
                 Limpar filtros
               </DropdownItem>

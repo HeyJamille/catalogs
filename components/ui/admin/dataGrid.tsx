@@ -1,16 +1,13 @@
 "use client";
 
 // React
-import { TransitionStartFunction, useTransition } from "react";
+import { TransitionStartFunction, useState, useTransition } from "react";
+
+// Next
+import { useSearchParams } from "next/navigation";
 
 // Bibliotecas
-import {
-  Accordion,
-  AccordionItem,
-  Checkbox,
-  CheckboxGroup,
-  useDisclosure,
-} from "@heroui/react";
+import { useDisclosure } from "@heroui/react";
 
 // Componentes
 import Container from "../container";
@@ -18,15 +15,19 @@ import Table from "./table";
 import ToolBar from "./toolbar";
 import Loading from "./loading";
 import Drawer from "./drawers/drawer";
+import DrawerFilter from "./drawers/drawerFilter";
 
 // Tipagem
 import { ItemsColumns } from "@/types/columns";
+import { FilterItem, StateValue } from "@/types/filter";
+
 interface DataGridProps<T> {
   title: string;
   addItemDescription: string;
   handleAddItems: string;
   columns: ItemsColumns[];
   data: T[];
+  dataFilter: FilterItem[];
   renderCell: (
     item: T,
     columnUid: string,
@@ -40,8 +41,16 @@ export default function DataGrid<T>({
   handleAddItems,
   columns,
   data,
+  dataFilter,
   renderCell,
 }: DataGridProps<T>) {
+  const searchParams = useSearchParams();
+  const [value, setValue] = useState<StateValue>({
+    warehouses: [searchParams.get("warehouse")?.toString() ?? ""],
+    categories: [searchParams.get("category")?.toString() ?? ""],
+    brands: [searchParams.get("brand")?.toString() ?? ""],
+    is_active: ["all"],
+  });
   const [loading, setLoading] = useTransition();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -53,7 +62,9 @@ export default function DataGrid<T>({
         addItemDescription={addItemDescription}
         handleAddItems={handleAddItems}
         onOpen={onOpen}
+        clear={setValue}
         setLoading={setLoading}
+        columns={columns}
       />
       {loading ? (
         <main className="h-[530px]">
@@ -67,47 +78,16 @@ export default function DataGrid<T>({
           renderCell={renderCell}
         />
       )}
-      <Drawer title="Filtros" isOpen={isOpen} onClose={onClose}>
-        <Accordion>
-          <AccordionItem
-            key="1"
-            aria-label="Almoxarifado"
-            subtitle="Pressione para expandir"
-            title="Filtrar por almoxarifado"
-            classNames={{
-              indicator: "text-gray-900",
-              title: "font-semibold",
-            }}
-          >
-            <CheckboxGroup classNames={{ base: "w-full flex flex-col gap-2" }}>
-              {["Almoxarifado A", "Almoxarifado B", "Almoxarifado C"].map(
-                (item, index) => (
-                  <Checkbox
-                    key={index}
-                    size="md"
-                    radius="sm"
-                    classNames={{
-                      base: "max-w-full w-full flex items-center bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors p-3 focus:ring-2 focus:ring-blue-500",
-                      label:
-                        "w-full text-sm font-medium text-gray-700 dark:text-gray-200",
-                    }}
-                  >
-                    {item}
-                  </Checkbox>
-                )
-              )}
-            </CheckboxGroup>
-          </AccordionItem>
-          <AccordionItem
-            key="2"
-            aria-label="Accordion 2"
-            subtitle="Pressione para expandir"
-            title="Accordion 2"
-          >
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor
-          </AccordionItem>
-        </Accordion>
+      <Drawer
+        title="Filtros"
+        value={value}
+        isOpen={isOpen}
+        displayFooter={true}
+        onClose={onClose}
+        clear={setValue}
+        setLoading={setLoading}
+      >
+        <DrawerFilter value={value} data={dataFilter} setValue={setValue} />
       </Drawer>
     </Container>
   );

@@ -47,7 +47,7 @@ export default function Table<T>({
       removeWrapper
     >
       <TableHeader>
-        {columns.map((clm) => (
+        {columns?.map((clm) => (
           <TableColumn align="center" key={clm.uid}>
             {clm.name}
           </TableColumn>
@@ -55,13 +55,13 @@ export default function Table<T>({
       </TableHeader>
 
       <TableBody
-        items={data}
+        items={data ? data : []}
         className="w-full "
-        emptyContent="Nenhum produto encontrado"
+        emptyContent={"Nenhum dado encontrado :("}
       >
         {(item) => (
-          <TableRow key={(item as any).id ?? (item as any).product_code}>
-            {columns.map((col) => (
+          <TableRow key={(item as any).id}>
+            {columns?.map((col) => (
               <TableCell key={col.uid}>
                 {renderCell(item, col.uid, setLoading)}
               </TableCell>
