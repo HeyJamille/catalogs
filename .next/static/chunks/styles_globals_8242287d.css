@@ -1107,6 +1107,14 @@
     height: 100dvh;
   }
 
+  .h-\[220px\] {
+    height: 220px;
+  }
+
+  .h-\[280px\] {
+    height: 280px;
+  }
+
   .h-\[530px\] {
     height: 530px;
   }
@@ -1407,6 +1415,14 @@
     max-width: var(--container-5xl);
   }
 
+  .max-w-10 {
+    max-width: calc(var(--spacing) * 10);
+  }
+
+  .max-w-28 {
+    max-width: calc(var(--spacing) * 28);
+  }
+
   .max-w-\[10rem\] {
     max-width: 10rem;
   }
@@ -1523,6 +1539,10 @@
     min-width: calc(var(--spacing) * 16);
   }
 
+  .min-w-18 {
+    min-width: calc(var(--spacing) * 18);
+  }
+
   .min-w-20 {
     min-width: calc(var(--spacing) * 20);
   }
@@ -1531,8 +1551,24 @@
     min-width: calc(var(--spacing) * 24);
   }
 
+  .min-w-28 {
+    min-width: calc(var(--spacing) * 28);
+  }
+
+  .min-w-32 {
+    min-width: calc(var(--spacing) * 32);
+  }
+
   .min-w-40 {
     min-width: calc(var(--spacing) * 40);
+  }
+
+  .min-w-44 {
+    min-width: calc(var(--spacing) * 44);
+  }
+
+  .min-w-\[180px\] {
+    min-width: 180px;
   }
 
   .min-w-\[200px\] {
@@ -1541,6 +1577,14 @@
 
   .min-w-\[240px\] {
     min-width: 240px;
+  }
+
+  .min-w-\[250px\] {
+    min-width: 250px;
+  }
+
+  .min-w-\[280px\] {
+    min-width: 280px;
   }
 
   .min-w-full {
@@ -2378,6 +2422,10 @@
     border-color: var(--color-gray-400);
   }
 
+  .border-gray-500 {
+    border-color: var(--color-gray-500);
+  }
+
   .border-primary {
     border-color: hsl(var(--heroui-primary) / 1);
   }
@@ -3063,6 +3111,18 @@
 
   .p-10 {
     padding: calc(var(--spacing) * 10);
+  }
+
+  .p-\[0\.1em\] {
+    padding: .1em;
+  }
+
+  .p-\[0\.2em\] {
+    padding: .2em;
+  }
+
+  .p-\[0\.3em\] {
+    padding: .3em;
   }
 
   .\!px-1 {
@@ -6563,6 +6623,12 @@
   }
 
   @media (hover: hover) {
+    .hover\:bg-\[\#3b82f6\]:hover {
+      background-color: #3b82f6;
+    }
+  }
+
+  @media (hover: hover) {
     .hover\:bg-blue-100:hover {
       background-color: var(--color-blue-100);
     }
@@ -7724,6 +7790,10 @@
 
   .data-\[hover\=true\]\:\!bg-warning[data-hover="true"] {
     background-color: hsl(var(--heroui-warning) / 1) !important;
+  }
+
+  .data-\[hover\=true\]\:bg-\[\#3b82f6\][data-hover="true"] {
+    background-color: #3b82f6;
   }
 
   .data-\[hover\=true\]\:bg-content2[data-hover="true"] {

@@ -7,7 +7,7 @@ import { TransitionStartFunction, useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
 
 // Bibliotecas
-import { useDisclosure } from "@heroui/react";
+import { SharedSelection, useDisclosure } from "@heroui/react";
 
 // Componentes
 import Container from "../container";
@@ -51,9 +51,17 @@ export default function DataGrid<T>({
     brands: [searchParams.get("brand")?.toString() ?? ""],
     is_active: ["all"],
   });
+  const [selectedColumns, setSelectedColumns] = useState(
+    columns.filter((col) => col.isDisplay).map((col) => col.uid)
+  );
   const [loading, setLoading] = useTransition();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const handleSelectionColumnsChange = (keys: SharedSelection) => {
+    const arr = Array.from(typeof keys === "string" ? [keys] : keys);
+    setSelectedColumns(arr as string[]);
+  };
 
   return (
     <Container>
@@ -63,8 +71,10 @@ export default function DataGrid<T>({
         handleAddItems={handleAddItems}
         onOpen={onOpen}
         clear={setValue}
-        setLoading={setLoading}
         columns={columns}
+        selectedColumns={selectedColumns}
+        handleSelectionColumnsChange={handleSelectionColumnsChange}
+        setLoading={setLoading}
       />
       {loading ? (
         <main className="h-[530px]">
@@ -73,6 +83,7 @@ export default function DataGrid<T>({
       ) : (
         <Table
           columns={columns}
+          selectedColumns={selectedColumns}
           data={data}
           setLoading={setLoading}
           renderCell={renderCell}

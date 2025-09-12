@@ -9,6 +9,7 @@ import { Package2 } from "lucide-react";
 
 // Utils
 import { formatCurrency } from "../../../utils/mask/money/formatCurrency";
+import { formatDate } from "@/utils/mask/money/formatDate";
 
 // Tipagem
 import { stockItems } from "../../../types/stock";
@@ -135,6 +136,51 @@ export const renderCell = (
           className={`${myStockIsLow && "text-red-500"} text-bold text-small capitalize`}
         >
           {item.stock.maximum_quantity}
+        </p>
+      );
+    case "date_of_inactivation":
+      return (
+        <p
+          className={`${myStockIsLow && "text-red-500"} text-bold text-small capitalize`}
+        >
+          {item.date_of_inactivation
+            ? formatDate(item.date_of_inactivation)
+            : "-"}
+        </p>
+      );
+    case "has_discount":
+      return (
+        <Chip
+          classNames={{ content: "capitalize font-bold" }}
+          color={item.stock.has_discount ? "primary" : "danger"}
+          size="sm"
+          variant="flat"
+        >
+          {item.stock.has_discount ? "Sim" : "Não"}
+        </Chip>
+      );
+    case "created_at":
+      return (
+        <p
+          className={`${myStockIsLow && "text-red-500"} text-bold text-small capitalize`}
+        >
+          {formatDate(item.created_at)}
+        </p>
+      );
+    case "sales_unit":
+      return (
+        <p
+          className={`${myStockIsLow && "text-red-500"} text-bold text-small capitalize`}
+        >
+          {item.sales_unit}
+        </p>
+      );
+    case "discount_percentage":
+      return (
+        <p
+          className={`${myStockIsLow && "text-red-500"} text-bold text-small capitalize`}
+        >
+          {item.stock.discount_percentage} %
         </p>
       );
     case "actions":

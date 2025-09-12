@@ -15,8 +15,8 @@ import Drawer from "../ui/admin/drawers/drawer";
 import DrawerSelect from "../ui/admin/drawers/drawerSelectForm";
 
 // Bibliotecas
-import { Button, useDisclosure } from "@heroui/react";
-import { CircleFadingPlus } from "lucide-react";
+import { Button, Switch, useDisclosure } from "@heroui/react";
+import { Check, CircleFadingPlus, MoonIcon, SunIcon, X } from "lucide-react";
 
 // Dados
 import inputFields from "@/data/inputsFields/productsFields.json";
@@ -84,6 +84,9 @@ export default function ProductForm({
     `${product?.stock.warehouse_id}`,
   ]);
   const [selectDrawerType, setSelectDrawerType] = useState<string[]>([]);
+  const [isActive, setIsActive] = useState<boolean | undefined>(
+    product?.is_active
+  );
   const [error, setError] = useState<boolean>(false);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -127,6 +130,10 @@ export default function ProductForm({
       price: removeCurrencyMask(state.price),
       purchase_price: removeCurrencyMask(state.purchasePrice),
       cost_price: removeCurrencyMask(state.costPrice),
+      is_active: isActive,
+      ...(isActive === false && {
+        date_of_inactivation: new Date().toISOString(),
+      }),
     };
 
     await handleForm({
@@ -270,6 +277,26 @@ export default function ProductForm({
                   </p>
                 </Button>
               </div>
+            </div>
+            <div>
+              <h3
+                className={`text-md pb-2 font-semibold ${error ? "text-red-500" : "text-gray-700"} `}
+              >
+                Ativar?
+              </h3>
+              <Switch
+                defaultSelected={isActive}
+                onValueChange={setIsActive}
+                color="success"
+                size="md"
+                thumbIcon={({ isSelected }) =>
+                  isSelected ? (
+                    <Check className="w-5 h-5 p-[0.1em] text-gray-500" />
+                  ) : (
+                    <X className="w-5 h-5 p-[0.1em] text-gray-500" />
+                  )
+                }
+              />
             </div>
           </Form>
         </main>

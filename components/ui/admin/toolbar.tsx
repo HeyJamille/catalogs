@@ -8,11 +8,14 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
+  SharedSelection,
 } from "@heroui/react";
 import {
   ChevronDownIcon,
   Download,
   Ellipsis,
+  Eye,
+  EyeClosed,
   FunnelPlus,
   FunnelX,
   Plus,
@@ -23,7 +26,7 @@ import {
 import { useRouter } from "next/navigation";
 
 // React
-import { TransitionStartFunction } from "react";
+import { TransitionStartFunction, useState } from "react";
 
 // Tipagem
 import { StateValue } from "@/types/filter";
@@ -33,8 +36,10 @@ interface ToolBarProps {
   addItemDescription: string;
   handleAddItems: string;
   columns: ItemsColumns[];
+  selectedColumns: string[];
   onOpen: () => void;
   clear: (value: StateValue) => void;
+  handleSelectionColumnsChange: (keys: SharedSelection) => void;
   setLoading: TransitionStartFunction;
 }
 
@@ -43,10 +48,14 @@ export default function ToolBar({
   addItemDescription,
   handleAddItems,
   columns,
+  selectedColumns,
   onOpen,
   clear,
+  handleSelectionColumnsChange,
   setLoading,
 }: ToolBarProps) {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
   const router = useRouter();
 
   const handleCleanChange = () => {
@@ -74,17 +83,23 @@ export default function ToolBar({
         <div className="flex items-center gap-4">
           <Dropdown
             showArrow
+            placement="bottom-end"
             classNames={{
               base: "before:bg-default-200",
-              content: "p-0 border-small border-divider bg-background",
+              content:
+                "p-0 border-small border-divider bg-background min-w-[280px]",
             }}
           >
             <DropdownTrigger className="hidden sm:flex">
               <Button
-                endContent={<ChevronDownIcon className="text-small" />}
+                endContent={
+                  <ChevronDownIcon className="text-gray-600 w-5 h-5" />
+                }
                 size="md"
                 radius="sm"
                 variant="flat"
+                className="min-w-32 font-semibold text-gray-700 w-full h-9 border border-gray-300"
+                onPress={() => setIsOpen(!isOpen)}
               >
                 Colunas
               </Button>
@@ -93,7 +108,10 @@ export default function ToolBar({
               disallowEmptySelection
               aria-label="Table Columns"
               closeOnSelect={false}
+              color="primary"
               selectionMode="multiple"
+              selectedKeys={selectedColumns}
+              onSelectionChange={handleSelectionColumnsChange}
             >
               {columns.map((column) => (
                 <DropdownItem key={column.uid} className="capitalize">
@@ -103,7 +121,7 @@ export default function ToolBar({
             </DropdownMenu>
           </Dropdown>
           <Button
-            startContent={<RefreshCcw className="w-5 h-5" />}
+            startContent={<RefreshCcw className="w-4 h-4 font-semibold" />}
             size="md"
             radius="sm"
             onPress={() => {
@@ -111,21 +129,9 @@ export default function ToolBar({
                 router.refresh();
               });
             }}
-            className="bg-[#3b82f6] text-white shadow-md transition duration-300"
+            className="bg-[#3b82f6] font-semibold min-w-32 border border-gray-300 h-9 w-full text-white shadow-md transition duration-300"
           >
             Atualizar
-          </Button>
-
-          <Button
-            startContent={<Plus className="w-5 h-5" />}
-            href={handleAddItems}
-            as="a"
-            size="md"
-            radius="sm"
-            color="success"
-            className=" text-white shadow-md transition duration-300"
-          >
-            Cadastrar {addItemDescription}
           </Button>
           <Dropdown
             showArrow
@@ -141,12 +147,20 @@ export default function ToolBar({
                 isIconOnly
                 variant="bordered"
                 radius="sm"
-                className="border-gray-300 dark:border-gray-600  transition"
+                className="border h-9 min-w-9 w-full border-gray-400 dark:border-gray-600  transition"
               >
                 <Ellipsis className="w-6 h-6 text-gray-700 dark:text-gray-300" />
               </Button>
             </DropdownTrigger>
             <DropdownMenu aria-label="Mais opções" variant="light">
+              <DropdownItem
+                key="register"
+                description={`Adicionar um novo ${addItemDescription}`}
+                href={handleAddItems}
+                startContent={<Plus className="w-5 h-5 text-success/80" />}
+              >
+                Cadastrar {addItemDescription}
+              </DropdownItem>
               <DropdownItem
                 key="filters"
                 description="Refine os resultados exibidos"
