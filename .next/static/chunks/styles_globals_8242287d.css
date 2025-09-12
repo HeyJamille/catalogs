@@ -92,7 +92,6 @@
     --color-green-600: oklch(62.7% .194 149.214);
     --color-blue-50: oklch(97% .014 254.604);
     --color-blue-100: oklch(93.2% .032 255.585);
-    --color-blue-200: oklch(88.2% .059 254.128);
     --color-blue-400: oklch(70.7% .165 254.624);
     --color-blue-500: oklch(62.3% .214 259.815);
     --color-blue-600: oklch(54.6% .245 262.881);
@@ -1321,14 +1320,6 @@
     width: calc(var(--spacing) * 20);
   }
 
-  .w-40 {
-    width: calc(var(--spacing) * 40);
-  }
-
-  .w-52 {
-    width: calc(var(--spacing) * 52);
-  }
-
   .w-72 {
     width: calc(var(--spacing) * 72);
   }
@@ -1535,10 +1526,6 @@
 
   .min-w-40 {
     min-width: calc(var(--spacing) * 40);
-  }
-
-  .min-w-\[180px\] {
-    min-width: 180px;
   }
 
   .min-w-\[200px\] {
@@ -2161,11 +2148,6 @@
     border-end-end-radius: 0 !important;
   }
 
-  .rounded-t-2xl {
-    border-top-left-radius: var(--radius-2xl);
-    border-top-right-radius: var(--radius-2xl);
-  }
-
   .rounded-t-large {
     border-top-left-radius: var(--heroui-radius-large);
     border-top-right-radius: var(--heroui-radius-large);
@@ -2389,18 +2371,6 @@
     border-color: var(--color-gray-400);
   }
 
-  .border-gray-500 {
-    border-color: var(--color-gray-500);
-  }
-
-  .border-gray-600 {
-    border-color: var(--color-gray-600);
-  }
-
-  .border-gray-700 {
-    border-color: var(--color-gray-700);
-  }
-
   .border-primary {
     border-color: hsl(var(--heroui-primary) / 1);
   }
@@ -2585,10 +2555,6 @@
     .bg-background\/80 {
       background-color: color-mix(in oklab, hsl(var(--heroui-background) / 1) 80%, transparent);
     }
-  }
-
-  .bg-blue-200 {
-    background-color: var(--color-blue-200);
   }
 
   .bg-blue-600 {
@@ -6567,12 +6533,6 @@
   }
 
   @media (hover: hover) {
-    .hover\:bg-blue-500:hover {
-      background-color: var(--color-blue-500);
-    }
-  }
-
-  @media (hover: hover) {
     .hover\:bg-blue-700:hover {
       background-color: var(--color-blue-700);
     }
@@ -6605,12 +6565,6 @@
   @media (hover: hover) {
     .hover\:bg-gray-100:hover {
       background-color: var(--color-gray-100);
-    }
-  }
-
-  @media (hover: hover) {
-    .hover\:bg-gray-300:hover {
-      background-color: var(--color-gray-300);
     }
   }
 
@@ -8683,10 +8637,6 @@
     scale: .97;
   }
 
-  .data-\[pressed\=true\]\:bg-blue-600[data-pressed="true"] {
-    background-color: var(--color-blue-600);
-  }
-
   .data-\[pressed\=true\]\:opacity-50[data-pressed="true"] {
     opacity: .5;
   }
@@ -9851,10 +9801,6 @@
     background-color: hsl(var(--heroui-default-100) / 1);
   }
 
-  .dark\:bg-gray-700:is(.dark *) {
-    background-color: var(--color-gray-700);
-  }
-
   .dark\:bg-gray-800:is(.dark *) {
     background-color: var(--color-gray-800);
   }
@@ -10007,12 +9953,6 @@
   .dark\:after\:bg-content2:is(.dark *):after {
     content: var(--tw-content);
     background-color: hsl(var(--heroui-content2) / 1);
-  }
-
-  @media (hover: hover) {
-    .dark\:hover\:bg-gray-600:is(.dark *):hover {
-      background-color: var(--color-gray-600);
-    }
   }
 
   @media (hover: hover) {
