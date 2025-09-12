@@ -2564,13 +2564,10 @@
     }
   }
 
-<<<<<<< HEAD
-=======
   .bg-black {
     background-color: var(--color-black);
   }
 
->>>>>>> f18552b18590365000878aff47ca828d1a1bce4c
   .bg-blue-600 {
     background-color: var(--color-blue-600);
   }
@@ -5562,21 +5559,6 @@
     border-color: hsl(var(--heroui-default) / 1);
   }
 
-  .before\:bg-blue-200:before {
-    content: var(--tw-content);
-    background-color: var(--color-blue-200);
-  }
-
-  .before\:bg-blue-400:before {
-    content: var(--tw-content);
-    background-color: var(--color-blue-400);
-  }
-
-  .before\:bg-blue-800:before {
-    content: var(--tw-content);
-    background-color: var(--color-blue-800);
-  }
-
   .before\:bg-content1:before {
     content: var(--tw-content);
     background-color: hsl(var(--heroui-content1) / 1);
@@ -6623,15 +6605,12 @@
   }
 
   @media (hover: hover) {
-<<<<<<< HEAD
-=======
     .hover\:bg-gray-800:hover {
       background-color: var(--color-gray-800);
     }
   }
 
   @media (hover: hover) {
->>>>>>> f18552b18590365000878aff47ca828d1a1bce4c
     .hover\:bg-primary-50:hover {
       background-color: hsl(var(--heroui-primary-50) / 1);
     }
