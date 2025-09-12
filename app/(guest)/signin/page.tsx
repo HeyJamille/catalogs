@@ -24,42 +24,11 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    try {
-      setLoading(true);
-      const resp = await signIn({ email, password });
+    setLoading(true);
 
-      if (!resp) {
-        // Login OK
-        addToast({
-          title: "Login realizado com sucesso!",
-          description: "Você será redirecionado em instantes.",
-          variant: "solid",
-          color: "success",
-          classNames: {
-            title: "text-white",
-            description: "text-gray-100",
-            icon: "text-white",
-          },
-        });
-      } else {
-        // Error Message
-        addToast({
-          title: "Erro ao fazer login",
-          description: resp || "Verifique suas credenciais e tente novamente.",
-          variant: "flat",
-          color: "danger",
-        });
-      }
-    } catch {
-      addToast({
-        title: "Erro no servidor",
-        description: "Tente novamente mais tarde.",
-        variant: "flat",
-        color: "danger",
-      });
-    } finally {
-      setLoading(false);
-    }
+    await signIn({ email, password });
+
+    setLoading(false);
   };
 
   return (

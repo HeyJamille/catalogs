@@ -203,9 +203,36 @@ function AuthProvider({ children }) {
                 email,
                 password
             });
-            setUser(resp.data.user);
-            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$js$2d$cookie$2f$dist$2f$js$2e$cookie$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].set("auth_token", resp.data.token);
-            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$js$2d$cookie$2f$dist$2f$js$2e$cookie$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].set("user_rule", resp.data.user.rule.name);
+            if (resp.status === 200 || resp.status === 201) {
+                (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$heroui$2f$react$2f$node_modules$2f40$heroui$2f$toast$2f$dist$2f$chunk$2d$U2DWYKGQ$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["addToast"])({
+                    title: "Login realizado com sucesso!",
+                    description: "Você será redirecionado em instantes.",
+                    variant: "solid",
+                    color: "success",
+                    classNames: {
+                        title: "text-white",
+                        description: "text-gray-100",
+                        icon: "text-white"
+                    }
+                });
+            } else if (resp.status == 500) {
+                (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$heroui$2f$react$2f$node_modules$2f40$heroui$2f$toast$2f$dist$2f$chunk$2d$U2DWYKGQ$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["addToast"])({
+                    title: "Erro no servidor",
+                    description: "Tente novamente mais tarde.",
+                    variant: "flat",
+                    color: "danger"
+                });
+            } else {
+                (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$heroui$2f$react$2f$node_modules$2f40$heroui$2f$toast$2f$dist$2f$chunk$2d$U2DWYKGQ$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["addToast"])({
+                    title: "Erro ao fazer login",
+                    description: resp.data.message || "Verifique suas credenciais e tente novamente.",
+                    variant: "flat",
+                    color: "danger"
+                });
+            }
+            setUser(resp.data.user && resp.data.user);
+            resp.data.token && __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$js$2d$cookie$2f$dist$2f$js$2e$cookie$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].set("auth_token", resp.data.token);
+            resp.data.user.rule.name && __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$js$2d$cookie$2f$dist$2f$js$2e$cookie$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].set("user_rule", resp.data.user.rule.name);
             api.defaults.headers["Authorization"] = `Bearer ${resp.data.token}`;
             const routeByRule = {
                 Admin: "/dashboard",
@@ -215,10 +242,9 @@ function AuthProvider({ children }) {
                 Estoque: "/estoque"
             };
             loader.start();
-            router.push(routeByRule[resp.data.user.rule.name]);
+            resp.data.user && router.push(routeByRule[resp.data.user.rule.name]);
         } catch (err) {
-            // Aviso de error
-            return err.response.data.message;
+            return err;
         }
     }
     async function signOut() {
@@ -256,13 +282,13 @@ function AuthProvider({ children }) {
                 toastOffset: 20
             }, void 0, false, {
                 fileName: "[project]/provider/auth.tsx",
-                lineNumber: 104,
+                lineNumber: 133,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/provider/auth.tsx",
-        lineNumber: 102,
+        lineNumber: 131,
         columnNumber: 5
     }, this);
 }
