@@ -18,6 +18,7 @@ import { ItemsColumns } from "@/types/columns";
 interface TableProps<T> {
   columns: ItemsColumns[];
   data: T[];
+  selectedColumns: string[];
   setLoading: TransitionStartFunction;
   renderCell: (
     item: T,
@@ -29,16 +30,21 @@ interface TableProps<T> {
 export default function Table<T>({
   columns,
   data,
-  setLoading,
+  selectedColumns,
   renderCell,
+  setLoading,
 }: TableProps<T>) {
+  const visibleColumns = columns.filter((col) =>
+    selectedColumns.includes(col.uid)
+  );
+
   return (
     <TB
       aria-label="table"
       isHeaderSticky
       selectionMode="multiple"
       classNames={{
-        base: "p-4 mb-5 overflow-auto max-h-[530px]",
+        base: "p-4 mb-5 overflow-auto xl:max-h-[440px] 2xl:max-h-[530px]",
         th: "bg-[#3b82f6] text-gray-200 text-sm ",
         wrapper: "",
         td: "border-b border-gray-300",
@@ -47,7 +53,7 @@ export default function Table<T>({
       removeWrapper
     >
       <TableHeader>
-        {columns?.map((clm) => (
+        {visibleColumns.map((clm) => (
           <TableColumn align="center" key={clm.uid}>
             {clm.name}
           </TableColumn>
@@ -61,7 +67,7 @@ export default function Table<T>({
       >
         {(item) => (
           <TableRow key={(item as any).id}>
-            {columns?.map((col) => (
+            {visibleColumns.map((col) => (
               <TableCell key={col.uid}>
                 {renderCell(item, col.uid, setLoading)}
               </TableCell>

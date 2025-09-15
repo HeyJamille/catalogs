@@ -1,5 +1,4 @@
 // Bibliotecas
-import { StateValue } from "@/types/filter";
 import {
   Drawer as Drw,
   DrawerContent,
@@ -8,7 +7,7 @@ import {
   DrawerFooter,
   Button,
 } from "@heroui/react";
-import { FunnelX, Save } from "lucide-react";
+import { Columns, Download, FunnelX, Save } from "lucide-react";
 
 // Next
 import { useRouter, useSearchParams } from "next/navigation";
@@ -17,14 +16,18 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { ReactNode, TransitionStartFunction } from "react";
 
 // Tipagem
+import { StateValue } from "@/types/filter";
 interface DrawerProps {
   title: string;
   isOpen: boolean;
   children: ReactNode;
-  displayFooter: boolean;
+  displayFooterFilter?: boolean;
+  displayFooterRelatory?: boolean;
   value?: StateValue;
+  position?: "top" | "right" | "bottom" | "left";
   onClose: () => void;
   clear?: (value: StateValue) => void;
+  handleDownloadExcel?: () => void;
   setLoading?: TransitionStartFunction;
 }
 
@@ -32,10 +35,13 @@ export default function Drawer({
   title,
   isOpen,
   children,
-  displayFooter,
+  displayFooterFilter,
+  displayFooterRelatory,
   value,
+  position,
   onClose,
   clear,
+  handleDownloadExcel,
   setLoading,
 }: DrawerProps) {
   const router = useRouter();
@@ -101,8 +107,9 @@ export default function Drawer({
     <Drw
       classNames={{ body: "px-2 py-0" }}
       isOpen={isOpen}
-      size="md"
+      size="sm"
       onClose={onClose}
+      placement={position && position}
     >
       <DrawerContent>
         {(onClose) => (
@@ -113,27 +120,39 @@ export default function Drawer({
               </h2>
             </DrawerHeader>
             <DrawerBody className="w-full">{children}</DrawerBody>
-            {displayFooter && (
-              <DrawerFooter>
-                <Button
-                  startContent={<FunnelX className="w-5 h-5" />}
-                  color="danger"
-                  radius="sm"
-                  variant="light"
-                  onPress={handleCleanChange}
-                >
-                  Limpar Filtro
-                </Button>
-                <Button
-                  color="primary"
-                  radius="sm"
-                  startContent={<Save className="w-5 h-5" />}
-                  onPress={handleFilterChange}
-                >
-                  Salvar Filtro
-                </Button>
-              </DrawerFooter>
-            )}
+            {displayFooterFilter ||
+              (displayFooterRelatory && (
+                <DrawerFooter>
+                  <Button
+                    startContent={<FunnelX className="w-5 h-5" />}
+                    color="danger"
+                    radius="sm"
+                    variant="light"
+                    onPress={handleCleanChange}
+                    className={`${displayFooterRelatory && "hidden"}`}
+                  >
+                    Limpar Filtro
+                  </Button>
+                  <Button
+                    color="primary"
+                    radius="sm"
+                    startContent={
+                      displayFooterFilter ? (
+                        <Save className="w-5 h-5" />
+                      ) : (
+                        <Download className="w-5 h-5" />
+                      )
+                    }
+                    onPress={
+                      displayFooterFilter
+                        ? handleFilterChange
+                        : handleDownloadExcel
+                    }
+                  >
+                    {displayFooterFilter ? "Aplicar Filtro" : "Abaixar arquivo"}
+                  </Button>
+                </DrawerFooter>
+              ))}
           </>
         )}
       </DrawerContent>

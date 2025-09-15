@@ -66,7 +66,7 @@ export default function LoginPage() {
               <Input
                 label="Senha"
                 labelPlacement="outside-top"
-                placeholder="••••••••••••••••"
+                placeholder="Sua senha"
                 type={showPassword ? "text" : "password"}
                 variant="bordered"
                 required

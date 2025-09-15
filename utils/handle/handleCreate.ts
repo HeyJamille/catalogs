@@ -48,25 +48,16 @@ export async function handleForm({
         },
       });
     }
+    if (resp.status === 400) {
+      addToast({
+        title: `${(resp as any).data.message}`,
+        variant: "flat",
+        color: "danger",
+      });
+    }
   } catch (err) {
     console.log("Erro: ", err);
 
-    if ((err as any).status === 400) {
-      addToast({
-        title: "Erro ao salvar",
-        description: `${(err as any).response.data.message}`,
-        variant: "flat",
-        color: "danger",
-      });
-    }
-    if ((err as any).status === 404) {
-      addToast({
-        title: "Erro ao salvar",
-        description: `${(err as any).response.data.message}`,
-        variant: "flat",
-        color: "danger",
-      });
-    }
     if ((err as any).status === 500) {
       {
         addToast({
