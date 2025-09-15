@@ -53,6 +53,14 @@ export const renderCell = (
           {item.product_code}
         </p>
       );
+    case "stock.warehouse_name":
+      return (
+        <p
+          className={`${myStockIsLow && "text-red-500"} text-bold truncate w-[8em] text-small capitalize`}
+        >
+          {item.stock.warehouse_name}
+        </p>
+      );
     case "brand":
       return (
         <p
@@ -88,7 +96,7 @@ export const renderCell = (
           {formatCurrency(item.stock.price)}
         </p>
       );
-    case "purchase_price":
+    case "stock.purchase_price":
       return (
         <p
           className={`${myStockIsLow && "text-red-500"} font-semibold text-small capitalize`}
@@ -96,7 +104,7 @@ export const renderCell = (
           {formatCurrency(item.stock.purchase_price)}
         </p>
       );
-    case "cost_price":
+    case "stock.cost_price":
       return (
         <p
           className={`${myStockIsLow && "text-red-500"} font-semibold text-small capitalize`}
@@ -114,7 +122,7 @@ export const renderCell = (
           {formatCurrency(costOfGoods)}
         </p>
       );
-    case "current_quantity":
+    case "stock.current_quantity":
       return (
         <p
           className={`${myStockIsLow && "text-red-500"} text-bold text-small capitalize`}
@@ -122,7 +130,7 @@ export const renderCell = (
           {item.stock.current_quantity}
         </p>
       );
-    case "minimum_quantity":
+    case "stock.minimum_quantity":
       return (
         <p
           className={`${myStockIsLow && "text-red-500"} text-bold text-small capitalize`}
@@ -130,7 +138,7 @@ export const renderCell = (
           {item.stock.current_quantity}
         </p>
       );
-    case "maximum_quantity":
+    case "stock.maximum_quantity":
       return (
         <p
           className={`${myStockIsLow && "text-red-500"} text-bold text-small capitalize`}
@@ -148,7 +156,7 @@ export const renderCell = (
             : "-"}
         </p>
       );
-    case "has_discount":
+    case "stock.has_discount":
       return (
         <Chip
           classNames={{ content: "capitalize font-bold" }}
@@ -175,7 +183,7 @@ export const renderCell = (
           {item.sales_unit}
         </p>
       );
-    case "discount_percentage":
+    case "stock.discount_percentage":
       return (
         <p
           className={`${myStockIsLow && "text-red-500"} text-bold text-small capitalize`}

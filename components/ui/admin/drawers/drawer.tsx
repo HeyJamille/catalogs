@@ -7,7 +7,7 @@ import {
   DrawerFooter,
   Button,
 } from "@heroui/react";
-import { Columns, Download, FunnelX, Save } from "lucide-react";
+import { Download, FunnelX, Save } from "lucide-react";
 
 // Next
 import { useRouter, useSearchParams } from "next/navigation";
@@ -120,39 +120,37 @@ export default function Drawer({
               </h2>
             </DrawerHeader>
             <DrawerBody className="w-full">{children}</DrawerBody>
-            {displayFooterFilter ||
-              (displayFooterRelatory && (
-                <DrawerFooter>
-                  <Button
-                    startContent={<FunnelX className="w-5 h-5" />}
-                    color="danger"
-                    radius="sm"
-                    variant="light"
-                    onPress={handleCleanChange}
-                    className={`${displayFooterRelatory && "hidden"}`}
-                  >
-                    Limpar Filtro
-                  </Button>
-                  <Button
-                    color="primary"
-                    radius="sm"
-                    startContent={
-                      displayFooterFilter ? (
-                        <Save className="w-5 h-5" />
-                      ) : (
-                        <Download className="w-5 h-5" />
-                      )
-                    }
-                    onPress={
-                      displayFooterFilter
-                        ? handleFilterChange
-                        : handleDownloadExcel
-                    }
-                  >
-                    {displayFooterFilter ? "Aplicar Filtro" : "Abaixar arquivo"}
-                  </Button>
-                </DrawerFooter>
-              ))}
+            <DrawerFooter>
+              <Button
+                startContent={<FunnelX className="w-5 h-5" />}
+                color="danger"
+                radius="sm"
+                variant="light"
+                onPress={handleCleanChange}
+                className={`${displayFooterRelatory && "hidden"}`}
+              >
+                Limpar Filtro
+              </Button>
+              {displayFooterFilter ? (
+                <Button
+                  color="primary"
+                  radius="sm"
+                  startContent={<Save className="w-5 h-5" />}
+                  onPress={handleFilterChange}
+                >
+                  Aplicar Filtro
+                </Button>
+              ) : (
+                <Button
+                  color="primary"
+                  radius="sm"
+                  startContent={<Download className="w-5 h-5" />}
+                  onPress={handleDownloadExcel}
+                >
+                  Abaixar Arquivo
+                </Button>
+              )}
+            </DrawerFooter>
           </>
         )}
       </DrawerContent>

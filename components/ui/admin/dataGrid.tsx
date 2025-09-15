@@ -8,8 +8,6 @@ import { useSearchParams } from "next/navigation";
 
 // Bibliotecas
 import { SharedSelection, useDisclosure } from "@heroui/react";
-import ExcelJS from "exceljs";
-import { saveAs } from "file-saver";
 
 // Componentes
 import Container from "../container";
@@ -23,6 +21,7 @@ import DrawerRelatory from "./drawers/drawerRelatory";
 // Tipagem
 import { ItemsColumns } from "@/types/columns";
 import { FilterItem, StateValue } from "@/types/filter";
+import handleDownloadExcel from "@/utils/relatorys/excel/handleDownloadExcel";
 
 interface DataGridProps<T> {
   title: string;
@@ -77,34 +76,6 @@ export default function DataGrid<T>({
     setSelectedColumns(arr as string[]);
   };
 
-  const handleDownloadExcel = async () => {
-    if (!data || !columns) return;
-
-    const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet("Relatório");
-
-    worksheet.columns = columns
-      .filter((col) => selectedColumns.includes(col.uid)) // apenas colunas selecionadas
-      .map((col) => ({
-        header: col.name, // ou outro campo de label
-        key: col.uid,
-        width: 20, // largura padrão, pode ajustar
-      }));
-
-    data.forEach((row) => {
-      const newRow: Record<string, any> = {};
-      columns.forEach((col) => {
-        if (selectedColumns.includes(col.uid)) {
-          newRow[col.uid] = (row as Record<string, any>)[col.uid];
-        }
-      });
-      worksheet.addRow(newRow);
-    });
-
-    const buffer = await workbook.xlsx.writeBuffer();
-    saveAs(new Blob([buffer]), "relatorio.xlsx");
-  };
-
   return (
     <Container>
       <ToolBar
@@ -148,7 +119,9 @@ export default function DataGrid<T>({
         isOpen={isOpenRelatory}
         onClose={onCloseRelatory}
         displayFooterRelatory
-        handleDownloadExcel={handleDownloadExcel}
+        handleDownloadExcel={() => {
+          handleDownloadExcel({ data, columns, selectedColumns });
+        }}
       >
         <DrawerRelatory
           selectedColumns={selectedColumns}

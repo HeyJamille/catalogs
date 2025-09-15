@@ -1,23 +1,40 @@
 [
   { "name": "Nome do Produto", "uid": "name", "isDisplay": true },
+  { "name": "Almoxarifado", "uid": "stock.warehouse_name", "isDisplay": false },
   { "name": "Código de Barra", "uid": "product_code", "isDisplay": true },
   { "name": "Marca", "uid": "brand", "isDisplay": true },
   { "name": "Categoria ", "uid": "category", "isDisplay": true },
   { "name": "Unidade ", "uid": "sales_unit", "isDisplay": false },
   { "name": "Ativo?", "uid": "is_active", "isDisplay": true },
-  { "name": "Promoção?", "uid": "has_discount", "isDisplay": false },
+  { "name": "Promoção?", "uid": "stock.has_discount", "isDisplay": false },
   { "name": "Preço", "uid": "stock.price", "isDisplay": true },
-  { "name": "Preço de Compra", "uid": "purchase_price", "isDisplay": true },
-  { "name": "Preço de Custo", "uid": "cost_price", "isDisplay": true },
+  {
+    "name": "Preço de Compra",
+    "uid": "stock.purchase_price",
+    "isDisplay": true
+  },
+  { "name": "Preço de Custo", "uid": "stock.cost_price", "isDisplay": true },
   { "name": "Custo da Mercadoria", "uid": "cost_of_goods", "isDisplay": true },
   {
     "name": "Porcentagem do desconto",
-    "uid": "discount_percentage",
+    "uid": "stock.discount_percentage",
     "isDisplay": false
   },
-  { "name": "Quantidade Atual", "uid": "current_quantity", "isDisplay": true },
-  { "name": "Quantidade Mínima", "uid": "minimum_quantity", "isDisplay": true },
-  { "name": "Quantidade Máxima", "uid": "maximum_quantity", "isDisplay": true },
+  {
+    "name": "Quantidade Atual",
+    "uid": "stock.current_quantity",
+    "isDisplay": true
+  },
+  {
+    "name": "Quantidade Mínima",
+    "uid": "stock.minimum_quantity",
+    "isDisplay": true
+  },
+  {
+    "name": "Quantidade Máxima",
+    "uid": "stock.maximum_quantity",
+    "isDisplay": true
+  },
   {
     "name": "Data do cadastro",
     "uid": "created_at",
