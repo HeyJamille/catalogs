@@ -1,5 +1,6 @@
 // Bibliotecas
 import {
+  Button,
   Checkbox,
   CheckboxGroup,
   Listbox,
@@ -7,47 +8,57 @@ import {
   SharedSelection,
 } from "@heroui/react";
 import { Divider } from "@heroui/react";
-import { Info } from "lucide-react";
+import { Filter, Info } from "lucide-react";
+import Input from "../../input";
 
 // Tipagem
 import { ItemsColumns } from "@/types/columns";
 interface DrawerRelatoryProps {
+  name: string;
+  extension: string[];
   selectedColumns: string[];
   columns: ItemsColumns[];
+  onOpenFilter: () => void;
   handleSelectionColumnsChange: (keys: SharedSelection) => void;
+  setName: (value: string) => void;
+  setExtension: (value: string[]) => void;
 }
 
 export default function DrawerRelatory({
+  name,
+  extension,
   selectedColumns,
   columns,
+  onOpenFilter,
   handleSelectionColumnsChange,
+  setName,
+  setExtension,
 }: DrawerRelatoryProps) {
   return (
     <main className="px-4 space-y-4">
       <CheckboxGroup
-        defaultValue={["xls"]}
         classNames={{ wrapper: "pl-3" }}
+        defaultValue={["excel"]}
         label="Formato do arquivo"
+        value={extension}
+        onChange={(value: string[]) => setExtension(value.slice(-1))}
       >
-        <Checkbox
-          key="xls"
-          size="md"
-          radius="sm"
-          classNames={{ label: "text-sm font-semibold" }}
-          value="xls"
-        >
+        <Checkbox classNames={{ label: "text-sm font-semibold" }} value="excel">
           Excel (.XLS)
         </Checkbox>
-        <Checkbox
-          key="pdf"
-          size="md"
-          radius="sm"
-          classNames={{ label: "text-sm font-semibold" }}
-          value=".pdf"
-        >
+        <Checkbox classNames={{ label: "text-sm font-semibold" }} value="pdf">
           PDF (.PDF)
         </Checkbox>
       </CheckboxGroup>
+      <div className="flex flex-col gap-2">
+        <Input
+          name={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="relatório"
+          label="Nome do arquivo (opcional)"
+          description="Se deixar em branco, usaremos “relatório” como nome padrão."
+        />
+      </div>
       <div className="flex flex-col gap-2">
         <span className="relative text-medium text-foreground-500">
           Colunas visíveis
@@ -59,7 +70,6 @@ export default function DrawerRelatory({
             selectedKeys={selectedColumns}
             selectionMode="multiple"
             variant="flat"
-            color="primary"
             onSelectionChange={handleSelectionColumnsChange}
           >
             {columns.map((column) => (
@@ -78,6 +88,15 @@ export default function DrawerRelatory({
           </Listbox>
         </div>
       </div>
+      <Button
+        radius="sm"
+        color="success"
+        startContent={<Filter className="w-5 h-5 " />}
+        className="w-full font-semibold text-white"
+        onPress={onOpenFilter}
+      >
+        Aplicar filtros
+      </Button>
       <Divider />
       <div className="w-full flex items-center space-x-2 justify-center text-gray-400">
         <Info className="w-5 h-5" />

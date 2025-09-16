@@ -27,7 +27,7 @@ interface DrawerProps {
   position?: "top" | "right" | "bottom" | "left";
   onClose: () => void;
   clear?: (value: StateValue) => void;
-  handleDownloadExcel?: () => void;
+  handleDownload?: () => void;
   setLoading?: TransitionStartFunction;
 }
 
@@ -41,7 +41,7 @@ export default function Drawer({
   position,
   onClose,
   clear,
-  handleDownloadExcel,
+  handleDownload,
   setLoading,
 }: DrawerProps) {
   const router = useRouter();
@@ -85,7 +85,6 @@ export default function Drawer({
         router.refresh();
       });
   };
-
   const handleCleanChange = () => {
     const params = new URLSearchParams();
 
@@ -145,7 +144,7 @@ export default function Drawer({
                   color="primary"
                   radius="sm"
                   startContent={<Download className="w-5 h-5" />}
-                  onPress={handleDownloadExcel}
+                  onPress={handleDownload}
                 >
                   Abaixar Arquivo
                 </Button>
