@@ -19,6 +19,6 @@ export const data = [
     label: "Produtos",
     href: "/stock",
     icon: PackageSearch,
-    subItems: [{ label: "Estoques", href: "/stock", icon: PackageSearch }],
+    subItems: [{ label: "Estoque", href: "/stock", icon: PackageSearch }],
   },
 ];

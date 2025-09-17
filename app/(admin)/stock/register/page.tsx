@@ -3,17 +3,18 @@ import { cookies } from "next/headers";
 
 // Componentes
 import ContainerLayout from "@/components/ui/admin/containerLayout";
+import ProductForm from "@/components/forms/productForm";
 
 // Utils
 import { setupApiClient } from "@/utils/api/fetchData";
 import { formatedLabel } from "@/utils/functions/formattedLabel";
-import ProductForm from "@/components/forms/productForm";
 
 export default async function RegisterStock() {
   const cookieStore = cookies();
   const token = (await cookieStore).get("auth_token")?.value;
 
   const api = setupApiClient(token);
+
   const warehouseData = await api.get("/warehouses/filter?is_active=true");
   const categoriesData = await api.get("/categories");
   const brandsData = await api.get("/brands");
@@ -27,7 +28,7 @@ export default async function RegisterStock() {
   const brands = formatedLabel(brandsData.data.brands, "id", "name");
 
   return (
-    <ContainerLayout title="Cadastro de Produtos">
+    <ContainerLayout title="Cadastro de Estoque">
       <ProductForm
         warehouses={warehouses}
         categories={categories}

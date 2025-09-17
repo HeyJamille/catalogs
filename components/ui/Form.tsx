@@ -6,42 +6,54 @@ import { ReactNode } from "react";
 // Bibliotecas
 import { Button } from "@heroui/react";
 import { ChevronLeft, Save } from "lucide-react";
+import { useRouter } from "next/navigation";
 
-export default function Form({
-  handleForm,
-  href,
-  children,
-}: {
-  handleForm: (formData: FormData) => void;
+// Tipagem
+interface FormProps {
+  handleForm: (e: React.FormEvent) => void;
   children: ReactNode;
-  href: string;
-}) {
+  loading: boolean;
+}
+
+export default function Form({ handleForm, children, loading }: FormProps) {
+  const router = useRouter();
+
   return (
-    <form action={handleForm} className="flex-col flex items-center space-y-4">
-      <div className="w-full grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2">
+    <form
+      onSubmit={handleForm}
+      className="flex-col flex items-center p-5 space-y-5"
+    >
+      <main className="w-full flex">
+        <div className="w-full flex justify-start space-x-4">
+          <h2 className="text-2xl text-start font-bold text-gray-600 dark:text-white">
+            Produtos
+          </h2>
+        </div>
+        <div className="space-x-2 flex items-center">
+          <Button
+            size="md"
+            radius="sm"
+            type="submit"
+            isLoading={loading}
+            startContent={!loading && <Save className="w-5 h-5" />}
+            className="bg-[#3b82f6] text-gray-200 min-w-24"
+          >
+            Salvar Produto
+          </Button>
+          <Button
+            startContent={<ChevronLeft className="w-5 h-5" />}
+            size="md"
+            onPress={() => router.back()}
+            radius="sm"
+            variant="bordered"
+            className="border-gray-300 border-1 bg-white min-w-24"
+          >
+            Voltar
+          </Button>
+        </div>
+      </main>
+      <div className="w-full grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {children}
-      </div>
-      <div className="w-full flex justify-end space-x-4">
-        <Button
-          size="md"
-          radius="sm"
-          type="submit"
-          startContent={<Save className="w-5 h-5" />}
-          className="bg-[#3b82f6] text-gray-200"
-        >
-          Cadastrar Produto
-        </Button>
-        <Button
-          startContent={<ChevronLeft className="w-5 h-5" />}
-          size="md"
-          as="a"
-          href={href}
-          radius="sm"
-          variant="bordered"
-          className="border-gray-300 border-1 bg-white min-w-32"
-        >
-          Voltar
-        </Button>
       </div>
     </form>
   );

@@ -9,6 +9,7 @@ import { AuthProvider } from "@/provider/auth";
 
 // Bibliotecas
 import NextTopLoader from "nextjs-toploader";
+import { ToastProvider } from "@heroui/react";
 
 export default function RootLayout({
   children,

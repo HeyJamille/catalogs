@@ -13,7 +13,8 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib
 ;
 function setupApiClient(token) {
     const api = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].create({
-        baseURL: "https://catalogsapi.vercel.app/v1"
+        baseURL: "https://catalogsapi.vercel.app/v1",
+        validateStatus: (status)=>status < 500
     });
     api.interceptors.request.use({
         "setupApiClient.use": (config)=>{
@@ -23,8 +24,8 @@ function setupApiClient(token) {
             return config;
         }
     }["setupApiClient.use"], {
-        "setupApiClient.use": (error)=>{
-            return Promise.reject(error);
+        "setupApiClient.use": (err)=>{
+            return Promise.reject(err);
         }
     }["setupApiClient.use"]);
     return api;
@@ -51,9 +52,13 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2f$fetchData$2e
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 // Bibliotecas
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$js$2d$cookie$2f$dist$2f$js$2e$cookie$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/js-cookie/dist/js.cookie.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$heroui$2f$toast$2f$dist$2f$chunk$2d$U2DWYKGQ$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@heroui/toast/dist/chunk-U2DWYKGQ.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$nextjs$2d$toploader$2f$dist$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/nextjs-toploader/dist/index.js [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
 "use client";
+;
+;
 ;
 ;
 ;
@@ -63,6 +68,7 @@ function AuthProvider({ children }) {
     _s();
     const [user, setUser] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])();
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"])();
+    const loader = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$nextjs$2d$toploader$2f$dist$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useTopLoader"])();
     async function signIn({ email, password }) {
         try {
             const api = (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2f$fetchData$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["setupApiClient"])();
@@ -70,9 +76,36 @@ function AuthProvider({ children }) {
                 email,
                 password
             });
-            setUser(resp.data.user);
-            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$js$2d$cookie$2f$dist$2f$js$2e$cookie$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].set("auth_token", resp.data.token);
-            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$js$2d$cookie$2f$dist$2f$js$2e$cookie$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].set("user_rule", resp.data.user.rule.name);
+            if (resp.status === 200 || resp.status === 201) {
+                (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$heroui$2f$toast$2f$dist$2f$chunk$2d$U2DWYKGQ$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["addToast"])({
+                    title: "Login realizado com sucesso!",
+                    description: "Você será redirecionado em instantes.",
+                    variant: "solid",
+                    color: "success",
+                    classNames: {
+                        title: "text-white",
+                        description: "text-gray-100",
+                        icon: "text-white"
+                    }
+                });
+            } else if (resp.status == 500) {
+                (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$heroui$2f$toast$2f$dist$2f$chunk$2d$U2DWYKGQ$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["addToast"])({
+                    title: "Erro no servidor",
+                    description: "Tente novamente mais tarde.",
+                    variant: "flat",
+                    color: "danger"
+                });
+            } else {
+                (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$heroui$2f$toast$2f$dist$2f$chunk$2d$U2DWYKGQ$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["addToast"])({
+                    title: "Erro ao fazer login",
+                    description: resp.data.message || "Verifique suas credenciais e tente novamente.",
+                    variant: "flat",
+                    color: "danger"
+                });
+            }
+            setUser(resp.data.user && resp.data.user);
+            resp.data.token && __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$js$2d$cookie$2f$dist$2f$js$2e$cookie$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].set("auth_token", resp.data.token);
+            resp.data.user.rule.name && __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$js$2d$cookie$2f$dist$2f$js$2e$cookie$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].set("user_rule", resp.data.user.rule.name);
             api.defaults.headers["Authorization"] = `Bearer ${resp.data.token}`;
             const routeByRule = {
                 Admin: "/dashboard",
@@ -81,10 +114,10 @@ function AuthProvider({ children }) {
                 Cliente: "/catalogo",
                 Estoque: "/estoque"
             };
-            router.push(routeByRule[resp.data.user.rule.name]);
+            loader.start();
+            resp.data.user && router.push(routeByRule[resp.data.user.rule.name]);
         } catch (err) {
-            // Aviso de error
-            return err.response.data.message;
+            return err;
         }
     }
     async function signOut() {
@@ -117,16 +150,27 @@ function AuthProvider({ children }) {
             signIn,
             signOut
         },
-        children: children
-    }, void 0, false, {
+        children: [
+            children,
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$heroui$2f$toast$2f$dist$2f$chunk$2d$U2DWYKGQ$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ToastProvider"], {
+                placement: "top-right",
+                toastOffset: 20
+            }, void 0, false, {
+                fileName: "[project]/provider/auth.tsx",
+                lineNumber: 133,
+                columnNumber: 7
+            }, this)
+        ]
+    }, void 0, true, {
         fileName: "[project]/provider/auth.tsx",
-        lineNumber: 98,
+        lineNumber: 131,
         columnNumber: 5
     }, this);
 }
-_s(AuthProvider, "vM+0cQpbmcqvR1155uZ1Pw51794=", false, function() {
+_s(AuthProvider, "kpl4QSQgdXOcYiNlFtgDk6EbrXA=", false, function() {
     return [
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"]
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"],
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$nextjs$2d$toploader$2f$dist$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useTopLoader"]
     ];
 });
 _c = AuthProvider;

@@ -11,6 +11,8 @@ import { createContext, ReactNode, useEffect, useState } from "react";
 
 // Bibliotecas
 import Cookies from "js-cookie";
+import { addToast, ToastProvider } from "@heroui/react";
+import { useTopLoader } from "nextjs-toploader";
 
 // Tipagem
 import { itemUsers } from "../types/user";
@@ -33,6 +35,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<itemUsers>();
 
   const router = useRouter();
+  const loader = useTopLoader();
 
   async function signIn({ email, password }: SignInProps) {
     try {
@@ -40,10 +43,41 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       const resp = await api.post("/users/signin", { email, password });
 
-      setUser(resp.data.user);
+      if (resp.status === 200 || resp.status === 201) {
+        addToast({
+          title: "Login realizado com sucesso!",
+          description: "Você será redirecionado em instantes.",
+          variant: "solid",
+          color: "success",
+          classNames: {
+            title: "text-white",
+            description: "text-gray-100",
+            icon: "text-white",
+          },
+        });
+      } else if (resp.status == 500) {
+        addToast({
+          title: "Erro no servidor",
+          description: "Tente novamente mais tarde.",
+          variant: "flat",
+          color: "danger",
+        });
+      } else {
+        addToast({
+          title: "Erro ao fazer login",
+          description:
+            resp.data.message ||
+            "Verifique suas credenciais e tente novamente.",
+          variant: "flat",
+          color: "danger",
+        });
+      }
 
-      Cookies.set("auth_token", resp.data.token);
-      Cookies.set("user_rule", resp.data.user.rule.name);
+      setUser(resp.data.user && resp.data.user);
+
+      resp.data.token && Cookies.set("auth_token", resp.data.token);
+      resp.data.user.rule.name &&
+        Cookies.set("user_rule", resp.data.user.rule.name);
 
       api.defaults.headers["Authorization"] = `Bearer ${resp.data.token}`;
 
@@ -55,11 +89,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         Estoque: "/estoque",
       };
 
-      router.push(routeByRule[resp.data.user.rule.name]);
+      loader.start();
+      resp.data.user && router.push(routeByRule[resp.data.user.rule.name]);
     } catch (err: any) {
-      // Aviso de error
-
-      return err.response.data.message;
+      return err;
     }
   }
 
@@ -97,6 +130,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   return (
     <AuthContext.Provider value={{ user, signIn, signOut }}>
       {children}
+      <ToastProvider placement="top-right" toastOffset={20} />
     </AuthContext.Provider>
   );
 }

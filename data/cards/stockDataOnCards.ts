@@ -1,30 +1,35 @@
 // Utils
 import { sumValues } from "@/utils/functions/sumValues";
-import { formatCurrency } from "@/utils/mask/formatCurrency";
+import { formatCurrency } from "@/utils/mask/money/formatCurrency";
 
 // Bibliotecas
 import { Banknote, BanknoteArrowUp, Box } from "lucide-react";
 
 // Tipagem
-import { productItems } from "@/types/product";
+import { stockItems } from "@/types/stock";
 interface StockDataOnCardsProps {
-  stockData: productItems[];
+  stockData: stockItems[];
 }
 
-export default function StockDataOnCards({ stockData }: StockDataOnCardsProps) {
+export default function StockDataOnCards({
+  stockData = [],
+}: StockDataOnCardsProps) {
   const totalProductCost = sumValues(
     stockData,
-    (item) => item.stock.cost_price
+    (item) => item.stock?.cost_price || 0
   );
   const totalQuantity = sumValues(
     stockData,
-    (item) => item.stock.current_quantity
+    (item) => item.stock?.current_quantity || 0
   );
   const stockValue = totalProductCost * totalQuantity;
-  const totalProductValue = sumValues(stockData, (item) => item.stock.price);
+  const totalProductValue = sumValues(
+    stockData,
+    (item) => item.stock?.price || 0
+  );
   const stockProfit = (totalProductValue - totalProductCost) * totalQuantity;
   const totalMinStockCount = stockData.filter(
-    (item) => item.stock.current_quantity <= item.stock.minimium_quantity
+    (item) => item.stock?.current_quantity <= item.stock?.minimium_quantity
   ).length;
   const totalRevenue = totalProductValue * totalQuantity;
   const marginPercentage =

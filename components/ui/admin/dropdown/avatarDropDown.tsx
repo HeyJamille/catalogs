@@ -4,7 +4,7 @@
 import { AuthContext } from "@/provider/auth";
 import { useContext } from "react";
 
-// React
+// Bibliotecas
 import {
   Avatar,
   Dropdown,
@@ -23,19 +23,28 @@ import {
   User2,
   UserRoundCog,
 } from "lucide-react";
+import { useTopLoader } from "nextjs-toploader";
 
 export default function AvatarDropDown({ isMenu }: { isMenu?: boolean }) {
   const { user, signOut } = useContext(AuthContext);
 
+  const loader = useTopLoader();
+
   return (
-    <Dropdown placement="bottom-start">
+    <Dropdown
+      placement="bottom-start"
+      classNames={{
+        base: "before:bg-default-200",
+        content: "p-0 border-small border-divider bg-background",
+      }}
+    >
       <DropdownTrigger>
         <Avatar
           src={user?.photo || undefined}
           radius="sm"
           size="md"
           classNames={{
-            base: `${isMenu ? "bg-gray-200 text-blue-900" : "bg-[#3b82f6] text-white"} `,
+            base: `${isMenu ? "before:bg-default-200 bg-gray-200 text-blue-900" : "bg-[#3b82f6] text-white"} `,
           }}
           icon={<User2 />}
         />
@@ -114,7 +123,10 @@ export default function AvatarDropDown({ isMenu }: { isMenu?: boolean }) {
             className="text-danger px-3"
             description="Sair do Sistema"
             startContent={<LogOut className="w-5 h-5" />}
-            onClick={() => signOut()}
+            onClick={() => {
+              signOut();
+              loader.start();
+            }}
           >
             Log Out
           </DropdownItem>

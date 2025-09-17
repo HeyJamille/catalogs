@@ -2,14 +2,12 @@
 
 // Bibliotecas
 import { Textarea } from "@heroui/input";
+import { ComponentProps } from "react";
 
-export default function CommentArea({
-  label,
-  name,
-}: {
-  label: string;
-  name: string;
-}) {
+// Tipagem
+type CommentAreaProps = ComponentProps<typeof Textarea>;
+
+export default function CommentArea({ ...rest }: CommentAreaProps) {
   return (
     <Textarea
       isClearable
@@ -18,17 +16,14 @@ export default function CommentArea({
       className="w-full"
       classNames={{
         inputWrapper:
-          "border-1  border-gray-400 data-[hover=true]:border-blue-500 group-data-[focus=true]:border-blue-800",
-        input: "min-h-[80px]",
+          "border-1 pt-1 border-gray-400 data-[hover=true]:border-blue-500 group-data-[focus=true]:border-blue-800",
+        input: "min-h-[100px]",
         label: "font-semibold",
       }}
-      label={label}
       placeholder=""
       variant="bordered"
       disableAutosize
-      name={name}
-      // eslint-disable-next-line no-console
-      //   onClear={() => console.log("textarea cleared")}
+      {...rest}
     />
   );
 }

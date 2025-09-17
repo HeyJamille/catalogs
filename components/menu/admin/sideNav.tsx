@@ -94,7 +94,7 @@ export default function SideNav({ isOpen }: { isOpen: boolean }) {
                     <ChevronDown className="w-4 h-4 mr-3" />
                   )
                 }
-                onClick={() => toggleMenu(item.label)}
+                onPress={() => toggleMenu(item.label)}
                 className="flex items-center bg-gray-100 w-full px-3 py-2 rounded-lg text-blue-900 transition"
               />
               {openMenus.has(item.label) && (
@@ -136,7 +136,6 @@ export default function SideNav({ isOpen }: { isOpen: boolean }) {
                           startContent={
                             <subItem.icon className="w-5 h-5 mr-2" />
                           }
-                          as="a"
                           key={index}
                           href={subItem.href}
                         >

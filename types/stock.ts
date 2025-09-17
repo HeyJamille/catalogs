@@ -1,12 +1,18 @@
-export type productItems = {
+export type stockItems = {
   id: string;
   url_imagem: string;
   name: string;
   description: string;
   product_code: string;
   sales_unit: string;
-  brand: string;
-  category: string;
+  brand: {
+    id: string;
+    name: string;
+  };
+  category: {
+    id: string;
+    name: string;
+  };
   is_active: boolean;
   date_of_inactivation: Date;
   created_at: Date;

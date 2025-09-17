@@ -8,16 +8,17 @@ import { Chip, User } from "@heroui/react";
 import { Package2 } from "lucide-react";
 
 // Utils
-import { formatCurrency } from "../../../utils/mask/formatCurrency";
+import { formatCurrency } from "../../../utils/mask/money/formatCurrency";
+import { formatDate } from "@/utils/mask/money/formatDate";
 
 // Tipagem
-import { productItems } from "./../../../types/product";
+import { stockItems } from "../../../types/stock";
 
 // Components
 import ActionsCell from "@/components/ui/admin/actionsCell";
 
 export const renderCell = (
-  item: productItems,
+  item: stockItems,
   columnKey: string,
   setLoading: TransitionStartFunction
 ) => {
@@ -52,12 +53,20 @@ export const renderCell = (
           {item.product_code}
         </p>
       );
+    case "stock.warehouse_name":
+      return (
+        <p
+          className={`${myStockIsLow && "text-red-500"} text-bold truncate w-[8em] text-small capitalize`}
+        >
+          {item.stock.warehouse_name}
+        </p>
+      );
     case "brand":
       return (
         <p
           className={`${myStockIsLow && "text-red-500"} text-bold text-small capitalize`}
         >
-          {item.brand}
+          {(item as any).brand}
         </p>
       );
     case "category":
@@ -65,7 +74,7 @@ export const renderCell = (
         <p
           className={`${myStockIsLow && "text-red-500"} text-bold text-small capitalize`}
         >
-          {item.category}
+          {(item as any).category}
         </p>
       );
     case "is_active":
@@ -79,7 +88,7 @@ export const renderCell = (
           {item.is_active ? "Sim" : "Não"}
         </Chip>
       );
-    case "price":
+    case "stock.price":
       return (
         <p
           className={`${myStockIsLow && "text-red-500"} font-semibold text-small capitalize`}
@@ -87,7 +96,7 @@ export const renderCell = (
           {formatCurrency(item.stock.price)}
         </p>
       );
-    case "purchase_price":
+    case "stock.purchase_price":
       return (
         <p
           className={`${myStockIsLow && "text-red-500"} font-semibold text-small capitalize`}
@@ -95,7 +104,7 @@ export const renderCell = (
           {formatCurrency(item.stock.purchase_price)}
         </p>
       );
-    case "cost_price":
+    case "stock.cost_price":
       return (
         <p
           className={`${myStockIsLow && "text-red-500"} font-semibold text-small capitalize`}
@@ -113,7 +122,7 @@ export const renderCell = (
           {formatCurrency(costOfGoods)}
         </p>
       );
-    case "current_quantity":
+    case "stock.current_quantity":
       return (
         <p
           className={`${myStockIsLow && "text-red-500"} text-bold text-small capitalize`}
@@ -121,7 +130,7 @@ export const renderCell = (
           {item.stock.current_quantity}
         </p>
       );
-    case "minimum_quantity":
+    case "stock.minimium_quantity":
       return (
         <p
           className={`${myStockIsLow && "text-red-500"} text-bold text-small capitalize`}
@@ -129,7 +138,7 @@ export const renderCell = (
           {item.stock.current_quantity}
         </p>
       );
-    case "maximum_quantity":
+    case "stock.maximum_quantity":
       return (
         <p
           className={`${myStockIsLow && "text-red-500"} text-bold text-small capitalize`}
@@ -137,7 +146,59 @@ export const renderCell = (
           {item.stock.maximum_quantity}
         </p>
       );
+    case "date_of_inactivation":
+      return (
+        <p
+          className={`${myStockIsLow && "text-red-500"} text-bold text-small capitalize`}
+        >
+          {item.date_of_inactivation
+            ? formatDate(item.date_of_inactivation)
+            : "-"}
+        </p>
+      );
+    case "stock.has_discount":
+      return (
+        <Chip
+          classNames={{ content: "capitalize font-bold" }}
+          color={item.stock.has_discount ? "primary" : "danger"}
+          size="sm"
+          variant="flat"
+        >
+          {item.stock.has_discount ? "Sim" : "Não"}
+        </Chip>
+      );
+    case "created_at":
+      return (
+        <p
+          className={`${myStockIsLow && "text-red-500"} text-bold text-small capitalize`}
+        >
+          {formatDate(item.created_at)}
+        </p>
+      );
+    case "sales_unit":
+      return (
+        <p
+          className={`${myStockIsLow && "text-red-500"} text-bold text-small capitalize`}
+        >
+          {item.sales_unit}
+        </p>
+      );
+    case "stock.discount_percentage":
+      return (
+        <p
+          className={`${myStockIsLow && "text-red-500"} text-bold text-small capitalize`}
+        >
+          {item.stock.discount_percentage} %
+        </p>
+      );
     case "actions":
-      return <ActionsCell productId={item.id} setLoadingUI={setLoading} />;
+      return (
+        <ActionsCell
+          id={item.id}
+          endpoint="/stocks"
+          hrfeEdit="/stock/edit"
+          setLoadingUI={setLoading}
+        />
+      );
   }
 };
