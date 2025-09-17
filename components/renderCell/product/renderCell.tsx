@@ -130,7 +130,7 @@ export const renderCell = (
           {item.stock.current_quantity}
         </p>
       );
-    case "stock.minimum_quantity":
+    case "stock.minimium_quantity":
       return (
         <p
           className={`${myStockIsLow && "text-red-500"} text-bold text-small capitalize`}

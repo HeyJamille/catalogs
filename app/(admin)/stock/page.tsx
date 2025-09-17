@@ -98,6 +98,7 @@ export default async function StockPage({
         columns={columns}
         data={productsData.data.products}
         dataFilter={dataFilter}
+        relatoryData={[{ id: "excel", label: "Excel (.XLS)", disable: true }]}
         activateReportingOption={true}
         renderCell={renderCell}
       />

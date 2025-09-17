@@ -9,6 +9,7 @@ interface HandleDownloadExcelProps<T> {
   selectedColumns: string[];
   data: T[];
   columns: ItemsColumns[];
+  setLoading: (value: boolean) => void;
 }
 
 export default async function handleDownloadExcel<T>({
@@ -16,6 +17,7 @@ export default async function handleDownloadExcel<T>({
   selectedColumns,
   data,
   columns,
+  setLoading,
 }: HandleDownloadExcelProps<T>) {
   const workbook = new ExcelJS.Workbook();
   const worksheet = workbook.addWorksheet("Relatório");
@@ -26,6 +28,8 @@ export default async function handleDownloadExcel<T>({
       return acc[key];
     }, obj);
   };
+
+  setLoading(true);
 
   const hasCostOfGoods = columns.some((col) => col.uid === "cost_of_goods");
 
@@ -88,4 +92,6 @@ export default async function handleDownloadExcel<T>({
 
   const buffer = await workbook.xlsx.writeBuffer();
   saveAs(new Blob([buffer]), `${name ? name : "relatorio"}.xlsx`);
+
+  setLoading(false)
 }

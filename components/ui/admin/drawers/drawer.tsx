@@ -21,6 +21,7 @@ interface DrawerProps {
   title: string;
   isOpen: boolean;
   children: ReactNode;
+  loading: boolean;
   displayFooterFilter?: boolean;
   displayFooterRelatory?: boolean;
   value?: StateValue;
@@ -35,6 +36,7 @@ export default function Drawer({
   title,
   isOpen,
   children,
+  loading,
   displayFooterFilter,
   displayFooterRelatory,
   value,
@@ -134,7 +136,8 @@ export default function Drawer({
                 <Button
                   color="primary"
                   radius="sm"
-                  startContent={<Save className="w-5 h-5" />}
+                  startContent={!loading && <Save className="w-5 h-5" />}
+                  isLoading={loading}
                   onPress={handleFilterChange}
                 >
                   Aplicar Filtro
@@ -143,8 +146,9 @@ export default function Drawer({
                 <Button
                   color="primary"
                   radius="sm"
-                  startContent={<Download className="w-5 h-5" />}
+                  startContent={!loading && <Download className="w-5 h-5" />}
                   onPress={handleDownload}
+                  isLoading={loading}
                 >
                   Abaixar Arquivo
                 </Button>

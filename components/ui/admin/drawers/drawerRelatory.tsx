@@ -18,6 +18,7 @@ interface DrawerRelatoryProps {
   extension: string[];
   selectedColumns: string[];
   columns: ItemsColumns[];
+  relatoryData: { id: string; label: string; disable: boolean }[];
   onOpenFilter: () => void;
   handleSelectionColumnsChange: (keys: SharedSelection) => void;
   setName: (value: string) => void;
@@ -29,6 +30,7 @@ export default function DrawerRelatory({
   extension,
   selectedColumns,
   columns,
+  relatoryData,
   onOpenFilter,
   handleSelectionColumnsChange,
   setName,
@@ -36,20 +38,25 @@ export default function DrawerRelatory({
 }: DrawerRelatoryProps) {
   return (
     <main className="px-4 space-y-4">
-      <CheckboxGroup
-        classNames={{ wrapper: "pl-3" }}
-        defaultValue={["excel"]}
-        label="Formato do arquivo"
-        value={extension}
-        onChange={(value: string[]) => setExtension(value.slice(-1))}
-      >
-        <Checkbox classNames={{ label: "text-sm font-semibold" }} value="excel">
-          Excel (.XLS)
-        </Checkbox>
-        <Checkbox classNames={{ label: "text-sm font-semibold" }} value="pdf">
-          PDF (.PDF)
-        </Checkbox>
-      </CheckboxGroup>
+      {relatoryData.map((item) => (
+        <CheckboxGroup
+          key={item.id}
+          classNames={{ wrapper: "pl-3" }}
+          defaultValue={["excel"]}
+          label="Formato do arquivo"
+          value={extension}
+          onChange={(value: string[]) => setExtension(value.slice(-1))}
+          isDisabled={item.disable}
+        >
+          <Checkbox
+            classNames={{ label: "text-sm font-semibold" }}
+            value={item.id}
+          >
+            {item.label}
+          </Checkbox>
+        </CheckboxGroup>
+      ))}
+
       <div className="flex flex-col gap-2">
         <Input
           name={name}
