@@ -16,7 +16,7 @@ import DrawerSelect from "../ui/admin/drawers/drawerSelectForm";
 
 // Bibliotecas
 import { Button, Switch, useDisclosure } from "@heroui/react";
-import { Check, CircleFadingPlus, MoonIcon, SunIcon, X } from "lucide-react";
+import { Check, CircleFadingPlus, UploadCloud, X } from "lucide-react";
 
 // Dados
 import inputFields from "@/data/inputsFields/productsFields.json";
@@ -278,7 +278,7 @@ export default function ProductForm({
                 </Button>
               </div>
             </div>
-            <div>
+            <div className={`${!product && "hidden"}`}>
               <h3
                 className={`text-md pb-2 font-semibold ${error ? "text-red-500" : "text-gray-700"} `}
               >
@@ -303,9 +303,11 @@ export default function ProductForm({
       </Container>
       <Drawer
         title={`Selecione uma ${selectDrawerType[1]}`}
-        displayFooter={false}
+        loading={false}
         isOpen={isOpen}
         onClose={onClose}
+        displayFooterFilter={false}
+        displayFooterRelatory={false}
       >
         <DrawerSelect
           title={`${selectDrawerType[1]}`}

@@ -1,3 +1,5 @@
+"use client";
+
 // Bibliotecas
 import { Button } from "@heroui/button";
 import { Link } from "lucide-react";
@@ -5,7 +7,7 @@ import { Link } from "lucide-react";
 export default function Error() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-6 text-center">
-      <h1 className="text-7xl font-extrabold text-purple-700 drop-shadow-lg">
+      <h1 className="text-7xl font-extrabold text-blue-500 drop-shadow-lg">
         500
       </h1>
       <h2 className="text-3xl font-semibold mt-4 text-gray-800">

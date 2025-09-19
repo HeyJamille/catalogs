@@ -98,6 +98,8 @@
     --color-blue-700: oklch(48.8% .243 264.376);
     --color-blue-800: oklch(42.4% .199 265.638);
     --color-blue-900: oklch(37.9% .146 265.522);
+    --color-purple-700: oklch(49.6% .265 301.924);
+    --color-purple-800: oklch(43.8% .218 303.724);
     --color-slate-100: oklch(96.8% .007 247.896);
     --color-slate-300: oklch(86.9% .022 252.894);
     --color-slate-500: oklch(55.4% .046 257.417);
@@ -2756,6 +2758,10 @@
     .bg-primary\/20 {
       background-color: color-mix(in oklab, hsl(var(--heroui-primary) / 1) 20%, transparent);
     }
+  }
+
+  .bg-purple-700 {
+    background-color: var(--color-purple-700);
   }
 
   .bg-red-50 {
@@ -6637,6 +6643,12 @@
   @media (hover: hover) {
     .hover\:bg-primary-50:hover {
       background-color: hsl(var(--heroui-primary-50) / 1);
+    }
+  }
+
+  @media (hover: hover) {
+    .hover\:bg-purple-800:hover {
+      background-color: var(--color-purple-800);
     }
   }
 
