@@ -13,10 +13,11 @@ import Form from "../ui/Form";
 import Input from "../ui/input";
 import Drawer from "../ui/admin/drawers/drawer";
 import DrawerSelect from "../ui/admin/drawers/drawerSelectForm";
+import Upload from "../ui/admin/upload";
 
 // Bibliotecas
 import { Button, Switch, useDisclosure } from "@heroui/react";
-import { Check, CircleFadingPlus, UploadCloud, X } from "lucide-react";
+import { Check, CircleFadingPlus, X } from "lucide-react";
 
 // Dados
 import inputFields from "@/data/inputsFields/productsFields.json";
@@ -83,6 +84,7 @@ export default function ProductForm({
   const [stockId, setStockId] = useState<string[]>([
     `${product?.stock.warehouse_id}`,
   ]);
+  const [urlImagem, setUrlImagem] = useState<string>(product?.url_imagem ?? "");
   const [selectDrawerType, setSelectDrawerType] = useState<string[]>([]);
   const [isActive, setIsActive] = useState<boolean | undefined>(
     product?.is_active
@@ -153,7 +155,7 @@ export default function ProductForm({
   return (
     <>
       <Container>
-        <main className="">
+        <main className="p-4">
           <Form handleForm={handleFormProduct} loading={state.loading}>
             {inputFields.map(
               ({ name, label, type, placeholder, required, mask }) => (
@@ -184,17 +186,31 @@ export default function ProductForm({
                 />
               )
             )}
-            <div className="col-span-full">
-              <CommentArea
-                name="description"
-                label="Descrição"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
+            <div className="col-span-3 flex w-full space-x-4">
+              <main className="w-full flex-col flex">
+                <CommentArea
+                  name="description"
+                  label="Descrição"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+              </main>
+              <main className="w-[40%] flex-col flex">
+                <h3 className={`text-sm pb-2 font-semibold text-gray-800`}>
+                  Upload
+                </h3>
+                <Upload
+                  url={urlImagem}
+                  setUrlImg={setUrlImagem}
+                  setLoading={(value: boolean) =>
+                    dispatch({ type: "SET_LOADING", value })
+                  }
+                />
+              </main>
             </div>
             <div>
               <h3
-                className={`text-md pb-1 font-semibold ${error ? "text-red-500" : "text-gray-700"} `}
+                className={`text-sm pb-1 font-semibold ${error ? "text-red-500" : "text-gray-700"} `}
               >
                 Marcas
               </h3>
@@ -222,7 +238,7 @@ export default function ProductForm({
             </div>
             <div>
               <h3
-                className={`text-md pb-1 font-semibold ${error ? "text-red-500" : "text-gray-700"} `}
+                className={`text-sm pb-1 font-semibold ${error ? "text-red-500" : "text-gray-700"} `}
               >
                 Categorias
               </h3>
@@ -251,7 +267,7 @@ export default function ProductForm({
             </div>
             <div>
               <h3
-                className={`text-md pb-1 font-semibold ${error ? "text-red-500" : "text-gray-700"} `}
+                className={`text-sm pb-1 font-semibold ${error ? "text-red-500" : "text-gray-700"} `}
               >
                 Almoxarifado
               </h3>
@@ -278,9 +294,10 @@ export default function ProductForm({
                 </Button>
               </div>
             </div>
+
             <div className={`${!product && "hidden"}`}>
               <h3
-                className={`text-md pb-2 font-semibold ${error ? "text-red-500" : "text-gray-700"} `}
+                className={`text-sm pb-2 font-semibold ${error ? "text-red-500" : "text-gray-700"} `}
               >
                 Ativar?
               </h3>
@@ -288,7 +305,7 @@ export default function ProductForm({
                 defaultSelected={isActive}
                 onValueChange={setIsActive}
                 color="success"
-                size="md"
+                size="sm"
                 thumbIcon={({ isSelected }) =>
                   isSelected ? (
                     <Check className="w-5 h-5 p-[0.1em] text-gray-500" />
@@ -301,6 +318,17 @@ export default function ProductForm({
           </Form>
         </main>
       </Container>
+      {/* <Container>
+        <div className="p-4">
+          <Upload
+            url={urlImagem}
+            setUrlImg={setUrlImagem}
+            setLoading={(value: boolean) =>
+              dispatch({ type: "SET_LOADING", value })
+            }
+          />
+        </div>
+      </Container> */}
       <Drawer
         title={`Selecione uma ${selectDrawerType[1]}`}
         loading={false}
