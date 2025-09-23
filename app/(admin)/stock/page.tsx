@@ -46,7 +46,7 @@ export default async function StockPage({
 
   const [productsData, warehouseData, categoriesData, brandsData] =
     await Promise.all([
-      api.get(`/stocks/filters?${query}`),
+      api.get(`/stocks/filters?${query}&limit=10&page=1`),
       api.get("/warehouses/filter?is_active=true"),
       api.get("/categories"),
       api.get("/brands"),
@@ -87,6 +87,7 @@ export default async function StockPage({
       ],
     },
   ];
+  const pagination = {totalItems: productsData.data.totalItems, endpoint: '/stocks'}
 
   return (
     <ContainerLayout title="Gestão de Estoque">
@@ -100,6 +101,7 @@ export default async function StockPage({
         dataFilter={dataFilter}
         relatoryData={[{ id: "excel", label: "Excel (.XLS)", disable: true }]}
         activateReportingOption={true}
+        pagination={pagination}
         renderCell={renderCell}
       />
     </ContainerLayout>
