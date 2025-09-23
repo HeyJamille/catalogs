@@ -132,6 +132,7 @@ export default function ProductForm({
       price: removeCurrencyMask(state.price),
       purchase_price: removeCurrencyMask(state.purchasePrice),
       cost_price: removeCurrencyMask(state.costPrice),
+      url_imagem: urlImagem,
       is_active: isActive,
       ...(isActive === false && {
         date_of_inactivation: new Date().toISOString(),
@@ -148,6 +149,7 @@ export default function ProductForm({
 
     dispatch({ type: "RESET", payload: initial });
     !product && setDescription("");
+    !product && setUrlImagem("");
     !product && setCategoryId([]);
     !product && setBrandId([]);
     !product && setStockId([]);

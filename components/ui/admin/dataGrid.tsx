@@ -8,8 +8,11 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 // Bibliotecas
 import { SharedSelection, useDisclosure } from "@heroui/react";
+<<<<<<< HEAD
 import { useInfiniteScroll } from "@heroui/use-infinite-scroll";
 import { useAsyncList } from "@react-stately/data";
+=======
+>>>>>>> fe63c346deb74a93a9db259491377efc41fc0342
 
 // Componentes
 import Container from "../container";
@@ -26,6 +29,7 @@ import handleDownloadExcel from "@/utils/relatorys/excel/handleDownloadExcel";
 // Tipagem
 import { ItemsColumns } from "@/types/columns";
 import { FilterItem, StateValue } from "@/types/filter";
+import { Paginations } from "@/types/pagination";
 
 interface DataGridProps<T> {
   title: string;
@@ -36,6 +40,7 @@ interface DataGridProps<T> {
   dataFilter: FilterItem[];
   relatoryData: { id: string; label: string; disable: boolean }[];
   activateReportingOption?: Boolean;
+  pagination: Paginations;
   renderCell: (
     item: T,
     columnUid: string,
@@ -52,6 +57,7 @@ export default function DataGrid<T>({
   dataFilter,
   relatoryData,
   activateReportingOption = false,
+  pagination,
   renderCell,
 }: DataGridProps<T>) {
   const searchParams = useSearchParams();
@@ -101,13 +107,14 @@ export default function DataGrid<T>({
         setLoading={setLoading}
       />
       {loading ? (
-        <main className="h-[530px]">
+        <main className="xl:h-[440px] 2xl:h-[510px]">
           <Loading />
         </main>
       ) : (
         <Table
           columns={columns}
           selectedColumns={selectedColumns}
+          pagination={pagination}
           data={data}
           setLoading={setLoading}
           renderCell={renderCell}

@@ -1,5 +1,9 @@
 {
   "/(admin)/dashboard/page": "app/(admin)/dashboard/page.js",
   "/(admin)/stock/page": "app/(admin)/stock/page.js",
+<<<<<<< HEAD
+=======
+  "/(admin)/stock/register/page": "app/(admin)/stock/register/page.js",
+>>>>>>> fe63c346deb74a93a9db259491377efc41fc0342
   "/(guest)/page": "app/(guest)/page.js"
 }

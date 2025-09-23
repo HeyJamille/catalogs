@@ -89,7 +89,12 @@ export default async function StockPage({
       ],
     },
   ];
+<<<<<<< HEAD
   console.log("Dados: ", productsData.data);
+=======
+  const pagination = {totalItems: productsData.data.totalItems, endpoint: '/stocks'}
+
+>>>>>>> fe63c346deb74a93a9db259491377efc41fc0342
   return (
     <ContainerLayout title="Gestão de Estoque">
       <InfoCards data={cardDetails} />
@@ -102,6 +107,7 @@ export default async function StockPage({
         dataFilter={dataFilter}
         relatoryData={[{ id: "excel", label: "Excel (.XLS)", disable: true }]}
         activateReportingOption={true}
+        pagination={pagination}
         renderCell={renderCell}
       />
     </ContainerLayout>
