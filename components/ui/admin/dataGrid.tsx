@@ -4,12 +4,12 @@
 import { TransitionStartFunction, useState, useTransition } from "react";
 
 // Next
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 // Bibliotecas
 import { SharedSelection, useDisclosure } from "@heroui/react";
-import { jsPDF } from "jspdf";
-import { autoTable } from "jspdf-autotable";
+import { useInfiniteScroll } from "@heroui/use-infinite-scroll";
+import { useAsyncList } from "@react-stately/data";
 
 // Componentes
 import Container from "../container";

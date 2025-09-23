@@ -94,7 +94,7 @@ export default function Upload({ url, setUrlImg, setLoading }: UploadProps) {
               <Image
                 src={url}
                 radius="md"
-                className="rounded-md object-contain w-24"
+                className="rounded-md object-contain w-36"
               />
               <p className="text-sm px-2 text-gray-500">
                 Arraste ou clique para enviar sua imagem

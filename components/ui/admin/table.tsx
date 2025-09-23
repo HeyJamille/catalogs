@@ -1,7 +1,10 @@
 "use client";
 
+// Next
+import { useSearchParams } from "next/navigation";
+
 // React
-import { TransitionStartFunction } from "react";
+import { TransitionStartFunction, useState } from "react";
 
 // Bibliotecas
 import {
@@ -12,6 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from "@heroui/react";
+import { useInfiniteScroll } from "@heroui/use-infinite-scroll";
 
 // Tipagem
 import { ItemsColumns } from "@/types/columns";
@@ -34,15 +38,29 @@ export default function Table<T>({
   renderCell,
   setLoading,
 }: TableProps<T>) {
+  const [hasMore, setHasMore] = useState(false);
+
+  const searchParams = useSearchParams();
   const visibleColumns = columns.filter((col) =>
     selectedColumns.includes(col.uid)
   );
+
+  const onLoadMore = () => {
+    console.log("Carregando mais dados...");
+    // Lógica para carregar mais dados
+  };
+
+  const [loaderRef, scrollerRef] = useInfiniteScroll({
+    hasMore,
+    onLoadMore,
+  });
 
   return (
     <TB
       aria-label="table"
       isHeaderSticky
       selectionMode="multiple"
+      baseRef={scrollerRef}
       classNames={{
         base: "p-4 mb-5 overflow-auto xl:max-h-[440px] 2xl:max-h-[530px]",
         th: "bg-[#3b82f6] text-gray-200 text-sm ",

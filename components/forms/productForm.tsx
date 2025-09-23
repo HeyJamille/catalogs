@@ -136,6 +136,7 @@ export default function ProductForm({
       ...(isActive === false && {
         date_of_inactivation: new Date().toISOString(),
       }),
+      url_imagem: urlImagem,
     };
 
     await handleForm({
@@ -150,6 +151,7 @@ export default function ProductForm({
     !product && setCategoryId([]);
     !product && setBrandId([]);
     !product && setStockId([]);
+    !product && setUrlImagem("");
   }
 
   return (
@@ -318,17 +320,6 @@ export default function ProductForm({
           </Form>
         </main>
       </Container>
-      {/* <Container>
-        <div className="p-4">
-          <Upload
-            url={urlImagem}
-            setUrlImg={setUrlImagem}
-            setLoading={(value: boolean) =>
-              dispatch({ type: "SET_LOADING", value })
-            }
-          />
-        </div>
-      </Container> */}
       <Drawer
         title={`Selecione uma ${selectDrawerType[1]}`}
         loading={false}

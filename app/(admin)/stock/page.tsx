@@ -32,6 +32,8 @@ export default async function StockPage({
   const api = setupApiClient(token);
 
   const search = await searchParams;
+  const page = search.page;
+  const limit = search.limit;
   const category = search.category;
   const warehouse = search.warehouse;
   const brand = search.brand;
@@ -46,7 +48,7 @@ export default async function StockPage({
 
   const [productsData, warehouseData, categoriesData, brandsData] =
     await Promise.all([
-      api.get(`/stocks/filters?${query}`),
+      api.get(`/stocks/filters?${query}&limit=10&page=1`),
       api.get("/warehouses/filter?is_active=true"),
       api.get("/categories"),
       api.get("/brands"),
@@ -87,7 +89,7 @@ export default async function StockPage({
       ],
     },
   ];
-
+  console.log("Dados: ", productsData.data);
   return (
     <ContainerLayout title="Gestão de Estoque">
       <InfoCards data={cardDetails} />
