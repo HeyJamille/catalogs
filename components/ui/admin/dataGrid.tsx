@@ -3,11 +3,10 @@
 // React
 import { TransitionStartFunction, useState, useTransition } from "react";
 
-// Next
-import { useSearchParams } from "next/navigation";
-
 // Bibliotecas
 import { SharedSelection, useDisclosure } from "@heroui/react";
+import { setupApiClient } from "@/utils/api/fetchData";
+import Cookies from "js-cookie";
 
 // Componentes
 import Container from "../container";
@@ -20,10 +19,11 @@ import DrawerRelatory from "./drawers/drawerRelatory";
 
 // Utils
 import handleDownloadExcel from "@/utils/relatorys/excel/handleDownloadExcel";
+import { filterParams } from "@/utils/filters/filterParams";
 
 // Tipagem
 import { ItemsColumns } from "@/types/columns";
-import { FilterItem, StateValue } from "@/types/filter";
+import { FilterItem } from "@/types/filter";
 import { Paginations } from "@/types/pagination";
 
 interface DataGridProps<T> {
@@ -32,8 +32,9 @@ interface DataGridProps<T> {
   handleAddItems: string;
   columns: ItemsColumns[];
   data: T[];
+  relatoryData?: T[];
   dataFilter: FilterItem[];
-  relatoryData: { id: string; label: string; disable: boolean }[];
+  typeRelatory: { id: string; label: string; disable: boolean }[];
   activateReportingOption?: Boolean;
   pagination: Paginations;
   renderCell: (
@@ -49,22 +50,15 @@ export default function DataGrid<T>({
   handleAddItems,
   columns,
   data,
-  dataFilter,
   relatoryData,
+  dataFilter,
+  typeRelatory,
   activateReportingOption = false,
   pagination,
   renderCell,
 }: DataGridProps<T>) {
-  const searchParams = useSearchParams();
-
   const [name, setname] = useState("");
   const [extension, setExtension] = useState<string[]>(["excel"]);
-  const [value, setValue] = useState<StateValue>({
-    warehouses: [searchParams.get("warehouse")?.toString() ?? ""],
-    categories: [searchParams.get("category")?.toString() ?? ""],
-    brands: [searchParams.get("brand")?.toString() ?? ""],
-    is_active: ["all"],
-  });
   const [selectedColumns, setSelectedColumns] = useState(
     columns.filter((col) => col.isDisplay).map((col) => col.uid)
   );
@@ -81,11 +75,11 @@ export default function DataGrid<T>({
     onOpen: onOpenRelatory,
     onClose: onCloseRelatory,
   } = useDisclosure();
-
   const handleSelectionColumnsChange = (keys: SharedSelection) => {
     const arr = Array.from(typeof keys === "string" ? [keys] : keys);
     setSelectedColumns(arr as string[]);
   };
+  const { value, setValue } = filterParams();
 
   return (
     <Container>
@@ -136,7 +130,7 @@ export default function DataGrid<T>({
         handleDownload={() => {
           handleDownloadExcel({
             name,
-            data,
+            data: relatoryData,
             columns,
             selectedColumns,
             setLoading: setLoadingDownload,
@@ -148,7 +142,7 @@ export default function DataGrid<T>({
           extension={extension}
           selectedColumns={selectedColumns}
           columns={columns}
-          relatoryData={relatoryData}
+          typeRelatory={typeRelatory}
           handleSelectionColumnsChange={handleSelectionColumnsChange}
           onOpenFilter={onOpenFilter}
           setName={setname}

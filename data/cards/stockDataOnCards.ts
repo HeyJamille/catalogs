@@ -9,10 +9,12 @@ import { Banknote, BanknoteArrowUp, Box } from "lucide-react";
 import { stockItems } from "@/types/stock";
 interface StockDataOnCardsProps {
   stockData: stockItems[];
+  productsLowStock: number;
 }
 
 export default function StockDataOnCards({
   stockData = [],
+  productsLowStock
 }: StockDataOnCardsProps) {
   const totalProductCost = sumValues(
     stockData,
@@ -28,9 +30,6 @@ export default function StockDataOnCards({
     (item) => item.stock?.price || 0
   );
   const stockProfit = (totalProductValue - totalProductCost) * totalQuantity;
-  const totalMinStockCount = stockData.filter(
-    (item) => item.stock?.current_quantity <= item.stock?.minimium_quantity
-  ).length;
   const totalRevenue = totalProductValue * totalQuantity;
   const marginPercentage =
     totalRevenue > 0 ? (stockProfit / totalRevenue) * 100 : 0;
@@ -50,7 +49,7 @@ export default function StockDataOnCards({
     {
       icon: Box,
       title: "Estoque Baixo",
-      value: totalMinStockCount.toString(),
+      value: productsLowStock.toString(),
     },
   ];
 

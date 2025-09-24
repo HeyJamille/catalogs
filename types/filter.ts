@@ -6,6 +6,7 @@ export interface StateValue {
   categories: string[];
   brands: string[];
   is_active: string[];
+  orderByStock: string[];
 }
 
 export interface FilterItem {

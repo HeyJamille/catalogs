@@ -7,7 +7,7 @@ import { ItemsColumns } from "@/types/columns";
 interface HandleDownloadExcelProps<T> {
   name?: string;
   selectedColumns: string[];
-  data: T[];
+  data?: T[];
   columns: ItemsColumns[];
   setLoading: (value: boolean) => void;
 }
@@ -51,7 +51,7 @@ export default async function handleDownloadExcel<T>({
     };
   });
 
-  data.forEach((row, rowIndex) => {
+  data && data.forEach((row, rowIndex) => {
     const newRow: Record<string, any> = {};
 
     columns.forEach((col) => {

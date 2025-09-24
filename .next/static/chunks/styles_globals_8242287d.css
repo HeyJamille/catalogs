@@ -1085,6 +1085,10 @@
     height: calc(var(--spacing) * 40);
   }
 
+  .h-43 {
+    height: calc(var(--spacing) * 43);
+  }
+
   .h-\[--visual-viewport-height\] {
     height: --visual-viewport-height;
   }
@@ -1111,10 +1115,6 @@
 
   .h-\[330px\] {
     height: 330px;
-  }
-
-  .h-\[530px\] {
-    height: 530px;
   }
 
   .h-\[calc\(100dvh_-_var\(--navbar-height\)\)\] {
@@ -1341,8 +1341,12 @@
     width: calc(var(--spacing) * 20);
   }
 
-  .w-24 {
-    width: calc(var(--spacing) * 24);
+  .w-32 {
+    width: calc(var(--spacing) * 32);
+  }
+
+  .w-43 {
+    width: calc(var(--spacing) * 43);
   }
 
   .w-72 {
@@ -6547,6 +6551,12 @@
   }
 
   @media (hover: hover) {
+    .hover\:flex:hover {
+      display: flex;
+    }
+  }
+
+  @media (hover: hover) {
     .hover\:-translate-x-0:hover {
       --tw-translate-x: calc(var(--spacing) * 0);
       translate: var(--tw-translate-x) var(--tw-translate-y);
@@ -9819,12 +9829,6 @@
   @media (width >= 96rem) {
     .\32 xl\:max-h-\[510px\] {
       max-height: 510px;
-    }
-  }
-
-  @media (width >= 96rem) {
-    .\32 xl\:max-h-\[710px\] {
-      max-height: 710px;
     }
   }
 

@@ -204,9 +204,6 @@ export default function ToolBar({
           </Dropdown>
         </div>
       </div>
-      <div className="px-4">
-        <Divider />
-      </div>
     </main>
   );
 }

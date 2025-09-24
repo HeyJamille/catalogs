@@ -35,25 +35,36 @@ export default async function StockPage({
   const category = search.category;
   const warehouse = search.warehouse;
   const brand = search.brand;
+  const orderByStock = search.orderByStock;
   const isActive = search.is_active;
 
   const query = new URLSearchParams({
-    ...(isActive !== "all" ? { is_active: String(isActive) } : {}),
+    ...(isActive ? { is_active: String(isActive) } : {}),
     ...(category ? { categories: String(category) } : {}),
     ...(warehouse ? { warehouse: String(warehouse) } : {}),
     ...(brand ? { brands: String(brand) } : {}),
+    ...(orderByStock ? { orderByStock: String(orderByStock) } : {}),
   }).toString();
 
-  const [productsData, warehouseData, categoriesData, brandsData] =
-    await Promise.all([
-      api.get(`/stocks/filters?${query}&limit=10&page=1`),
-      api.get("/warehouses/filter?is_active=true"),
-      api.get("/categories"),
-      api.get("/brands"),
-    ]);
-
+  const [
+    productsData,
+    productsLowStock,
+    warehouseData,
+    categoriesData,
+    brandsData,
+  ] = await Promise.all([
+    api.get(`/stocks/filters?${query}&limit=10&page=1`),
+    api.get(`/stocks/filters?${query}&lowStock=true`),
+    api.get("/warehouses/filter?is_active=true"),
+    api.get("/categories"),
+    api.get("/brands"),
+  ]);
+  const relatoryData = await api.get(
+    `/stocks/filters?${query}&limit=${productsData.data.totalItems}`
+  );
   const cardDetails = StockDataOnCards({
     stockData: productsData.data.products,
+    productsLowStock: productsLowStock.data.totalItems,
   });
   const warehouses = formatedLabel(warehouseData.data.warehouses, "id", "name");
   const categories = formatedLabel(
@@ -67,7 +78,7 @@ export default async function StockPage({
       id: 1,
       title: "Filtrar por almoxarifado",
       name: "warehouses",
-      data: warehouses,
+      data: [...warehouses, { id: "all", label: "Todos" }],
     },
     {
       id: 2,
@@ -86,8 +97,20 @@ export default async function StockPage({
         { id: "all", label: "Todos" },
       ],
     },
+    {
+      id: 5,
+      title: "Ordenar produtos por quantidade em estoque",
+      name: "orderByStock",
+      data: [
+        { id: "desc", label: "Maior para menor" },
+        { id: "asc", label: "Menor para maior" },
+      ],
+    },
   ];
-  const pagination = {totalItems: productsData.data.totalItems, endpoint: '/stocks'}
+  const pagination = {
+    totalItems: productsData.data.totalItems,
+    endpoint: "/stocks",
+  };
 
   return (
     <ContainerLayout title="Gestão de Estoque">
@@ -98,8 +121,9 @@ export default async function StockPage({
         handleAddItems="/stock/register"
         columns={columns}
         data={productsData.data.products}
+        relatoryData={relatoryData.data.products}
         dataFilter={dataFilter}
-        relatoryData={[{ id: "excel", label: "Excel (.XLS)", disable: true }]}
+        typeRelatory={[{ id: "excel", label: "Excel (.XLS)", disable: true }]}
         activateReportingOption={true}
         pagination={pagination}
         renderCell={renderCell}

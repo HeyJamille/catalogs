@@ -37,7 +37,6 @@ export const renderCell = (
             color: "primary",
           }}
           classNames={{
-            base: "",
             name: `${myStockIsLow && "text-red-400"} text-sm w-[10em] truncate`,
             description: `text-sm w-[10em] truncate ${myStockIsLow ? "text-red-300" : "text-gray-400"} `,
           }}

@@ -61,7 +61,7 @@ export default function Drawer({
       });
     value &&
       value.warehouses.forEach((warehouse) => {
-        if (warehouse) {
+        if (warehouse !== "all") {
           params.delete("warehouse");
           params.append("warehouse", warehouse);
         }
@@ -75,9 +75,16 @@ export default function Drawer({
       });
     value &&
       value.is_active.forEach((active) => {
-        if (active) {
+        if (active !== "all") {
           params.delete("is_active");
           params.append("is_active", active);
+        }
+      });
+    value &&
+      value.orderByStock.forEach((orderByStock) => {
+        if (orderByStock) {
+          params.delete("orderByStock");
+          params.append("orderByStock", orderByStock);
         }
       });
 
@@ -97,6 +104,7 @@ export default function Drawer({
         categories: [],
         warehouses: [],
         is_active: ["all"],
+        orderByStock: [],
       });
     setLoading &&
       setLoading(() => {

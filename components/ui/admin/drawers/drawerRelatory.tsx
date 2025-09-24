@@ -18,7 +18,7 @@ interface DrawerRelatoryProps {
   extension: string[];
   selectedColumns: string[];
   columns: ItemsColumns[];
-  relatoryData: { id: string; label: string; disable: boolean }[];
+  typeRelatory: { id: string; label: string; disable: boolean }[];
   onOpenFilter: () => void;
   handleSelectionColumnsChange: (keys: SharedSelection) => void;
   setName: (value: string) => void;
@@ -30,7 +30,7 @@ export default function DrawerRelatory({
   extension,
   selectedColumns,
   columns,
-  relatoryData,
+  typeRelatory,
   onOpenFilter,
   handleSelectionColumnsChange,
   setName,
@@ -38,7 +38,7 @@ export default function DrawerRelatory({
 }: DrawerRelatoryProps) {
   return (
     <main className="px-4 space-y-4">
-      {relatoryData.map((item) => (
+      {typeRelatory.map((item) => (
         <CheckboxGroup
           key={item.id}
           classNames={{ wrapper: "pl-3" }}
