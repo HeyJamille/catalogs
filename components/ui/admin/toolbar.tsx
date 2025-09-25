@@ -8,7 +8,9 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
+  Kbd,
   SharedSelection,
+  Tooltip,
 } from "@heroui/react";
 import {
   ChevronDownIcon,
@@ -16,15 +18,20 @@ import {
   Ellipsis,
   FunnelPlus,
   FunnelX,
+  Info,
   Plus,
   RefreshCcw,
+  Search,
 } from "lucide-react";
 
 // Next
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 // React
-import { TransitionStartFunction, useState } from "react";
+import { TransitionStartFunction, useRef, useState } from "react";
+
+// Componentes
+import Input from "../input";
 
 // Tipagem
 import { StateValue } from "@/types/filter";
@@ -55,8 +62,10 @@ export default function ToolBar({
   setLoading,
 }: ToolBarProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [search, setSearch] = useState<string>("");
 
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const handleCleanChange = () => {
     const params = new URLSearchParams();
@@ -67,7 +76,9 @@ export default function ToolBar({
       categories: [],
       warehouses: [],
       is_active: ["all"],
+      orderByStock: [],
     });
+    setSearch("");
     setLoading &&
       setLoading(() => {
         router.refresh();
@@ -75,30 +86,56 @@ export default function ToolBar({
   };
 
   return (
-    <main>
-      <div className="px-6 py-4 flex items-center justify-between">
+    <main className="px-4 py-3 space-y-4">
+      <div className="justify-start flex items-center">
         <h2 className="text-2xl font-bold text-gray-600 dark:text-white">
           {title}
         </h2>
-        <div className="flex items-center gap-4">
+      </div>
+
+      <Divider />
+
+      <div className="flex items-center justify-between">
+        <Input
+          className="w-96"
+          startContent={<Search className="w-5 h-5 text-gray-500" />}
+          endContent={
+            <Kbd keys={["enter"]} className="font-semibold rounded-md">
+              Enter
+            </Kbd>
+          }
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              const inputElement = e.currentTarget as HTMLInputElement;
+              const params = new URLSearchParams(searchParams.toString());
+              params.set("search", inputElement.value);
+              router.push(`?${params.toString()}`);
+              setLoading &&
+                setLoading(() => {
+                  router.refresh();
+                });
+            }
+          }}
+          placeholder="Digite para pesquisar"
+        />
+        <div className="flex items-center gap-3">
           <Dropdown
             showArrow
             placement="bottom-end"
             classNames={{
-              base: "before:bg-default-200 ",
+              base: "before:bg-default-200",
               content:
                 "p-0 border-small border-divider bg-background min-w-[280px]",
             }}
           >
             <DropdownTrigger className="hidden sm:flex">
               <Button
-                endContent={
-                  <ChevronDownIcon className="text-gray-600 w-5 h-5" />
-                }
-                size="md"
+                endContent={<ChevronDownIcon className="w-4 h-4" />}
                 radius="sm"
-                variant="flat"
-                className="min-w-32 font-semibold text-gray-700 w-full h-9 border border-gray-300"
+                variant="bordered"
+                className="min-w-32 flex items-center justify-center font-semibold text-gray-500 w-full h-10 border border-gray-300"
                 onPress={() => setIsOpen(!isOpen)}
               >
                 Colunas
@@ -132,18 +169,18 @@ export default function ToolBar({
             </DropdownMenu>
           </Dropdown>
           <Button
-            startContent={<RefreshCcw className="w-4 h-4 font-semibold" />}
-            size="md"
+            startContent={<RefreshCcw className="w-5 h-5" />}
             radius="sm"
             onPress={() => {
               setLoading(() => {
                 router.refresh();
               });
             }}
-            className="bg-[#3b82f6] font-semibold min-w-32 border border-gray-300 h-9 w-full text-white shadow-md transition duration-300"
+            className="bg-[#3b82f6] min-w-36 font-semibold border border-gray-300 h-10 w-full text-white shadow-md transition duration-300"
           >
             Atualizar
           </Button>
+
           <Dropdown
             showArrow
             radius="md"
@@ -159,9 +196,9 @@ export default function ToolBar({
                 isIconOnly
                 variant="bordered"
                 radius="sm"
-                className="border h-9 min-w-9 w-full border-gray-400 dark:border-gray-600  transition"
+                className="border h-10 min-w-10 w-full border-gray-400 dark:border-gray-600  transition"
               >
-                <Ellipsis className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+                <Ellipsis className="w-5 h-5 text-gray-700 dark:text-gray-300" />
               </Button>
             </DropdownTrigger>
             <DropdownMenu aria-label="Mais opções" variant="light">

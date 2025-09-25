@@ -31,12 +31,13 @@ export default async function StockPage({
   const token = (await cookieStore).get("auth_token")?.value;
   const api = setupApiClient(token);
 
-  const search = await searchParams;
-  const category = search.category;
-  const warehouse = search.warehouse;
-  const brand = search.brand;
-  const orderByStock = search.orderByStock;
-  const isActive = search.is_active;
+  const searchParam = await searchParams;
+  const category = searchParam.category;
+  const warehouse = searchParam.warehouse;
+  const brand = searchParam.brand;
+  const orderByStock = searchParam.orderByStock;
+  const isActive = searchParam.is_active;
+  const search = searchParam.search;
 
   const query = new URLSearchParams({
     ...(isActive ? { is_active: String(isActive) } : {}),
@@ -44,6 +45,7 @@ export default async function StockPage({
     ...(warehouse ? { warehouse: String(warehouse) } : {}),
     ...(brand ? { brands: String(brand) } : {}),
     ...(orderByStock ? { orderByStock: String(orderByStock) } : {}),
+    ...(search ? { search: String(search) } : {}),
   }).toString();
 
   const [
@@ -111,7 +113,7 @@ export default async function StockPage({
     totalItems: productsData.data.totalItems,
     endpoint: "/stocks",
   };
-
+  
   return (
     <ContainerLayout title="Gestão de Estoque">
       <InfoCards data={cardDetails} />

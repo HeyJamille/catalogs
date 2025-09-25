@@ -14,7 +14,7 @@ interface StockDataOnCardsProps {
 
 export default function StockDataOnCards({
   stockData = [],
-  productsLowStock
+  productsLowStock,
 }: StockDataOnCardsProps) {
   const totalProductCost = sumValues(
     stockData,
@@ -49,7 +49,7 @@ export default function StockDataOnCards({
     {
       icon: Box,
       title: "Estoque Baixo",
-      value: productsLowStock.toString(),
+      value: productsLowStock?.toString() ?? 0,
     },
   ];
 

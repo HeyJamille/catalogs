@@ -48,10 +48,6 @@ export default function Table<T>({
   renderCell,
 }: TableProps<T>) {
   const [listData, setListData] = useState<T[]>(data);
-  const [hoveredColumn, setHoveredColumn] = useState<string | null>(null);
-  const [sortDescriptor, setSortDescriptor] = useState<
-    SortDescriptor | undefined
-  >(undefined);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
 
@@ -75,35 +71,18 @@ export default function Table<T>({
     }
   };
 
-  const sortedData = useMemo(() => {
-    if (!sortDescriptor) return listData;
-
-    return [...listData].sort((a: any, b: any) => {
-      const first = a[sortDescriptor.column];
-      const second = b[sortDescriptor.column];
-
-      if (first === second) return 0;
-
-      if (sortDescriptor.direction === "ascending") {
-        return first > second ? 1 : -1;
-      } else {
-        return first < second ? 1 : -1;
-      }
-    });
-  }, [listData, sortDescriptor]);
-
   return (
     <main
       id="scrollArea"
-      className="overflow-auto xl:max-h-[440px] 2xl:max-h-[510px] py-2 px-4 mb-8"
+      className="overflow-auto xl:max-h-[440px] 2xl:max-h-[500px] px-2 mb-8"
     >
       <TB
         aria-label="table"
         isHeaderSticky
         classNames={{
-          th: "bg-[#3b82f6] text-gray-200 text-sm ",
-          td: "border-b border-gray-300",
-          tr: "hover:bg-gray-100",
+          th: "bg-[#3b82f6] text-gray-200 text-sm font-semibold capitalize",
+          td: "border-b border-gray-200",
+          tr: "hover:bg-gray-50",
         }}
         topContentPlacement="outside"
         bottomContent={
@@ -117,22 +96,14 @@ export default function Table<T>({
       >
         <TableHeader>
           {visibleColumns.map((clm) => (
-            <TableColumn
-              align="center"
-              key={clm.uid}
-              onMouseEnter={() => setHoveredColumn(clm.uid)}
-              onMouseLeave={() => setHoveredColumn(null)}
-            >
-              <div className="w-full space-x-2 flex justify-center items-center">
-                <p>{clm.name}</p>
-                {hoveredColumn === clm.uid && <ChevronUp className="w-4 h-4" />}
-              </div>
+            <TableColumn align="center" key={clm.uid}>
+              {clm.name}
             </TableColumn>
           ))}
         </TableHeader>
 
         <TableBody
-          items={sortedData ? sortedData : []}
+          items={listData ? listData : []}
           className="w-full "
           emptyContent="Nenhum dado encontrado :("
         >

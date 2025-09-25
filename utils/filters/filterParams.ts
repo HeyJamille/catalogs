@@ -1,3 +1,5 @@
+"use client";
+
 // Next
 import { useSearchParams } from "next/navigation";
 

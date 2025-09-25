@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import StatCard from "../../../components/statusCards/page";
 import {
   AlertTriangle,
   Calendar,
@@ -10,8 +9,6 @@ import {
   ShoppingBag,
   TrendingUp,
 } from "lucide-react";
-
-import { useApp } from "@/provider/App";
 
 export default function AdminPage() {
   // const [token, setToken] = useState<string | null>(null);

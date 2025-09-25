@@ -4,9 +4,7 @@
 import { TransitionStartFunction, useState, useTransition } from "react";
 
 // Bibliotecas
-import { SharedSelection, useDisclosure } from "@heroui/react";
-import { setupApiClient } from "@/utils/api/fetchData";
-import Cookies from "js-cookie";
+import { Divider, SharedSelection, useDisclosure } from "@heroui/react";
 
 // Componentes
 import Container from "../container";
