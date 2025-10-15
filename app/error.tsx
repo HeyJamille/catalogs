@@ -1,3 +1,5 @@
+"use client";
+
 // Bibliotecas
 import { Button } from "@heroui/button";
 import { Link } from "lucide-react";
