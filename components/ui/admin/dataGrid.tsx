@@ -8,11 +8,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 // Bibliotecas
 import { SharedSelection, useDisclosure } from "@heroui/react";
-<<<<<<< HEAD
 import { useInfiniteScroll } from "@heroui/use-infinite-scroll";
 import { useAsyncList } from "@react-stately/data";
-=======
->>>>>>> fe63c346deb74a93a9db259491377efc41fc0342
 
 // Componentes
 import Container from "../container";

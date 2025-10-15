@@ -39,12 +39,14 @@ export default async function StockPage({
   const brand = search.brand;
   const isActive = search.is_active;
 
-  const query = new URLSearchParams({
-    ...(isActive !== "all" ? { is_active: String(isActive) } : {}),
+  const paramsObj = {
+    ...(isActive && isActive !== "all" ? { is_active: String(isActive) } : {}),
     ...(category ? { categories: String(category) } : {}),
     ...(warehouse ? { warehouse: String(warehouse) } : {}),
     ...(brand ? { brands: String(brand) } : {}),
-  }).toString();
+  } as Record<string, string>;
+
+  const query = new URLSearchParams(paramsObj).toString();
 
   const [productsData, warehouseData, categoriesData, brandsData] =
     await Promise.all([
@@ -89,12 +91,11 @@ export default async function StockPage({
       ],
     },
   ];
-<<<<<<< HEAD
-  console.log("Dados: ", productsData.data);
-=======
-  const pagination = {totalItems: productsData.data.totalItems, endpoint: '/stocks'}
+  const pagination = {
+    totalItems: productsData.data.totalItems,
+    endpoint: "/stocks",
+  };
 
->>>>>>> fe63c346deb74a93a9db259491377efc41fc0342
   return (
     <ContainerLayout title="Gestão de Estoque">
       <InfoCards data={cardDetails} />

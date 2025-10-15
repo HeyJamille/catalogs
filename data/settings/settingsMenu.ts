@@ -1,6 +1,7 @@
 // Bibliotecas
 import {
   FolderSymlinkIcon,
+  Inbox,
   LayoutDashboard,
   PackageSearch,
 } from "lucide-react";
@@ -20,5 +21,11 @@ export const data = [
     href: "/stock",
     icon: PackageSearch,
     subItems: [{ label: "Estoque", href: "/stock", icon: PackageSearch }],
+  },
+  {
+    label: "Caixa de Entrada",
+    href: "/inbox",
+    icon: Inbox,
+    subItems: [{ label: "Inbox", href: "/inbox", icon: Inbox }],
   },
 ];
