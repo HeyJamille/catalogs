@@ -32,7 +32,7 @@ export default function Layout({ companysData, children }: LayoutProps) {
           isOpen={isOpen}
           companysData={companysData}
         />
-        <main className="w-full py-6 px-5">
+        <main className="w-full">
           <Provider>{children}</Provider>
         </main>
       </main>

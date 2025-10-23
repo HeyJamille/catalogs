@@ -1,6 +1,9 @@
+// Tipagem
+import { bannerItems } from "./banner";
+
 export type stockItems = {
   id: string;
-  url_imagem: string;
+  banners: bannerItems[];
   name: string;
   description: string;
   product_code: string;

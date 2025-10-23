@@ -3,15 +3,14 @@
 // React
 import { useContext, useState } from "react";
 
-// Componentes
+// Bibliotecas
 import { Button } from "@heroui/button";
-
-// Icons
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { addToast, Input } from "@heroui/react";
 
 // Provider
 import { AuthContext } from "@/provider/auth";
+import { AiOutlineEyeInvisible } from "react-icons/ai";
+import { AiOutlineEyeInvisible } from "react-icons/ai";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");

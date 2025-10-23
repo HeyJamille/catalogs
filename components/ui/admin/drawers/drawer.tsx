@@ -121,7 +121,9 @@ export default function Drawer({
               </h2>
             </DrawerHeader>
             <DrawerBody className="w-full">{children}</DrawerBody>
-            <DrawerFooter>
+            <DrawerFooter
+              className={`${!displayFooterFilter && !displayFooterRelatory && "hidden"}`}
+            >
               <Button
                 startContent={<FunnelX className="w-5 h-5" />}
                 color="danger"
