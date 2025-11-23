@@ -24,7 +24,7 @@ export async function handleForm({
   setLoading,
 }: HandleFormProps) {
   const token = Cookies.get("auth_token");
-  const api = setupApiClient(token);
+  const api = setupApiClient({ token });
 
   try {
     const resp = isEdit

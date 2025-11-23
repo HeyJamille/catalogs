@@ -39,7 +39,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   async function signIn({ email, password }: SignInProps) {
     try {
-      const api = setupApiClient();
+      const api = setupApiClient({});
 
       const resp = await api.post("/users/signin", { email, password });
 
@@ -111,7 +111,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     async function loadUser() {
       if (token) {
         try {
-          const api = setupApiClient(token);
+          const api = setupApiClient({ token });
 
           const resp = await api.get("/users/me");
 

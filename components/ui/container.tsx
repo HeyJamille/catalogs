@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 
 export default function Container({ children }: { children: ReactNode }) {
   return (
-    <div className="mt-8 mb-2 overflow-hidden bg-white dark:bg-gray-800 shadow rounded-2xl ring-1 ring-gray-200 dark:ring-gray-700">
+    <div className="overflow-auto h-full border-1 border-gray-200 bg-white shadow-md rounded-2xl">
       {children}
     </div>
   );

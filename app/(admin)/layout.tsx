@@ -14,7 +14,7 @@ export default async function AdminLayout({
 }) {
   const cookieStore = cookies();
   const token = (await cookieStore).get("auth_token")?.value;
-  const api = setupApiClient(token);
+  const api = setupApiClient({ token });
 
   const enterprise = await api.get("/companies/");
 

@@ -19,7 +19,7 @@ export async function handleRemove({
   setLoading,
 }: HandleRemoveProps) {
   const token = Cookies.get("auth_token");
-  const api = setupApiClient(token);
+  const api = setupApiClient({ token });
 
   try {
     await api.delete(endpoint);

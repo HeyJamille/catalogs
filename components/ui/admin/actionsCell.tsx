@@ -43,7 +43,7 @@ export default function ActionsCell({
   const [loading, setLoading] = useState(false);
 
   const token = Cookies.get("auth_token");
-  const api = setupApiClient(token);
+  const api = setupApiClient({ token });
   const router = useRouter();
 
   const handleDelete = async () => {

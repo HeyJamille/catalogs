@@ -29,24 +29,28 @@ export default async function StockPage({
 }) {
   const cookieStore = cookies();
   const token = (await cookieStore).get("auth_token")?.value;
-  const api = setupApiClient(token);
+  const api = setupApiClient({ token });
 
   const search = await searchParams;
+  const page = search.page;
+  const limit = search.limit;
   const category = search.category;
   const warehouse = search.warehouse;
   const brand = search.brand;
   const isActive = search.is_active;
 
-  const query = new URLSearchParams({
-    ...(isActive !== "all" ? { is_active: String(isActive) } : {}),
+  const paramsObj = {
+    ...(isActive && isActive !== "all" ? { is_active: String(isActive) } : {}),
     ...(category ? { categories: String(category) } : {}),
     ...(warehouse ? { warehouse: String(warehouse) } : {}),
     ...(brand ? { brands: String(brand) } : {}),
-  }).toString();
+  } as Record<string, string>;
+
+  const query = new URLSearchParams(paramsObj).toString();
 
   const [productsData, warehouseData, categoriesData, brandsData] =
     await Promise.all([
-      api.get(`/stocks/filters?${query}`),
+      api.get(`/stocks/filters?${query}&limit=10&page=1`),
       api.get("/warehouses/filter?is_active=true"),
       api.get("/categories"),
       api.get("/brands"),
@@ -87,6 +91,10 @@ export default async function StockPage({
       ],
     },
   ];
+  const pagination = {
+    totalItems: productsData.data.totalItems,
+    endpoint: "/stocks",
+  };
 
   return (
     <ContainerLayout title="Gestão de Estoque">
@@ -100,6 +108,7 @@ export default async function StockPage({
         dataFilter={dataFilter}
         relatoryData={[{ id: "excel", label: "Excel (.XLS)", disable: true }]}
         activateReportingOption={true}
+        pagination={pagination}
         renderCell={renderCell}
       />
     </ContainerLayout>

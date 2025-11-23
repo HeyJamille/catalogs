@@ -13,7 +13,7 @@ export default async function RegisterStock() {
   const cookieStore = cookies();
   const token = (await cookieStore).get("auth_token")?.value;
 
-  const api = setupApiClient(token);
+  const api = setupApiClient({ token });
 
   const warehouseData = await api.get("/warehouses/filter?is_active=true");
   const categoriesData = await api.get("/categories");

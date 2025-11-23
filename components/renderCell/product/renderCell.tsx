@@ -4,8 +4,7 @@
 import { TransitionStartFunction } from "react";
 
 // Bibliotecas
-import { Chip, User } from "@heroui/react";
-import { Package2 } from "lucide-react";
+import { Avatar, AvatarGroup, Chip, User } from "@heroui/react";
 
 // Utils
 import { formatCurrency } from "../../../utils/mask/money/formatCurrency";
@@ -28,22 +27,20 @@ export const renderCell = (
   switch (columnKey) {
     case "name":
       return (
-        <User
-          avatarProps={{
-            radius: "md",
-            size: "md",
-            src: item?.url_imagem || undefined,
-            icon: <Package2 className="w-5 h-5" />,
-            color: "primary",
-          }}
-          classNames={{
-            base: "",
-            name: `${myStockIsLow && "text-red-400"} text-sm w-[10em] truncate`,
-            description: `text-sm w-[10em] truncate ${myStockIsLow ? "text-red-300" : "text-gray-400"} `,
-          }}
-          name={item.name}
-          description={item.description}
-        />
+        <AvatarGroup
+          isBordered
+          max={3}
+          renderCount={(count) => (
+            <p className="text-small text-foreground font-medium ms-2">
+              +{count} others
+            </p>
+          )}
+          total={10}
+        >
+          {item.banners.map((banner) => (
+            <Avatar id={banner.id} src={banner.url_imagem} />
+          ))}
+        </AvatarGroup>
       );
     case "product_code":
       return (

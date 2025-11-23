@@ -3,12 +3,10 @@
 // React
 import { useContext, useState } from "react";
 
-// Componentes
+// Bibliotecas
 import { Button } from "@heroui/button";
-
-// Icons
+import { Input } from "@heroui/react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { addToast, Input } from "@heroui/react";
 
 // Provider
 import { AuthContext } from "@/provider/auth";

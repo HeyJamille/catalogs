@@ -147,9 +147,9 @@ __turbopack_context__.s({
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/axios/lib/axios.js [app-ssr] (ecmascript)");
 ;
-function setupApiClient(token) {
+function setupApiClient({ token, url }) {
     const api = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].create({
-        baseURL: "https://catalogsapi.vercel.app/v1",
+        baseURL: url ? url : "https://kamala-driveable-overfavorably.ngrok-free.dev/v1",
         validateStatus: (status)=>status < 500
     });
     api.interceptors.request.use((config)=>{
@@ -198,7 +198,7 @@ function AuthProvider({ children }) {
     const loader = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$nextjs$2d$toploader$2f$dist$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useTopLoader"])();
     async function signIn({ email, password }) {
         try {
-            const api = (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2f$fetchData$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["setupApiClient"])();
+            const api = (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2f$fetchData$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["setupApiClient"])({});
             const resp = await api.post("/users/signin", {
                 email,
                 password
@@ -258,7 +258,9 @@ function AuthProvider({ children }) {
         async function loadUser() {
             if (token) {
                 try {
-                    const api = (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2f$fetchData$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["setupApiClient"])(token);
+                    const api = (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2f$fetchData$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["setupApiClient"])({
+                        token
+                    });
                     const resp = await api.get("/users/me");
                     setUser(resp.data.user);
                 } catch (err) {
