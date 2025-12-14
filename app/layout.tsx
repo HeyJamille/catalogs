@@ -30,7 +30,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <main className="h-screen bg-[#F7F7F7] overflow-auto">{children}</main>
+        <main className="h-screen bg-[#F7F5F3] overflow-hidden">
+          {children}
+        </main>
       </body>
     </html>
   );
