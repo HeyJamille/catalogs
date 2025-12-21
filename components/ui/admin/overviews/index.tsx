@@ -1,5 +1,6 @@
 "use client";
 
+// Bibliotecas
 import {
   Avatar,
   Badge,
@@ -14,13 +15,14 @@ import {
   ListItemText,
   Stack,
   TextField,
-  ToggleButton,
-  ToggleButtonGroup,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { useState } from "react";
 import { BsFillPersonPlusFill, BsFilter } from "react-icons/bs";
 import { FiSearch } from "react-icons/fi";
+import ButtonIcon from "../btnIcons";
+import SearchInput from "../../input/search";
 
 interface Contact {
   id: number;
@@ -107,55 +109,17 @@ export default function Overviews() {
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography variant="h6">Conversas</Typography>
           <Box sx={{ display: "flex", gap: 1 }}>
-            <IconButton
-              sx={{
-                border: "1px solid",
-                borderColor: "grey.400",
-                borderRadius: "8px",
-                color: "grey.700",
-                "&:hover": {
-                  backgroundColor: "grey.100",
-                  borderColor: "grey.600",
-                },
-              }}
-            >
-              <BsFillPersonPlusFill className="w-5 h-5" />
-            </IconButton>
-
-            <IconButton
-              sx={{
-                border: "1px solid",
-                borderColor: "grey.400",
-                borderRadius: "8px",
-                color: "grey.700",
-                "&:hover": {
-                  backgroundColor: "grey.100",
-                  borderColor: "grey.600",
-                },
-              }}
-            >
-              <BsFilter className="w-5 h-5" />
-            </IconButton>
+            <ButtonIcon
+              title="Adicionar Contato"
+              icon={<BsFillPersonPlusFill className="w-5 h-5" />}
+            />
+            <ButtonIcon
+              title="Filtros"
+              icon={<BsFilter className="w-5 h-5" />}
+            />
           </Box>
         </Box>
-        <TextField
-          fullWidth
-          placeholder="Pesquisar..."
-          size="small"
-          sx={{
-            py: 1,
-            "& .MuiOutlinedInput-root": {
-              borderRadius: "24px",
-            },
-          }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <FiSearch className="w-5 h-5" />
-              </InputAdornment>
-            ),
-          }}
-        />
+        <SearchInput />
 
         <Stack direction="row" spacing={1} sx={{ mt: 1, flexWrap: "wrap" }}>
           {options.map((label) => (

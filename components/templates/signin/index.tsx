@@ -2,56 +2,51 @@
 
 // Bibliotecas
 import {
+  Alert,
   Box,
   Button,
   Container,
   FormControl,
-  InputAdornment,
   Paper,
   Stack,
-  TextField,
   Typography,
 } from "@mui/material";
 import { CiLock, CiMail } from "react-icons/ci";
 
 // React
-import { useState } from "react";
+import { useContext, useState } from "react";
 
-export default function SignIn() {
+// Componentes
+import Input from "@/components/ui/input";
+import Toastify from "@/components/ui/admin/toastify";
+
+// Provider
+import { AuthContext } from "@/provider/authProvider";
+
+export default function FormSignIn() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassoword] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
+  const [errorMsg, setErrorMsg] = useState<string>("");
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
-  function handleSignIn(e: React.FormEvent) {
-    e.preventDefault();
-  }
+  const { signIn } = useContext(AuthContext);
 
-  function handleValidateFields() {
+  async function handleSignIn(e: React.FormEvent) {
+    e.preventDefault();
+
+    setLoading(true);
+
     if (!email && !password) {
       setError(true);
+      setErrorMsg("Campos de email e senha são obrigatórios");
     }
-    // if (!email || !/\S+@\S+\.\S+/.test(email)) {
-    //   setError(true);
-    //   // setEmailError("Por favor, insira um endereço de e-mail válido.");
 
-    //   addToast({
-    //     title: "Campo obrigatório",
-    //     description: "Por favor, insira um endereço de e-mail válido.",
-    //     variant: "solid",
-    //     color: "danger",
-    //     classNames: {
-    //       title: "text-white",
-    //       description: "text-gray-100",
-    //       icon: "text-white",
-    //     },
-    //   });
-    // } else if (!password || password.length < 8) {
-    //   setError(true);
-    //   setPasswordError("A senha deve ter no mínimo 8 caracteres.");
-    // }
+    await signIn({ email, password });
+
+    setLoading(false);
   }
 
   return (
@@ -86,54 +81,31 @@ export default function SignIn() {
           <form onSubmit={handleSignIn}>
             <FormControl>
               <Stack spacing={3}>
-                <TextField
+                <Input
                   id="email"
-                  name="email"
+                  name="Email"
                   label="Email"
                   type="email"
                   size="small"
                   placeholder="seuemail@gmail.com"
                   error={error}
                   helperText={emailError && emailError}
-                  fullWidth
-                  variant="outlined"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <CiMail className="w-5 h-5" />
-                      </InputAdornment>
-                    ),
-                    sx: {
-                      "& .MuiOutlinedInput-notchedOutline": {
-                        borderRadius: "8px",
-                      },
-                    },
-                  }}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  icon={<CiMail className="w-5 h-5" />}
                 />
-                <TextField
+                <Input
                   id="password"
                   name="password"
                   label="Senha"
                   type="password"
                   size="small"
-                  placeholder="sua senha"
+                  placeholder="Sua senha"
                   error={error}
-                  // helperText="Incorrect entry."
-
-                  fullWidth
-                  variant="outlined"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <CiLock className="w-5 h-5" />
-                      </InputAdornment>
-                    ),
-                    sx: {
-                      "& .MuiOutlinedInput-notchedOutline": {
-                        borderRadius: "8px",
-                      },
-                    },
-                  }}
+                  helperText={passwordError && passwordError}
+                  value={password}
+                  onChange={(e) => setPassoword(e.target.value)}
+                  icon={<CiLock className="w-5 h-5" />}
                 />
 
                 {/* <div className="flex items-center justify-between">
@@ -154,7 +126,7 @@ export default function SignIn() {
 
                 <Button
                   type="submit"
-                  onClick={handleValidateFields}
+                  onClick={handleSignIn}
                   fullWidth
                   sx={{
                     height: "3rem",
@@ -188,6 +160,12 @@ export default function SignIn() {
           </form>
         </Paper>
       </Container>
+      <Toastify
+        isOpen={error}
+        close={setError}
+        type="error"
+        description={errorMsg}
+      />
     </div>
   );
 }

@@ -5,6 +5,12 @@ import { Geist, Geist_Mono } from "next/font/google";
 // Css
 import "./globals.css";
 
+// Bibliotecas
+import NextTopLoader from "nextjs-toploader";
+
+// React
+import { AuthProvider } from "@/provider/authProvider";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -26,12 +32,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <main className="h-screen bg-[#F7F5F3] overflow-hidden">
-          {children}
+          <AuthProvider>{children}</AuthProvider>
+          <NextTopLoader color="#1e2939" />
         </main>
       </body>
     </html>

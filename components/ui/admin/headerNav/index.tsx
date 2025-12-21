@@ -21,6 +21,9 @@ import { useMemo } from "react";
 // Assets
 import slogan from "@/public/assets/slogan.png";
 
+// Next
+import { usePathname } from "next/navigation";
+
 // Tipagem
 interface HeaderNavProps {
   isOpen: boolean;
@@ -29,6 +32,7 @@ interface HeaderNavProps {
 
 export default function HeaderNav({ isOpen, setMenu }: HeaderNavProps) {
   const theme = useTheme();
+  const router = usePathname();
 
   const todayLabel = useMemo(() => {
     const monthNames = [
@@ -66,7 +70,6 @@ export default function HeaderNav({ isOpen, setMenu }: HeaderNavProps) {
         padding: 1,
       }}
     >
-      {/* <Toolbar sx={{ py: 0.5, paddingX: 0 }}> */}
       <Stack
         direction="row"
         justifyContent="space-between"
@@ -74,7 +77,7 @@ export default function HeaderNav({ isOpen, setMenu }: HeaderNavProps) {
         sx={{ width: "100%" }}
       >
         <Link
-          href="/"
+          href="/chats"
           underline="none"
           color="inherit"
           sx={{ display: "inline-flex", alignItems: "center" }}
@@ -189,8 +192,13 @@ export default function HeaderNav({ isOpen, setMenu }: HeaderNavProps) {
               size="small"
               sx={{
                 p: 0.5,
-                borderRadius: 1.5,
-                bgcolor: "transparent",
+                borderRadius: "8px",
+                bgcolor:
+                  router === "/settings/profile" ||
+                  router === "/settings/notify" ||
+                  router === "/settings/channel"
+                    ? "rgba(255,255,255,0.16)"
+                    : "transparent",
                 color: "#fff",
                 "&:hover": { bgcolor: "rgba(255,255,255,0.04)" },
               }}

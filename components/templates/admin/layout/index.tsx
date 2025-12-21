@@ -11,11 +11,11 @@ export default function Layout({ children }: { children: ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <main className="w-full flex flex-col h-full">
+    <main className="w-full flex flex-col h-screen">
       <HeaderNav isOpen={menuOpen} setMenu={setMenuOpen} />
-      <div className="flex space-x-18 ">
+      <div className="flex space-x-17 flex-1 overflow-hidden">
         <SideNav isOpen={menuOpen} setMenu={setMenuOpen} />
-        <main className="w-full flex pb-20">{children}</main>
+        <main className="flex-1 flex overflow-hidden">{children}</main>
       </div>
     </main>
   );

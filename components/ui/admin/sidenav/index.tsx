@@ -1,3 +1,5 @@
+"use client";
+
 // Bibliotecas
 import {
   Avatar,
@@ -12,10 +14,13 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { ReactNode } from "react";
 import { BsChatSquareDots } from "react-icons/bs";
 import { FaRegBell } from "react-icons/fa";
 import { TbSettings } from "react-icons/tb";
+
+// Next
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 // Tipagem
 interface SideNavProps {
@@ -26,19 +31,21 @@ interface SideNavProps {
 export default function SideNav({ isOpen, setMenu }: SideNavProps) {
   const theme = useTheme();
 
+  const router = usePathname();
+
   const navItems = [
     {
       label: "Chats",
-      href: "/",
+      href: "/chat",
       icon: <BsChatSquareDots style={{ width: 20, height: 20 }} />,
     },
   ];
 
   return (
     <Drawer
+      // className="bg-gray-600"
       variant="permanent"
       anchor="left"
-      // className="bg-blue-600"
       PaperProps={{
         sx: {
           width: isOpen ? 240 : 70,
@@ -69,7 +76,7 @@ export default function SideNav({ isOpen, setMenu }: SideNavProps) {
             arrow
           >
             <ListItemButton
-              component="a"
+              LinkComponent={Link}
               href={item.href}
               onClick={() => {
                 if (window.innerWidth < 600) setMenu; // comportamento mobile
@@ -81,6 +88,11 @@ export default function SideNav({ isOpen, setMenu }: SideNavProps) {
                 gap: 2,
                 "&:hover": { bgcolor: "rgba(255,255,255,0.04)" },
                 justifyContent: isOpen ? "flex-start" : "center",
+                bgcolor:
+                  router === item.href
+                    ? "rgba(255,255,255,0.16)"
+                    : "transparent",
+                borderRadius: "8px",
               }}
             >
               <ListItemIcon sx={{ minWidth: "auto", color: "inherit" }}>
@@ -105,7 +117,6 @@ export default function SideNav({ isOpen, setMenu }: SideNavProps) {
         ))}
         <Divider sx={{ my: 1, borderColor: "rgba(255,255,255,0.06)" }} />
       </List>
-      {/* Adicionar engrenagem e avatar */}
       <Box
         sx={{
           position: "absolute",
@@ -144,14 +155,19 @@ export default function SideNav({ isOpen, setMenu }: SideNavProps) {
         </Tooltip>
         <Tooltip title="Configurações" placement="right" arrow>
           <IconButton
-            href="/settings"
+            href="/settings/profile"
             component="a"
             aria-label="configurações"
             sx={{
               color: "inherit",
               p: 0.5,
-              borderRadius: 1.5,
-              bgcolor: "transparent",
+              borderRadius: "8px",
+              bgcolor:
+                router === "/settings/profile" ||
+                router === "/settings/notify" ||
+                router === "/settings/channel"
+                  ? "rgba(255,255,255,0.16)"
+                  : "transparent",
               width: 40,
               height: 40,
               display: "flex",
