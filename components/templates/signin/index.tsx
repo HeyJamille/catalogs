@@ -22,12 +22,13 @@ import Toastify from "@/components/ui/admin/toastify";
 
 // Provider
 import { AuthContext } from "@/provider/authProvider";
+import { AiOutlineLoading } from "react-icons/ai";
 
 export default function FormSignIn() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassoword] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
-  const [errorMsg, setErrorMsg] = useState<string>("");
+  const [msg, setMsg] = useState<string>("");
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -41,11 +42,12 @@ export default function FormSignIn() {
 
     if (!email && !password) {
       setError(true);
-      setErrorMsg("Campos de email e senha são obrigatórios");
+      setMsg("Campos de email e senha são obrigatórios");
     }
 
-    await signIn({ email, password });
-
+    const resp = await signIn({ email, password });
+    setError(true);
+    setMsg(resp);
     setLoading(false);
   }
 
@@ -127,22 +129,46 @@ export default function FormSignIn() {
                 <Button
                   type="submit"
                   onClick={handleSignIn}
+                  disabled={loading}
+                  loading={loading}
+                  loadingIndicator={
+                    <div className="flex items-center justify-center space-x-2">
+                      <AiOutlineLoading className="w-5 h-5 text-white animate-spin" />
+                      <span className="text-white font-medium">
+                        Carregando...
+                      </span>
+                    </div>
+                  }
                   fullWidth
                   sx={{
                     height: "3rem",
-                    background: "linear-gradient(to right, #155dfc, #1447e6)",
+                    background: loading
+                      ? "rgba(21, 93, 252, 0.7)"
+                      : "linear-gradient(to right, #155dfc, #1447e6)",
                     color: "#fff",
-                    fontWeight: 600,
-                    borderRadius: "0.5rem",
-                    boxShadow: "0 10px 15px -3px rgba(59, 130, 246, 0.3)",
-                    transition: "all 0.2s",
+                    fontWeight: 700,
+                    fontSize: "1rem",
+                    borderRadius: "0.75rem",
+                    boxShadow: loading
+                      ? "0 6px 10px rgba(0,0,0,0.15)"
+                      : "0 10px 18px -4px rgba(59, 130, 246, 0.35)",
+                    cursor: loading ? "not-allowed" : "pointer",
+                    transition: "all 0.25s ease-in-out",
                     "&:hover": {
-                      background: "linear-gradient(to right, #1E40AF, #1E3A8A)",
-                      boxShadow: "0 15px 25px -5px rgba(59, 130, 246, 0.4)",
+                      background: loading
+                        ? "rgba(21, 93, 252, 0.7)"
+                        : "linear-gradient(to right, #1E40AF, #1E3A8A)",
+                      boxShadow: loading
+                        ? "0 6px 10px rgba(0,0,0,0.15)"
+                        : "0 15px 28px -6px rgba(59, 130, 246, 0.45)",
+                    },
+                    "&:focus": {
+                      outline: "2px solid #93c5fd",
+                      outlineOffset: "2px",
                     },
                   }}
                 >
-                  Entrar
+                  {loading ? "Aguarde..." : "Entrar"}
                 </Button>
 
                 <p className="mt-6 text-center text-xs text-gray-500">
@@ -163,8 +189,8 @@ export default function FormSignIn() {
       <Toastify
         isOpen={error}
         close={setError}
-        type="error"
-        description={errorMsg}
+        type={msg === "Login realizado com sucesso!" ? "success" : "error"}
+        description={msg}
       />
     </div>
   );

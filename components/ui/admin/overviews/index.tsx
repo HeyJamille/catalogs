@@ -23,6 +23,7 @@ import { BsFillPersonPlusFill, BsFilter } from "react-icons/bs";
 import { FiSearch } from "react-icons/fi";
 import ButtonIcon from "../btnIcons";
 import SearchInput from "../../input/search";
+import Alert from "../alert";
 
 interface Contact {
   id: number;
@@ -34,7 +35,11 @@ interface Contact {
   online: boolean;
 }
 
-export default function Overviews() {
+interface OverviewsProps {
+  status: string;
+}
+
+export default function Overviews({ status }: OverviewsProps) {
   const [active, setActive] = useState("Individual");
 
   const options = ["Individual", "Grupos", "Canais", "Tags"];
@@ -148,6 +153,14 @@ export default function Overviews() {
           px: 0.8,
         }}
       >
+        <Box
+          sx={{
+            overflowY: "auto",
+            p: 1,
+          }}
+        >
+          <Alert error="error" description={status} />
+        </Box>
         <List sx={{}}>
           {contacts.map((contact) => (
             <ListItemButton key={contact.id} sx={{}}>

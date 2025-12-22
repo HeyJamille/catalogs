@@ -1,27 +1,39 @@
-// Bibliotecas
-import { Alert as AlertUI } from "@mui/material";
+"use client";
 
-export default function Alert({ description }: { description: string }) {
+// Bibliotecas
+import { Alert as AlertUI, useTheme } from "@mui/material";
+
+// Tipagem
+interface AlertProps {
+  description: string;
+  error?: "success" | "warning" | "error" | "info";
+}
+
+export default function Alert({ description, error }: AlertProps) {
+  const theme = useTheme();
+
   return (
     <AlertUI
-      severity="info"
+      severity={error ?? "info"}
       variant="outlined"
-      className="items-center text-gra"
+      className="items-center text-gray-100"
       sx={{
         display: "flex",
         alignItems: "center",
-        borderColor: "divider",
+        borderColor: error === "error" ? theme.palette.error.main : "divider",
         borderRadius: "8px",
         color: "#6a7282",
         "& .MuiAlert-icon": {
           display: "flex",
           justifyContent: "center",
-          color: "#6a7282",
+          color: error === "error" ? theme.palette.error.main : "#6a7282",
           fontSize: "2em",
         },
       }}
     >
-      {description}
+      <p className={`${error === "error" ? "text-red-500" : ""}`}>
+        {description}
+      </p>
     </AlertUI>
   );
 }

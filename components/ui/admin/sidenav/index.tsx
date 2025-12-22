@@ -2,7 +2,6 @@
 
 // Bibliotecas
 import {
-  Avatar,
   Box,
   Divider,
   Drawer,
@@ -18,6 +17,9 @@ import { BsChatSquareDots } from "react-icons/bs";
 import { FaRegBell } from "react-icons/fa";
 import { TbSettings } from "react-icons/tb";
 
+// Componentes
+import DropDownAvatar from "../dropDownAvatar";
+
 // Next
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -30,7 +32,6 @@ interface SideNavProps {
 
 export default function SideNav({ isOpen, setMenu }: SideNavProps) {
   const theme = useTheme();
-
   const router = usePathname();
 
   const navItems = [
@@ -180,36 +181,8 @@ export default function SideNav({ isOpen, setMenu }: SideNavProps) {
           </IconButton>
         </Tooltip>
 
-        <Tooltip title="Perfil" placement="right" arrow>
-          <IconButton
-            href="/profile"
-            component="a"
-            aria-label="perfil"
-            sx={{
-              color: "inherit",
-              p: 0.25,
-              borderRadius: 1.5,
-              bgcolor: "transparent",
-              width: 40,
-              height: 40,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              "&:hover": { bgcolor: "rgba(255,255,255,0.04)" },
-            }}
-          >
-            <Avatar
-              sx={{
-                width: 32,
-                height: 32,
-                fontSize: 14,
-                bgcolor: "rgba(255,255,255,0.12)",
-              }}
-            >
-              TU
-            </Avatar>
-          </IconButton>
-        </Tooltip>
+        {/* Avatar */}
+        <DropDownAvatar />
       </Box>
     </Drawer>
   );

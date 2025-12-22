@@ -1,20 +1,16 @@
 "use client";
 
-import CardContainer from "@/components/ui/admin/card";
+// Componentes
+import { CardContainer } from "@/components/ui/admin/card";
 import SearchInput from "@/components/ui/input/search";
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Typography,
-  TextField,
-  InputAdornment,
-  Stack,
-} from "@mui/material";
-import Link from "next/link";
+
+// Bibliotecas
+import { Box, Button, Typography, Stack } from "@mui/material";
 import { CiCircleInfo } from "react-icons/ci";
-import { FiPlus, FiSearch } from "react-icons/fi";
+import { FiPlus } from "react-icons/fi";
+
+// Next
+import Link from "next/link";
 
 export default function Channel() {
   return (
