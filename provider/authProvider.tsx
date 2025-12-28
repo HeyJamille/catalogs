@@ -15,7 +15,6 @@ import { useTopLoader } from "nextjs-toploader";
 
 // Tipagem
 import { itemUsers } from "@/types/users";
-import Toastify from "@/components/ui/admin/toastify";
 
 type SignInProps = {
   email: string;

@@ -1,101 +1,33 @@
 "use client";
 
-// Bibliotecas
-import {
-  Avatar,
-  Badge,
-  Box,
-  Button,
-  Divider,
-  IconButton,
-  InputAdornment,
-  List,
-  ListItemAvatar,
-  ListItemButton,
-  ListItemText,
-  Stack,
-  TextField,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+// React
 import { useState } from "react";
+
+// Bibliotecas
+import { Box, Button, Divider, Stack, Typography } from "@mui/material";
 import { BsFillPersonPlusFill, BsFilter } from "react-icons/bs";
-import { FiSearch } from "react-icons/fi";
+
+// Componentes
 import ButtonIcon from "../btnIcons";
 import SearchInput from "../../input/search";
 import Alert from "../alert";
+import ChatsOverviews from "@/components/templates/admin/chat/chatsOverviews";
 
-interface Contact {
-  id: number;
-  name: string;
-  lastMessage: string;
-  time: string;
-  unread: number;
-  avatar: string;
-  online: boolean;
-}
+// Tipagem
+import { itemsChatOverviews } from "@/types/chatOverviews";
 
 interface OverviewsProps {
-  status: string;
+  status: boolean;
+  listChatOverviews: itemsChatOverviews[];
 }
 
-export default function Overviews({ status }: OverviewsProps) {
+export default function Overviews({
+  status,
+  listChatOverviews,
+}: OverviewsProps) {
   const [active, setActive] = useState("Individual");
 
   const options = ["Individual", "Grupos", "Canais", "Tags"];
-
-  const contacts: Contact[] = [
-    {
-      id: 1,
-      name: "Sarah Anderson",
-      lastMessage: "Hey! How are you doing?",
-      time: "10:30",
-      unread: 2,
-      avatar:
-        "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100",
-      online: true,
-    },
-    {
-      id: 2,
-      name: "Michael Chen",
-      lastMessage: "The meeting is at 3 PM",
-      time: "09:15",
-      unread: 0,
-      avatar:
-        "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=100",
-      online: true,
-    },
-    {
-      id: 3,
-      name: "Emma Wilson",
-      lastMessage: "Thanks for your help!",
-      time: "Yesterday",
-      unread: 0,
-      avatar:
-        "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=100",
-      online: false,
-    },
-    {
-      id: 4,
-      name: "James Rodriguez",
-      lastMessage: "Can you send me the files?",
-      time: "Yesterday",
-      unread: 1,
-      avatar:
-        "https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=100",
-      online: false,
-    },
-    {
-      id: 5,
-      name: "Olivia Martinez",
-      lastMessage: "See you tomorrow!",
-      time: "Monday",
-      unread: 0,
-      avatar:
-        "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=100",
-      online: true,
-    },
-  ];
 
   return (
     <Box
@@ -124,6 +56,7 @@ export default function Overviews({ status }: OverviewsProps) {
             />
           </Box>
         </Box>
+
         <SearchInput />
 
         <Stack direction="row" spacing={1} sx={{ mt: 1, flexWrap: "wrap" }}>
@@ -156,55 +89,14 @@ export default function Overviews({ status }: OverviewsProps) {
         <Box
           sx={{
             overflowY: "auto",
-            p: 1,
+            py: 1,
           }}
         >
-          <Alert error="error" description={status} />
+          {!status && (
+            <Alert error="error" description="Sessão foi desconectada" />
+          )}
         </Box>
-        <List sx={{}}>
-          {contacts.map((contact) => (
-            <ListItemButton key={contact.id} sx={{}}>
-              <ListItemAvatar>
-                <Badge
-                  color="success"
-                  variant="dot"
-                  overlap="circular"
-                  invisible={!contact.online}
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "right",
-                  }}
-                >
-                  <Avatar
-                    src={contact.avatar}
-                    alt={contact.name}
-                    sx={{ width: 40, height: 40 }}
-                  />
-                </Badge>
-              </ListItemAvatar>
-
-              <ListItemText
-                primary={contact.name}
-                secondary={contact.lastMessage}
-                sx={{ wordBreak: "break-word" }}
-              />
-
-              <Box textAlign="center">
-                <Typography variant="caption" display="block">
-                  {contact.time}
-                </Typography>
-
-                {contact.unread > 0 && (
-                  <Badge
-                    badgeContent={contact.unread}
-                    color="primary"
-                    sx={{ mt: 1 }}
-                  />
-                )}
-              </Box>
-            </ListItemButton>
-          ))}
-        </List>
+        <ChatsOverviews contacts={listChatOverviews} />
       </Box>
     </Box>
   );

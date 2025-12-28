@@ -111,13 +111,13 @@ export default function HeaderNav({ isOpen, setMenu }: HeaderNavProps) {
                   textShadow: "0 1px 0 rgba(0,0,0,0.06)",
                 }}
               >
-                LOGICHUB
+                VEX
               </Typography>
               <Typography
                 variant="caption"
                 sx={{ color: "rgba(255,255,255,0.85)", display: "block" }}
               >
-                Dashboard
+                Venda Expressa
               </Typography>
             </Box>
           </Stack>

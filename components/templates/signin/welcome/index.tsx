@@ -1,5 +1,5 @@
 // Bibliotecas
-import { Box, Container, Paper, Stack, Typography } from "@mui/material";
+import { Box, Container, Stack, Typography } from "@mui/material";
 import { AiOutlineThunderbolt } from "react-icons/ai";
 import { BsBox } from "react-icons/bs";
 import { CiLock } from "react-icons/ci";

@@ -1,5 +1,6 @@
 // Componentes
 import ChooseInstance from "@/components/ui/admin/chooseInstance";
+import UnofficialInstance from "@/components/templates/admin/settings/unofficialInstance";
 
 // Bibliotecas
 import { Box } from "@mui/material";
@@ -16,11 +17,19 @@ export default async function Wpps({
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
   const cookieStore = cookies();
+  const params = await searchParams;
   const token = (await cookieStore).get("auth_token")?.value;
   const session = (await cookieStore).get("session_id")?.value;
-  console.log("paramentros: ", searchParams);
+  const type = params?.type;
   const api = setupApiClient({ token: token });
-  const qr = await api.get(`/wpps/session/${session}/qrcode`);
+
+  let qrCode;
+
+  if (type === "unofficial") {
+    const qr = await api.get(`/wpps/session/${session}/qrcode?isImg=false`);
+
+    qrCode = qr.data;
+  }
 
   return (
     <Box
@@ -32,9 +41,10 @@ export default async function Wpps({
       width="100%"
       pt={2}
       gap={4}
-      overflow={"auto"}
+      overflow="auto"
     >
       <ChooseInstance />
+      {type === "unofficial" && <UnofficialInstance qrCode={qrCode} />}
     </Box>
   );
 }

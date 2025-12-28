@@ -2,7 +2,6 @@
 
 // Bibliotecas
 import {
-  Alert,
   Box,
   Button,
   Container,
@@ -12,6 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { CiLock, CiMail } from "react-icons/ci";
+import { AiOutlineLoading } from "react-icons/ai";
 
 // React
 import { useContext, useState } from "react";
@@ -22,7 +22,6 @@ import Toastify from "@/components/ui/admin/toastify";
 
 // Provider
 import { AuthContext } from "@/provider/authProvider";
-import { AiOutlineLoading } from "react-icons/ai";
 
 export default function FormSignIn() {
   const [email, setEmail] = useState<string>("");

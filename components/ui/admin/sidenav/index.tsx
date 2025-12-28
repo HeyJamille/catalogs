@@ -13,9 +13,10 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { BsChatSquareDots } from "react-icons/bs";
 import { FaRegBell } from "react-icons/fa";
 import { TbSettings } from "react-icons/tb";
+import { IoChatbubbles } from "react-icons/io5";
+import { FaBoxesPacking } from "react-icons/fa6";
 
 // Componentes
 import DropDownAvatar from "../dropDownAvatar";
@@ -38,7 +39,12 @@ export default function SideNav({ isOpen, setMenu }: SideNavProps) {
     {
       label: "Chats",
       href: "/chat",
-      icon: <BsChatSquareDots style={{ width: 20, height: 20 }} />,
+      icon: <IoChatbubbles className="w-5 h-5" />,
+    },
+    {
+      label: "Estoques",
+      href: "/stock",
+      icon: <FaBoxesPacking className="w-5 h-5" />,
     },
   ];
 
@@ -83,10 +89,11 @@ export default function SideNav({ isOpen, setMenu }: SideNavProps) {
                 if (window.innerWidth < 600) setMenu; // comportamento mobile
               }}
               sx={{
-                px: 2,
-                py: 1.25,
+                // px: 2,
+                // py: 1.25,
+                width: "100%",
                 color: "inherit",
-                gap: 2,
+                // gap: 2,
                 "&:hover": { bgcolor: "rgba(255,255,255,0.04)" },
                 justifyContent: isOpen ? "flex-start" : "center",
                 bgcolor:

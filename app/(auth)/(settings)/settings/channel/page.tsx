@@ -1,21 +1,40 @@
-"use client";
-
 // Componentes
 import { CardContainer } from "@/components/ui/admin/card";
 import SearchInput from "@/components/ui/input/search";
 
 // Bibliotecas
-import { Box, Button, Typography, Stack } from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  Stack,
+  IconButton,
+  Tooltip,
+} from "@mui/material";
 import { CiCircleInfo } from "react-icons/ci";
 import { FiPlus } from "react-icons/fi";
+import { FaPlugCircleCheck } from "react-icons/fa6";
+import { FaWhatsapp } from "react-icons/fa";
 
 // Next
 import Link from "next/link";
+import { cookies } from "next/headers";
 
-export default function Channel() {
+// Utils
+import { setupApiClient } from "@/utils/api";
+import { formatPhone } from "@/utils/mask/phone/";
+
+export default async function Channel() {
+  const cookieStore = cookies();
+  const token = (await cookieStore).get("auth_token")?.value;
+  const session = (await cookieStore).get("session_id")?.value;
+  const api = setupApiClient({ token });
+
+  const status = await api.get(`/wpps/session/${session}/status`);
+
   return (
     <Box
-      minHeight="100vh"
+      maxHeight="100vh"
       display="flex"
       justifyContent="center"
       alignItems="flex-start"
@@ -75,16 +94,58 @@ export default function Channel() {
 
           <SearchInput />
 
-          {/* Empty state */}
           <Box
-            textAlign="center"
-            color="text.secondary"
-            py={6}
-            border="1px dashed"
-            borderColor="grey.300"
-            borderRadius={2}
+            sx={{
+              textAlign: "center",
+              color: "text.secondary",
+              py: 2,
+              px: 2,
+              border: "1px dashed",
+              borderColor: "grey.300",
+              borderRadius: 2,
+            }}
           >
-            <Typography variant="body2">Nenhum canal conectado</Typography>
+            {/* <Typography variant="body2">Nenhum canal conectado</Typography> */}
+
+            <Box
+              sx={{
+                backgroundColor: "grey.100",
+                p: 1,
+                borderRadius: 1,
+                display: status.data.isConnected ? "flex" : "none",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: 2,
+              }}
+            >
+              <Box
+                sx={{
+                  backgroundColor: "#25D366",
+                  borderRadius: "50%",
+                  p: 1,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <FaWhatsapp className="w-5 h-5" color="#fff" />
+              </Box>
+
+              <Box>
+                <Typography fontSize="14px" fontWeight={600}>
+                  {status.data.sessionName}
+                </Typography>
+                {/* <Typography sx={{ fontSize: "11px", color: "text.secondary" }}>
+                  {formatPhone("+" + status.data.id.replace(/\D/g, ""))}
+                </Typography> */}
+              </Box>
+
+              <Tooltip title={status.data.status} arrow>
+                <IconButton>
+                  <FaPlugCircleCheck className="w-6 h-6" color="#22C55E" />
+                </IconButton>
+              </Tooltip>
+            </Box>
           </Box>
         </Stack>
       </CardContainer>

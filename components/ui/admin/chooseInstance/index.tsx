@@ -16,7 +16,6 @@ import { BsQrCode } from "react-icons/bs";
 // Componentes
 import { CardContainer, CardHeader } from "../card";
 import Alert from "../alert";
-import UnofficialInstance from "@/components/templates/settings/unofficialInstance";
 
 // React
 import { useState } from "react";
@@ -152,9 +151,6 @@ export default function ChooseInstance() {
           </Grid>
         </Stack>
       </CardContainer>
-      {createInstance === "unofficial" && (
-        <UnofficialInstance setClose={() => setCreateInstance(undefined)} />
-      )}
     </>
   );
 }
