@@ -38,7 +38,7 @@ function parseUserRule(access?: string): UserRule | undefined {
   }
 }
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const token = req.cookies.get("auth_token")?.value;
   const cookieRule = req.cookies.get("user_rule")?.value;
   const userRule = parseUserRule(cookieRule);
