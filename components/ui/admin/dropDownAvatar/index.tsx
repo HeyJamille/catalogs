@@ -23,6 +23,7 @@ export default function DropDownAvatar() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const { user, signOut } = useContext(AuthContext);
+
   const theme = useTheme();
   const open = Boolean(anchorEl);
 
@@ -38,14 +39,12 @@ export default function DropDownAvatar() {
       <Tooltip title="Perfil" placement="auto" arrow>
         <IconButton
           onClick={handleOpen}
-          size="small"
           aria-controls={open ? "account-menu" : undefined}
           aria-haspopup="true"
           aria-expanded={open ? "true" : undefined}
           sx={{
             color: "inherit",
             p: 0.25,
-            borderRadius: 1.5,
             bgcolor: "transparent",
             width: 40,
             height: 40,
@@ -56,15 +55,14 @@ export default function DropDownAvatar() {
           }}
         >
           <Avatar
+            src={user?.photo}
             sx={{
               width: 32,
               height: 32,
               fontSize: 14,
               bgcolor: "rgba(255,255,255,0.12)",
             }}
-          >
-            TU
-          </Avatar>
+          ></Avatar>
         </IconButton>
       </Tooltip>
 
@@ -98,15 +96,13 @@ export default function DropDownAvatar() {
               backgroundColor: "#1976D2",
               fontSize: "1rem",
             }}
-          >
-            {!user?.photo && user?.name?.[0]}
-          </Avatar>
+          ></Avatar>
           <Box sx={{ overflow: "hidden" }}>
             <Typography sx={{ fontSize: "16px" }} fontWeight="600" noWrap>
               {user?.name}
             </Typography>
             <Typography color="text.secondary" sx={{ fontSize: "13px" }} noWrap>
-              {user?.email}
+              {user?.rules}
             </Typography>
           </Box>
         </Box>

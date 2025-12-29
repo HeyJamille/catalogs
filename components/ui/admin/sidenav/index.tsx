@@ -50,7 +50,6 @@ export default function SideNav({ isOpen, setMenu }: SideNavProps) {
 
   return (
     <Drawer
-      // className="bg-gray-600"
       variant="permanent"
       anchor="left"
       PaperProps={{
@@ -188,7 +187,6 @@ export default function SideNav({ isOpen, setMenu }: SideNavProps) {
           </IconButton>
         </Tooltip>
 
-        {/* Avatar */}
         <DropDownAvatar />
       </Box>
     </Drawer>

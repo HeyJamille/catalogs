@@ -135,9 +135,9 @@ export default async function Channel() {
                 <Typography fontSize="14px" fontWeight={600}>
                   {status.data.sessionName}
                 </Typography>
-                {/* <Typography sx={{ fontSize: "11px", color: "text.secondary" }}>
+                <Typography sx={{ fontSize: "11px", color: "text.secondary" }}>
                   {formatPhone("+" + status.data.id.replace(/\D/g, ""))}
-                </Typography> */}
+                </Typography>
               </Box>
 
               <Tooltip title={status.data.status} arrow>

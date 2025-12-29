@@ -77,7 +77,7 @@ export default function HeaderNav({ isOpen, setMenu }: HeaderNavProps) {
         sx={{ width: "100%" }}
       >
         <Link
-          href="/chats"
+          href="/chat"
           underline="none"
           color="inherit"
           sx={{ display: "inline-flex", alignItems: "center" }}
@@ -188,24 +188,31 @@ export default function HeaderNav({ isOpen, setMenu }: HeaderNavProps) {
           </Tooltip>
 
           <Tooltip title="Configurações">
-            <IconButton
-              size="small"
-              sx={{
-                p: 0.5,
-                borderRadius: "8px",
-                bgcolor:
-                  router === "/settings/profile" ||
-                  router === "/settings/notify" ||
-                  router === "/settings/channel"
-                    ? "rgba(255,255,255,0.16)"
-                    : "transparent",
-                color: "#fff",
-                "&:hover": { bgcolor: "rgba(255,255,255,0.04)" },
-              }}
-              aria-label="configurações"
+            <Link
+              href="/settings/profile"
+              underline="none"
+              color="inherit"
+              sx={{ display: "inline-flex", alignItems: "center" }}
             >
-              <TbSettings className="w-5 h-5" />
-            </IconButton>
+              <IconButton
+                size="small"
+                sx={{
+                  p: 0.5,
+                  borderRadius: "8px",
+                  bgcolor:
+                    router === "/settings/profile" ||
+                    router === "/settings/notify" ||
+                    router === "/settings/channel"
+                      ? "rgba(255,255,255,0.16)"
+                      : "transparent",
+                  color: "#fff",
+                  "&:hover": { bgcolor: "rgba(255,255,255,0.04)" },
+                }}
+                aria-label="configurações"
+              >
+                <TbSettings className="w-5 h-5" />
+              </IconButton>
+            </Link>
           </Tooltip>
 
           <Tooltip title={false ? "Fechar menu" : "Abrir menu"}>
