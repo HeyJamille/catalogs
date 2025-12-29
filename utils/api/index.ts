@@ -9,7 +9,9 @@ export function setupApiClient({
   url?: string;
 }) {
   const api = axios.create({
-    baseURL: url ? url : "http://localhost:3000/v0", //"https://kamala-driveable-overfavorably.ngrok-free.dev/v1",
+    baseURL: url
+      ? url
+      : "https://kamala-driveable-overfavorably.ngrok-free.dev/v0", //"https://kamala-driveable-overfavorably.ngrok-free.dev/v0" http://localhost:3000/v0,
     validateStatus: (status) => status < 500,
   });
 

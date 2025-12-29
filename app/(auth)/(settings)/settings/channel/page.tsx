@@ -136,7 +136,8 @@ export default async function Channel() {
                   {status.data.sessionName}
                 </Typography>
                 <Typography sx={{ fontSize: "11px", color: "text.secondary" }}>
-                  {formatPhone("+" + status.data.id.replace(/\D/g, ""))}
+                  {status.data.id &&
+                    formatPhone("+" + status.data.id.replace(/\D/g, ""))}
                 </Typography>
               </Box>
 
